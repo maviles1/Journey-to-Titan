@@ -64,10 +64,16 @@ public class Vector3d implements Vector3dInterface{
 	}
 
 	public double dist(Vector3dInterface other){
-		return Math.sqrt( (getX()-other.getX())*(getX()-other.getX()) + (getY()-other.getY())*(getY()-other.getY()) + (getZ()-other.getZ())*(getZ()-other.getZ()) );
+		return Math.sqrt( (getX()-other.getX())*(getX()-other.getX()) + (getY()-other.getY())*(getY()-other.getY()) );
 	}
 
 	public String toString(){
 		return ("(" + getX() + "," + getY() + "," + getZ() + ")");
 	}
+
+
+	public Vector3d copy(){
+		return new Vector3d(x,y,z);
+	}
+
 }

@@ -23,6 +23,7 @@ public interface FunctionInterface {
      * @param   t   the time at which to evaluate the function
      * @param   s   the location at which to evaluate the function
      */
+
     public Vector3dInterface call(double t, Vector3dInterface s);
 
 }
