@@ -5,10 +5,6 @@
  * This interface serves as the API for students in phase 1.
  */
 
-package titan;
-
-import titan.Vector3dInterface;
-import titan.FunctionInterface;
 
 public interface SolverInterface {
     

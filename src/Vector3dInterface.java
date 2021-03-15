@@ -5,8 +5,6 @@
  * This interface serves as the API for students in phase 1.
  */
 
-package titan;
-
 public interface Vector3dInterface {
     
     public double getX();
