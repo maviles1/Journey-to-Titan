@@ -1,4 +1,5 @@
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
@@ -12,7 +13,7 @@ import java.net.MalformedURLException;
 
 public class View extends ScrollPane {
     private double scaleValue = 1.0;
-    private double delta = 1.1;
+    private double delta = 1.05;
     private Canvas canvas;
 
     public View(Canvas canvas) throws MalformedURLException {
@@ -55,10 +56,20 @@ public class View extends ScrollPane {
                 else
                     scaleValue *= delta;    //smooth zoom in
 
+                double centerPosX = (zoomGroup.getLayoutBounds().getWidth() - getViewportBounds().getWidth())  * getHvalue() + getViewportBounds().getWidth()  / 2;
+                double centerPosY = (zoomGroup.getLayoutBounds().getHeight() - getViewportBounds().getHeight())  * getVvalue() + getViewportBounds().getHeight()  / 2;
+
                 //When zooming out, zoomGroup should only be zoomed until the entire content fits in the Viewport.
                 //This prevents the content from being zoomed out of existence
                 double nscale = Math.max(scaleValue, Math.min(getViewportBounds().getWidth() / zoomGroup.getLayoutBounds().getWidth(),
                         getViewportBounds().getHeight() / zoomGroup.getLayoutBounds().getHeight()));
+
+
+                double newCenterX = centerPosX * nscale;
+                double newCenterY = centerPosY * nscale;
+
+                setHvalue((newCenterX - getViewportBounds().getWidth()/2) / (zoomGroup.getLayoutBounds().getWidth() * scaleValue - getViewportBounds().getWidth()));
+                setVvalue((newCenterY - getViewportBounds().getHeight()/2) / (zoomGroup.getLayoutBounds().getHeight() * scaleValue  -getViewportBounds().getHeight()));
 
                 //apply new scale
                 scaleTransform.setX(nscale);
