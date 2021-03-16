@@ -1,3 +1,5 @@
+package titan;
+
 public interface SpaceObject {
     public void setPosition(Vector3d pos);
     public void setMass(double mass);

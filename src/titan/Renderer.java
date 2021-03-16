@@ -1,10 +1,10 @@
+package titan;
+
 import javafx.animation.AnimationTimer;
-import javafx.geometry.VPos;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;

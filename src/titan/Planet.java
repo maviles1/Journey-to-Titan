@@ -1,3 +1,5 @@
+package titan;
+
 public class Planet implements SpaceObject{
     private String name;
     private double mass;
@@ -7,7 +9,7 @@ public class Planet implements SpaceObject{
     private Vector3d acceleration;
     private double radius;
 
-    public Planet(String n, double m, Vector3d pos, Vector3d vel, double radius){
+    public Planet(String n, double m, Vector3d pos, Vector3d vel, double radius) {
         name=n;
         mass=m;
         position=pos;

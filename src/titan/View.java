@@ -1,3 +1,5 @@
+package titan;
+
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;

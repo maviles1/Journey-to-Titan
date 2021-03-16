@@ -1,17 +1,15 @@
+package titan;
+
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.io.FileReader;
-import java.io.BufferedReader;
 import java.io.File;
 import java.util.Scanner;
 import java.util.HashMap;
-import java.util.Vector;
 
 public class SpaceObjectBuilder {
 
     private ArrayList<SpaceObject> objects = new ArrayList<>();
+    public static ArrayList<SpaceObject> spaceObjects = new ArrayList<>();
 
     public SpaceObjectBuilder(String source){
         ArrayList<SpaceObject> objects = new ArrayList<>();
@@ -29,9 +27,10 @@ public class SpaceObjectBuilder {
                 }
                 Vector3d pos = new Vector3d(arguments.get("x"), arguments.get("y"), arguments.get("z"));
                 Vector3d vel = new Vector3d(arguments.get("vx"), arguments.get("vy"), arguments.get("vz"));
-//                Planet planet = new Planet(name, arguments.get("mass"), pos,vel);
+//                titan.Planet planet = new titan.Planet(name, arguments.get("mass"), pos,vel);
 //                objects.add(planet);
                 this.objects = objects;
+                spaceObjects = objects;
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

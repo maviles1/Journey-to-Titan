@@ -1,10 +1,10 @@
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import titan.*;
+
 import java.util.ArrayList;
 
 public class Main extends Application {
@@ -12,8 +12,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         SpaceObjectBuilder builder = new SpaceObjectBuilder("src/solar_system_data-2020_04_01.txt");
-
-        Planet.planets[0] = new Planet();
 
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.setPrefSize(800, 600);
@@ -24,7 +22,7 @@ public class Main extends Application {
         primaryStage.setTitle("Mission Titan");
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.show();
-        initialiseCanvas(canvas);
+        //initialiseCanvas(canvas);
         ArrayList <SpaceObject> planets = new ArrayList<>();
         Planet earth = new Planet("earth", 1000, new Vector3d(50,100,300), new Vector3d(0,0.0,0.0),70);
         Planet mars = new Planet("mars", 400, new Vector3d(400,75,87), new Vector3d(0.0,0.0,0.0),80);
@@ -36,9 +34,12 @@ public class Main extends Application {
         planets.add(saturn);
         planets.add(uranus);
         planets.add(sun);
+
+        //StateInterface state = new State();
+
+
         Renderer renderer = new Renderer(canvas,planets);
 
-        Renderer renderer = new Renderer(canvas);
         renderer.start();
 
 
