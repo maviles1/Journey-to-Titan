@@ -17,9 +17,17 @@ public class Renderer extends AnimationTimer {
     ArrayList <SpaceObject> system;
     ArrayList <Double []> paths = new ArrayList<>();
 
+    State state;
+
 
     public Renderer(Canvas canvas, ArrayList<SpaceObject> system) {
         this.canvas = canvas;
+        this.system = system;
+    }
+
+    public Renderer(Canvas canvas, ArrayList<SpaceObject> system, State state) {
+        this.canvas = canvas;
+        this.state = state;
         this.system = system;
     }
 
@@ -38,16 +46,16 @@ public class Renderer extends AnimationTimer {
         double y = 500 + 20 * Math.sin(t);
         gc.setFill(Paint.valueOf("#ffffff"));
 
-        for (int i = 0; i < system.size(); i++){
-            drawSpaceObject(gc, system.get(i));
-            system.get(i).update();
-            for (int j = 0; j < system.size(); j++){
-                if (!system.get(i).getName().equals(system.get(j).getName())){
-                    system.get(i).attract(system.get(j));
-                }
-            }
-
-        }
+//        for (int i = 0; i < system.size(); i++){
+//            drawSpaceObject(gc, system.get(i));
+//            system.get(i).update();
+//            for (int j = 0; j < system.size(); j++){
+//                if (!system.get(i).getName().equals(system.get(j).getName())){
+//                    system.get(i).attract(system.get(j));
+//                }
+//            }
+//
+//        }
 
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
@@ -56,7 +64,8 @@ public class Renderer extends AnimationTimer {
                 50, 10
         );
 
-//        gc.fillOval(0 + x, 0 + y, 50, 50);
+        gc.fillOval(0 + x, 0 + y, 50, 50);
+        gc.fillOval(0 + state.positions[0].getX(), 0 + state.positions[0].getY(), 50, 50);
 
     }
 

@@ -19,8 +19,16 @@ public class State implements StateInterface {
     }
 
     @Override
-    public StateInterface addMul(double step, RateInterface rate) {
-        return null;
+    public StateInterface addMul(double step, RateInterface r) {
+        Rate rate = (Rate) r;
+        Vector3d[] newPositions = new Vector3d[positions.length];
+        Vector3d[] newVelocities = new Vector3d[velocities.length];
+        for (int i = 0; i < positions.length; i++) {
+            newPositions[i] = positions[i].addMul(step, rate.getRatePosition()[i]);
+            newVelocities[i] = positions[i].addMul(step, rate.getRateVelocity()[i]);
+        }
+
+        return new State(newPositions, newVelocities, time + step);
     }
 
     public String toString() {

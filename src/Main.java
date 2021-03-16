@@ -49,12 +49,18 @@ public class Main extends Application {
             mass[i++] = spaceObject.getMass();
         }
 
-        StateInterface state = new State(positions, velocities, 0);
+        State state = new State(positions, velocities, 0);
         State.setMass(mass);
         State.setNames();
 
         System.out.println(state.toString());
-        Renderer renderer = new Renderer(canvas,planets);
+
+        ODEFunction f = new ODEFunction();
+        State state1 = (State) state.addMul(1, f.call(0 + 1, state));
+        System.out.println(state1.toString());
+
+
+        Renderer renderer = new Renderer(canvas,planets, state);
 
         renderer.start();
 

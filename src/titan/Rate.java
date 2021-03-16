@@ -2,9 +2,20 @@ package titan;
 
 public class Rate implements RateInterface {
 
-    double[] rate;
+    private Vector3d[] positionRates;
+    private Vector3d[] velocityRates;
 
-    public Rate(double[] rate) {
-        this.rate = rate;
+
+    public Rate(Vector3d[] rateP, Vector3d[] rateV) {
+        this.positionRates = rateP;
+        this.velocityRates = rateV;
+    }
+
+    public Vector3d[] getRatePosition() {
+        return positionRates;
+    }
+
+    public Vector3d[] getRateVelocity() {
+        return velocityRates;
     }
 }
