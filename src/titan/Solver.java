@@ -15,7 +15,7 @@ public class Solver implements ODESolverInterface{
     @Override
     public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
         //check if t should be the total time
-        int size= (int) (tf/h);
+        int size= (int) (tf/h+1);
         StateInterface[] s = new StateInterface[size];
         s[0]=step(f,0,y0,h);
         double t=0;
@@ -32,6 +32,6 @@ public class Solver implements ODESolverInterface{
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
 
         RateInterface r = f.call(t, y);
-        return y.addMul(h,r);
+        return y.addMul(h,r); //h*f(t,y)
     }
 }
