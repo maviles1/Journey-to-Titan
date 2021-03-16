@@ -27,8 +27,8 @@ public class SpaceObjectBuilder {
                 }
                 Vector3d pos = new Vector3d(arguments.get("x"), arguments.get("y"), arguments.get("z"));
                 Vector3d vel = new Vector3d(arguments.get("vx"), arguments.get("vy"), arguments.get("vz"));
-//                titan.Planet planet = new titan.Planet(name, arguments.get("mass"), pos,vel);
-//                objects.add(planet);
+                titan.Planet planet = new titan.Planet(name, arguments.get("mass"), pos,vel, 0);
+                objects.add(planet);
                 this.objects = objects;
                 spaceObjects = objects;
             }

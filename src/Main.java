@@ -37,7 +37,23 @@ public class Main extends Application {
 
         //StateInterface state = new State();
 
+        ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
 
+        Vector3d[] positions = new Vector3d[spaceObjects.size()];
+        Vector3d[] velocities = new Vector3d[spaceObjects.size()];
+        double[] mass = new double[spaceObjects.size()];
+        int i = 0;
+        for (SpaceObject spaceObject : spaceObjects) {
+            positions[i] = spaceObject.getPosition();
+            velocities[i] = spaceObject.getVelocity();
+            mass[i++] = spaceObject.getMass();
+        }
+
+        StateInterface state = new State(positions, velocities, 0);
+        State.setMass(mass);
+        State.setNames();
+
+        System.out.println(state.toString());
         Renderer renderer = new Renderer(canvas,planets);
 
         renderer.start();
