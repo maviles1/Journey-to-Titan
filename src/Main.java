@@ -26,6 +26,8 @@ public class Main extends Application {
 //
 //
 
+        Planet.planets[0] = new Planet();
+
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.setPrefSize(800, 600);
         Canvas canvas = new Canvas(anchorPane.getPrefWidth(), anchorPane.getPrefHeight());

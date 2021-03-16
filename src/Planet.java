@@ -6,6 +6,8 @@ public class Planet implements SpaceObjects{
     private Vector3d force;
     private Vector3d acceleration;
 
+    public static Planet[] planets = new Planet[8];
+
     public Planet(String n, double m, Vector3d pos, Vector3d vel){
         name=n;
         mass=m;

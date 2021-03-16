@@ -1,6 +1,8 @@
+import titan.Vector3dInterface;
+
 import java.lang.Math;
 
-public class Vector3d implements Vector3dInterface{
+public class Vector3d implements Vector3dInterface {
 	private double x;
 	private double y;
 	private double z;
