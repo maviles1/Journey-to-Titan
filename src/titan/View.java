@@ -7,6 +7,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.transform.Scale;
 
@@ -53,11 +54,13 @@ public class View extends ScrollPane {
              */
             @Override
             public void handle(ScrollEvent scrollEvent) {
+                double oldScale = scaleValue;
                 if (scrollEvent.getDeltaY() < 0)
                     scaleValue /= delta;    //smooth zoom out
                 else
                     scaleValue *= delta;    //smooth zoom in
 
+                //get old center positions
                 double centerPosX = (zoomGroup.getLayoutBounds().getWidth() - getViewportBounds().getWidth())  * getHvalue() + getViewportBounds().getWidth()  / 2;
                 double centerPosY = (zoomGroup.getLayoutBounds().getHeight() - getViewportBounds().getHeight())  * getVvalue() + getViewportBounds().getHeight()  / 2;
 
@@ -66,22 +69,38 @@ public class View extends ScrollPane {
                 double nscale = Math.max(scaleValue, Math.min(getViewportBounds().getWidth() / zoomGroup.getLayoutBounds().getWidth(),
                         getViewportBounds().getHeight() / zoomGroup.getLayoutBounds().getHeight()));
 
+                scaleTransform.setX(nscale);
+                scaleTransform.setY(nscale);
 
+                //calculate new center positions
                 double newCenterX = centerPosX * nscale;
                 double newCenterY = centerPosY * nscale;
 
-                setHvalue((newCenterX - getViewportBounds().getWidth()/2) / (zoomGroup.getLayoutBounds().getWidth() * scaleValue - getViewportBounds().getWidth()));
-                setVvalue((newCenterY - getViewportBounds().getHeight()/2) / (zoomGroup.getLayoutBounds().getHeight() * scaleValue  -getViewportBounds().getHeight()));
+                //recenter canvas
+                //setHvalue((newCenterX - getViewportBounds().getWidth()/2) / (zoomGroup.getLayoutBounds().getWidth() * scaleValue - getViewportBounds().getWidth()));
+                //setVvalue((newCenterY - getViewportBounds().getHeight()/2) / (zoomGroup.getLayoutBounds().getHeight() * scaleValue  -getViewportBounds().getHeight()));
+
+                double  f = (oldScale / nscale)-1;
+                Bounds bounds = zoomGroup.localToScene(zoomGroup.getBoundsInLocal());
+                double dx = (scrollEvent.getSceneX() - (bounds.getWidth()/2 + bounds.getMinX()));
+                double dy = (scrollEvent.getSceneY() - (bounds.getHeight()/2 + bounds.getMinY()));
+
+                setHvalue(zoomGroup.getTranslateX()-f*dx);
+                setVvalue(zoomGroup.getTranslateY()-f*dy);
 
                 //apply new scale
-                scaleTransform.setX(nscale);
-                scaleTransform.setY(nscale);
+
+//                scaleTransform.setX(zoomGroup.getTranslateX()-f*dx);
+//                scaleTransform.setY(zoomGroup.getTranslateY()-f*dy);
                 scrollEvent.consume();
             }
         }
 
+        ZoomHandler handler = new ZoomHandler();
+
         //make sure that ScrollPane doesn't use ScrollEvent to pan
         addEventFilter(ScrollEvent.ANY, new ZoomHandler());
+        //addEventFilter(ZoomEvent.ANY, handler);
 
         Image img = new Image(new File("src/space.png").toURI().toURL().toExternalForm());
 

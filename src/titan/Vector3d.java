@@ -36,29 +36,31 @@ public class Vector3d implements Vector3dInterface {
 		setY(getY() + other.getY());
 		setZ(getZ() + other.getZ());
 
-		return this;
+		//return this;
+		return new Vector3d(getX() + other.getX(), getY() + other.getY(), getZ() + other.getZ());
 	}
 	public Vector3d sub(Vector3dInterface other){
-		setX(getX() - other.getX());
-		setY(getY() - other.getY());
-		setZ(getZ() - other.getZ());
+		return new Vector3d(getX() - other.getX(), getY() - other.getY(), getZ() - other.getZ());
+//		setX(getX() - other.getX());
+//		setY(getY() - other.getY());
+//		setZ(getZ() - other.getZ());
 
-		return this;
 	}
 	public Vector3d mul(double scalar){
-		setX(getX() * scalar);
-		setY(getY() * scalar);
-		setZ(getZ() * scalar);
+//		setX(getX() * scalar);
+//		setY(getY() * scalar);
+//		setZ(getZ() * scalar);
 
-		return this;
+		return new Vector3d(getX() * scalar, getY() * scalar, getZ() * scalar);
+
 	}
 
 	public Vector3d addMul(double scalar, Vector3dInterface other){
-		setX(getX() + scalar * other.getX());
-		setY(getY() + scalar * other.getY());
-		setZ(getZ() + scalar * other.getZ());
+//		setX(getX() + scalar * other.getX());
+//		setY(getY() + scalar * other.getY());
+//		setZ(getZ() + scalar * other.getZ());
 
-		return this;
+		return new Vector3d(getX() + scalar * other.getX(), getY() + scalar * other.getY(), getZ() + scalar * other.getZ());
 	}
 
 	public double norm(){

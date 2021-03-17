@@ -18,7 +18,7 @@ public class ODEFunction implements ODEFunctionInterface{
                 if (i != j) {
 
                     double p = (G * State.mass[j])/Math.pow(state.positions[j].dist(state.positions[i]),3);
-                    a.addMul(p, state.positions[j].sub(state.positions[i]));
+                    a = a.addMul(p, state.positions[j].sub(state.positions[i]));
 
                 }
             }
