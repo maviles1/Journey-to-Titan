@@ -54,7 +54,6 @@ public class Main extends Application {
         State.setMass(mass);
         State.setNames();
 
-//TODO where did the minuses go????
         System.out.println(state.toString());
 
 
@@ -64,21 +63,19 @@ public class Main extends Application {
        // System.out.println(state1.toString());
 
 
-        double[] ts = new double[]{0, 31556926};
+      double[] ts = new double[]{0, 31556926};
         Solver x = new Solver();
-        StateInterface[] s = x.solve(f, state1, ts);
+   /*   StateInterface[] s = x.solve(f, state1, ts);
         System.out.println( s[1] );
         System.out.println();
-
+*/
         double tf = 31556926;
-        StateInterface[] s1 = x.solve(f, state1, tf, 1000);
-        System.out.println( s1[0] );
-        System.out.println();
+        StateInterface[] s1 = x.solve(f, state1, 2000, 1000);
 
 
         Renderer renderer = new Renderer(canvas,planets, state);
 
-        renderer.start();
+    //    renderer.start();
 
 
     }

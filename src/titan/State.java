@@ -1,12 +1,13 @@
 package titan;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class State implements StateInterface {
 
-    Vector3d[] positions;
-    Vector3d[] velocities;
+    private Vector3d[] positions;
+    private Vector3d[] velocities;
     static double[] mass;
     static Map<Integer, String> names;
 
@@ -16,6 +17,7 @@ public class State implements StateInterface {
         this.positions = positions;
         this.velocities = velocities;
         this.time = time;
+        System.out.println(Arrays.toString(this.positions));
     }
 
 
@@ -23,14 +25,20 @@ public class State implements StateInterface {
     @Override
     public StateInterface addMul(double step, RateInterface r) {
         Rate rate = (Rate) r;
+
         Vector3d[] newPositions = new Vector3d[positions.length];
         Vector3d[] newVelocities = new Vector3d[velocities.length];
-        for (int i = 0; i < positions.length; i++) {
+        System.out.println(Arrays.toString(positions));
+        for (int i = 0; i < velocities.length; i++) {
             newPositions[i] = positions[i].addMul(step, rate.getRatePosition()[i]);
             newVelocities[i] = velocities[i].addMul(step, rate.getRateVelocity()[i]);
         }
+
+        System.out.println("NEWW " +Arrays.toString(rate.getRatePosition()));
+
         return new State(newPositions, newVelocities, time + step);
     }
+
 
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -49,6 +57,14 @@ public class State implements StateInterface {
         for (int i = 0; i < SpaceObjectBuilder.spaceObjects.size(); i++) {
             names.put(i, SpaceObjectBuilder.spaceObjects.get(i).getName());
         }
+    }
+
+    public Vector3d[] getPosition(){
+        return positions;
+    }
+
+    public Vector3d[] getVelocities(){
+        return velocities;
     }
 
     public double getTime() {
