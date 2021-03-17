@@ -1,3 +1,5 @@
+package titan;
+
 import titan.SpaceObject;
 import titan.Vector3d;
 
