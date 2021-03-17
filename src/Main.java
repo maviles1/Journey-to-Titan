@@ -65,7 +65,7 @@ public class Main extends Application {
 
       double[] ts = new double[]{0, 31556926};
         Solver x = new Solver();
-      StateInterface[] s = x.solve(f, state, ts);
+        StateInterface[] s = x.solve(f, state, ts);
         System.out.println( s[1] );
         System.out.println();
 

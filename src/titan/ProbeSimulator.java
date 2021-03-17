@@ -11,6 +11,8 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
      *          taken relative to the Solar System barycentre.
      */
     public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double[] ts) {
+
+
         return new Vector3dInterface[0];
     }
 
