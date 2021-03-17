@@ -62,7 +62,7 @@ public class Renderer extends AnimationTimer {
         gc.fillOval(0 + x, 0 + y, 50, 50);
 
         for (int i = 0; i < state.getPositions().length; i++) {
-            gc.fillOval(state.getPositions()[i].getX() / (1e22), state.getPositions()[i].getY() / (1e22), 50, 50);
+            gc.fillOval(state.getPositions()[i].getX() / (1e8), state.getPositions()[i].getY() / (1e8), 50, 50);
         }
 
         state = (State)state.addMul(1/500, new ODEFunction().call(t, state));

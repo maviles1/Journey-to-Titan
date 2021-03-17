@@ -32,9 +32,9 @@ public class Vector3d implements Vector3dInterface {
 		this.z = z;
 	}
 	public Vector3d add(Vector3dInterface other){
-		setX(getX() + other.getX());
-		setY(getY() + other.getY());
-		setZ(getZ() + other.getZ());
+//		setX(getX() + other.getX());
+//		setY(getY() + other.getY());
+//		setZ(getZ() + other.getZ());
 
 		//return this;
 		return new Vector3d(getX() + other.getX(), getY() + other.getY(), getZ() + other.getZ());
