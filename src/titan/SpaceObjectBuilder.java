@@ -23,7 +23,7 @@ public class SpaceObjectBuilder {
                 String name = lines[0];
                 String [] args = lines[1].split(",");
                 for (int i = 0; i < args.length; i++){
-                    arguments.put(args[i].split("=")[0].replaceAll("[\\W]", ""),Double.parseDouble(args[i].split("=")[1].replaceAll("[\\W]", "")));
+                    arguments.put(args[i].split("=")[0].replaceAll("[\\W]", ""),Double.parseDouble(args[i].split("=")[1].replaceAll("}", "")));
                 }
                 Vector3d pos = new Vector3d(arguments.get("x"), arguments.get("y"), arguments.get("z"));
                 Vector3d vel = new Vector3d(arguments.get("vx"), arguments.get("vy"), arguments.get("vz"));
