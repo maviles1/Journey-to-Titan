@@ -5,6 +5,14 @@ import java.util.Map;
 
 public class State implements StateInterface {
 
+    public Vector3d[] getPositions() {
+        return positions;
+    }
+
+    public Vector3d[] getVelocities() {
+        return velocities;
+    }
+
     Vector3d[] positions;
     Vector3d[] velocities;
     static double[] mass;

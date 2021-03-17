@@ -19,6 +19,8 @@ public class Renderer extends AnimationTimer {
 
     State state;
 
+    double count = 0;
+
 
     public Renderer(Canvas canvas, ArrayList<SpaceObject> system) {
         this.canvas = canvas;
@@ -57,6 +59,14 @@ public class Renderer extends AnimationTimer {
 //
 //        }
 
+        //gc.fillOval(0 + x, 0 + y, 50, 50);
+
+        for (int i = 0; i < state.getPositions().length; i++) {
+            gc.fillOval(state.getPositions()[i].getX() / (1e22), state.getPositions()[i].getY() / (1e22), 50, 50);
+        }
+
+        state = (State)state.addMul(1/500, new ODEFunction().call(t, state));
+
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
         gc.fillText(
@@ -64,8 +74,8 @@ public class Renderer extends AnimationTimer {
                 50, 10
         );
 
-        gc.fillOval(0 + x, 0 + y, 50, 50);
-        gc.fillOval(0 + state.positions[0].getX(), 0 + state.positions[0].getY(), 50, 50);
+
+
 
     }
 

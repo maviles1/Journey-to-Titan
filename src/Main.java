@@ -14,7 +14,7 @@ public class Main extends Application {
         SpaceObjectBuilder builder = new SpaceObjectBuilder("src/solar_system_data-2020_04_01.txt");
 
         AnchorPane anchorPane = new AnchorPane();
-        anchorPane.setPrefSize(800, 600);
+        anchorPane.setPrefSize(1400, 700);
         Canvas canvas = new Canvas(anchorPane.getPrefWidth(), anchorPane.getPrefHeight());
         View view = new View(canvas);
         anchorPane.getChildren().add(view);
@@ -55,9 +55,9 @@ public class Main extends Application {
 
         System.out.println(state.toString());
 
-        ODEFunction f = new ODEFunction();
-        State state1 = (State) state.addMul(1, f.call(0 + 1, state));
-        System.out.println(state1.toString());
+//        ODEFunction f = new ODEFunction();
+//        State state1 = (State) state.addMul(1, f.call(0 + 1, state));
+//        System.out.println(state1.toString());
 
 
         Renderer renderer = new Renderer(canvas,planets, state);
