@@ -16,15 +16,17 @@ public class Solver implements ODESolverInterface{
     public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
         //check if t should be the total time
         int size= (int) (tf/h+1);
+        State state = (State) y0;
         StateInterface[] s = new StateInterface[size];
-        s[0]=step(f,0,y0,h);
+        s[0]=step(f,0,state,h);
         double t=0;
         for(int i=1;i<size-1;i++){
             t+=h;
-            s[i]=step(f,t,s[i-1],h);
+            s[i]=step(f,t,y0,h);
+
         }
         //tf or tf/h
-        s[size-1]=step(f,tf,s[size-2],tf%h);
+        s[size-1]=step(f,tf,s[size-2],tf-t);
         return s;
     }
 

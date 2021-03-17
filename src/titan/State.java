@@ -18,6 +18,8 @@ public class State implements StateInterface {
         this.time = time;
     }
 
+
+
     @Override
     public StateInterface addMul(double step, RateInterface r) {
         Rate rate = (Rate) r;
@@ -25,9 +27,8 @@ public class State implements StateInterface {
         Vector3d[] newVelocities = new Vector3d[velocities.length];
         for (int i = 0; i < positions.length; i++) {
             newPositions[i] = positions[i].addMul(step, rate.getRatePosition()[i]);
-            newVelocities[i] = positions[i].addMul(step, rate.getRateVelocity()[i]);
+            newVelocities[i] = velocities[i].addMul(step, rate.getRateVelocity()[i]);
         }
-
         return new State(newPositions, newVelocities, time + step);
     }
 
@@ -36,7 +37,6 @@ public class State implements StateInterface {
         for (int i = 0; i < positions.length; i++) {
             s.append("").append(names.get(i)).append(" { x=").append(positions[i].getX()).append(", y=").append(positions[i].getY()).append(", z=").append(positions[i].getZ()).append(" vx=").append(velocities[i].getX()).append(", vy=").append(velocities[i].getY()).append(", vz=").append(velocities[i].getZ()).append(" }\n");
         }
-
         return s.toString();
     }
 
