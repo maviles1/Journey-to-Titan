@@ -45,10 +45,12 @@ public class State implements StateInterface {
 
     public String toString() {
         StringBuilder s = new StringBuilder();
-        for (int i = 0; i < positions.length; i++) {
+          for (int i = 0; i < positions.length; i++) {
             s.append("").append(names.get(i)).append(" { x=").append(positions[i].getX()).append(", y=").append(positions[i].getY()).append(", z=").append(positions[i].getZ()).append(" vx=").append(velocities[i].getX()).append(", vy=").append(velocities[i].getY()).append(", vz=").append(velocities[i].getZ()).append(" }\n");
         }
 
+      //  s.append("").append(names.get(0)).append(" { x=").append(positions[0].getX()).append(", y=").append(positions[0].getY()).append(", z=").append(positions[0].getZ()).append(" vx=").append(velocities[0].getX()).append(", vy=").append(velocities[0].getY()).append(", vz=").append(velocities[0].getZ()).append(" }\n");
+        //s.append("").append(names.get(3)).append(" { x=").append(positions[3].getX()).append(", y=").append(positions[3].getY()).append(", z=").append(positions[3].getZ()).append(" vx=").append(velocities[3].getX()).append(", vy=").append(velocities[3].getY()).append(", vz=").append(velocities[3].getZ()).append(" }\n");
         return s.toString();
     }
 

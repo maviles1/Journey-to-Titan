@@ -9,7 +9,6 @@ public class Planet extends SpaceObject{
     }
 
     //consider including name or not
-
     public void update(){
         setPosition(getPosition().add(getVelocity()));
     }

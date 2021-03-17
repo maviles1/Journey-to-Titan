@@ -74,9 +74,9 @@ public class Main extends Application {
         System.out.println();
 
         double tf = 31556926;
-        StateInterface[] s1 = x.solve(f, state, tf, 1000);
+        StateInterface[] s1 = x.solve(f, state, tf, 10000);
 
-    //    System.out.println(s1[s1.length - 1]);
+        System.out.println(s1[s1.length - 1]);
 
 
         //TODO

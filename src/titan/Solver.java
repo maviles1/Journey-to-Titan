@@ -30,7 +30,7 @@ public class Solver implements ODESolverInterface{
         //tf or tf/h
         s[size-1]=step(f,tf,s[size-2],tf-t);
         for(int i=1;i<size;i++){
-   //         System.out.println(s[i]);
+            System.out.println(s[i]);
         }
         return s;
     }
