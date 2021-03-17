@@ -69,16 +69,17 @@ public class Main extends Application {
 
         double[] ts = new double[]{0, 31556926};
         Solver x = new Solver();
-        StateInterface[] s = x.solve(f, state, ts);
-        System.out.println(s[1]);
+     //   StateInterface[] s = x.solve(f, state, ts);
+     //   System.out.println(s[1]);
         System.out.println();
 
         double tf = 31556926;
         StateInterface[] s1 = x.solve(f, state, tf, 1000);
 
-        System.out.println(s1[s1.length - 1]);
+    //    System.out.println(s1[s1.length - 1]);
 
 
+        //TODO
 
         Renderer renderer = new Renderer(canvas, planets, state);
 

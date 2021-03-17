@@ -1,6 +1,8 @@
 package titan;
 
 public class ProbeSimulator implements ProbeSimulatorInterface{
+    private ODEFunction function;
+    private State state;
     /*
      * Simulate the solar system, including a probe fired from Earth at 00:00h on 1 April 2020.
      *
@@ -10,12 +12,22 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
      * @return  an array of size ts.length giving the position of the probe at each time stated,
      *          taken relative to the Solar System barycentre.
      */
+    public ProbeSimulator(ODEFunctionInterface f, StateInterface y){
+        function=(ODEFunction) f;
+        state= (State) y;
+    }
+
     public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double[] ts) {
+        Vector3d[] v = new Vector3d[ts.length];
+
+        for(int i=0;i<ts.length;i++){
+
+        }
+       // StateInterface[] s = solve(ODEFunctionInterface f, StateInterface y0, ts);
 
 
 
-
-        return new Vector3dInterface[0];
+        return v;
     }
 
     /*
@@ -28,6 +40,16 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
      *          taken relative to the Solar System barycentre
      */
     public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double tf, double h) {
-        return new Vector3dInterface[0];
+        //TODO or just cast to int? does it give the correct arraysize???
+        int size = (int) Math.round((tf/h)+1);
+        Vector3d[] v = new Vector3d[size];
+
+        for(int i=0;i<size;i++){
+
+        }
+
+
+
+        return v;
     }
 }
