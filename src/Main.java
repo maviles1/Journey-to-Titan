@@ -59,23 +59,24 @@ public class Main extends Application {
 
         ODEFunction f = new ODEFunction();
 
-        State state1 = (State) state.addMul(1, f.call(0 + 1, state));
+    //    State state1 = (State) state.addMul(1, f.call(0 + 1, state));
        // System.out.println(state1.toString());
 
 
       double[] ts = new double[]{0, 31556926};
         Solver x = new Solver();
-   /*   StateInterface[] s = x.solve(f, state1, ts);
+      StateInterface[] s = x.solve(f, state, ts);
         System.out.println( s[1] );
         System.out.println();
-*/
-        double tf = 31556926;
-        StateInterface[] s1 = x.solve(f, state1, 2000, 1000);
 
+        double tf = 31556926;
+        StateInterface[] s1 = x.solve(f, state, tf, 1000);
+
+        System.out.println(s1[s1.length-1]);
 
         Renderer renderer = new Renderer(canvas,planets, state);
 
-    //    renderer.start();
+        renderer.start();
 
 
     }

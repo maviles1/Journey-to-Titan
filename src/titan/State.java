@@ -17,7 +17,7 @@ public class State implements StateInterface {
         this.positions = positions;
         this.velocities = velocities;
         this.time = time;
-        System.out.println(Arrays.toString(this.positions));
+//   System.out.println(Arrays.toString(this.positions));
     }
 
 
@@ -28,13 +28,15 @@ public class State implements StateInterface {
 
         Vector3d[] newPositions = new Vector3d[positions.length];
         Vector3d[] newVelocities = new Vector3d[velocities.length];
-        System.out.println(Arrays.toString(positions));
+//        System.out.println(Arrays.toString(positions));
         for (int i = 0; i < velocities.length; i++) {
             newPositions[i] = positions[i].addMul(step, rate.getRatePosition()[i]);
             newVelocities[i] = velocities[i].addMul(step, rate.getRateVelocity()[i]);
         }
 
-        System.out.println("NEWW " +Arrays.toString(rate.getRatePosition()));
+     //   System.out.println("NEWW " +Arrays.toString(rate.getRatePosition()));
+      //  System.out.println("NEWW " +Arrays.toString(positions));
+
 
         return new State(newPositions, newVelocities, time + step);
     }
