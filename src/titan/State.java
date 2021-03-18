@@ -8,6 +8,8 @@ public class State implements StateInterface {
     static double[] mass;
     static Map<Integer, String> names;
     public Vector3d[] positions;
+    static double[] radius;
+
     double time;
     private Vector3d[] velocities;
 
@@ -57,13 +59,28 @@ public class State implements StateInterface {
         return s;
     }
 
-    public Vector3d[] getPosition() {
+    public State copy(){
+        Vector3d [] positions = new Vector3d[this.positions.length];
+        Vector3d [] velocities = new Vector3d[this.velocities.length];
+        for (int i = 0; i < this.positions.length; i++){
+            positions[i] = this.positions[i];
+            velocities[i] = this.velocities[i];
+        }
+        return new State(positions, velocities, 0);
+    }
+
+    public static void setRadius(double [] radius){
+        State.radius = radius;
+    }
+
+    public Vector3d[] getPosition(){
         return positions;
     }
 
-    public Vector3d[] getVelocities() {
+    public Vector3d[] getVelocities(){
         return velocities;
     }
+
 
     public double getTime() {
         return this.time;

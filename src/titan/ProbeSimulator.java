@@ -80,7 +80,6 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
 
         return vector;
     }
-
     public StateInterface[] getStates() {
         return states;
     }
