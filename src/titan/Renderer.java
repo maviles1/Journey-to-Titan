@@ -33,7 +33,7 @@ public class Renderer extends AnimationTimer {
         this.state = state;
         Solver solver = new Solver();
         ODEFunction func = new ODEFunction();
-        this.s1 = solver.solve(func, state, 31556926, 10000);
+        this.s1 = solver.solve(func, state, 315569260, 10000);
     }
 
     @Override
@@ -53,8 +53,6 @@ public class Renderer extends AnimationTimer {
         for (int i = 0; i < state.positions.length; i++){
             drawSpaceObject(gc, state.positions[i],i);
         }
-//
-
 
         gc.setTextAlign(TextAlignment.CENTER );
         gc.setTextBaseline(VPos.CENTER);
@@ -93,23 +91,26 @@ public class Renderer extends AnimationTimer {
     }
 
     public void drawSpaceObject(GraphicsContext gc,Vector3d vec, int index){
-        gc.fillOval(  gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 5, 5);
+        gc.fillOval(  gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()),toScreenRadius(State.radius[index]), toScreenRadius(State.radius[index]));
         gc.setFill(Paint.valueOf("#CC52D7"));
-        gc.strokeOval(gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 5, 5);
+        gc.strokeOval(gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), toScreenRadius(State.radius[index]), toScreenRadius(State.radius[index]));
         for (int i = 0; i < paths.size(); i++){
             gc.fillOval(paths.get(i)[0],paths.get(i)[1],paths.get(i)[2],paths.get(i)[3]);
         }
-        paths.add(new Double[]{gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 1.0, 1.0});
+        paths.add(new Double[]{gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()) + toScreenRadius(toScreenCoordinates(vec.getX())), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()) + toScreenRadius(toScreenCoordinates(vec.getY())), 1.0, 1.0});
         gc.setFill(Paint.valueOf("#DBF188"));
         gc.fillText(state.names.get(index), gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX() + 6), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY() + 30));
         gc.setFill(Paint.valueOf("#ffffff"));
-
-
     }
 
 
     public static double toScreenCoordinates(double d){
-        return ((d/(1e13)) * 300);
+        return ((d/(1e12)) * 100);
+    }
+
+    public static double toScreenRadius(double d){
+        System.out.println(d);
+        return d/10000;
     }
 
 }

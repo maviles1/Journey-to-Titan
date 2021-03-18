@@ -10,6 +10,7 @@ public class State implements StateInterface {
     private Vector3d[] velocities;
     static double[] mass;
     static Map<Integer, String> names;
+    static double[] radius;
 
     double time;
 
@@ -64,6 +65,10 @@ public class State implements StateInterface {
         for (int i = 0; i < SpaceObjectBuilder.spaceObjects.size(); i++) {
             names.put(i, SpaceObjectBuilder.spaceObjects.get(i).getName());
         }
+    }
+
+    public static void setRadius(double [] radius){
+        State.radius = radius;
     }
 
     public Vector3d[] getPosition(){
