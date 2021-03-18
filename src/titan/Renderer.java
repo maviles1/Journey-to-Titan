@@ -21,8 +21,6 @@ public class Renderer extends AnimationTimer {
     int count = 0;
     StateInterface [] s1;
 
-
-
     public Renderer(Canvas canvas, ArrayList<SpaceObject> system) {
         this.canvas = canvas;
         this.system = system;
@@ -36,9 +34,15 @@ public class Renderer extends AnimationTimer {
         this.s1 = solver.solve(func, state, 31556926, 10000);
     }
 
+
+    public Renderer(Canvas canvas, StateInterface[] states) {
+        this.canvas = canvas;
+        this.state = (State) states[0];
+        this.s1 = states;
+    }
+
     @Override
     public void handle(long now) {
-        Button button = new Button("PENIS");
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Paint.valueOf("#000000"));
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -53,8 +57,6 @@ public class Renderer extends AnimationTimer {
         for (int i = 0; i < state.positions.length; i++){
             drawSpaceObject(gc, state.positions[i],i);
         }
-//
-
 
         gc.setTextAlign(TextAlignment.CENTER );
         gc.setTextBaseline(VPos.CENTER);
@@ -72,20 +74,6 @@ public class Renderer extends AnimationTimer {
         );
 
 
-//        state.positions = func.call(t,state).getRatePosition();
-//        for (int i = 0; i < state.positions.length; i++){
-//            state.positions[i] = state.positions[i].add(func.call(t,state).getRatePosition()[i]);
-//        }
-//        state = (State) solver.step(func, t, state, 1);
-//        ODEFunction func = new ODEFunction();
-//        double[] ts = new double[]{0, 31556926};
-//        Solver solver = new Solver();
-////        StateInterface[] s = solver.solve(func, state, ts);
-//        //   System.out.println(s[1]);
-////        StateInterface[] s1 = solver.solve(func, state, tf, 100000);
-////        System.out.println(s1[count]);
-//        state = (State) s1[count];
-
 
         state = (State) s1[count];
         count++;
@@ -101,7 +89,7 @@ public class Renderer extends AnimationTimer {
         }
         paths.add(new Double[]{gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 1.0, 1.0});
         gc.setFill(Paint.valueOf("#DBF188"));
-        gc.fillText(state.names.get(index), gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX() + 6), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY() + 30));
+        gc.fillText(State.names.get(index), gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX() + 6), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY() + 30));
         gc.setFill(Paint.valueOf("#ffffff"));
 
 
@@ -109,7 +97,7 @@ public class Renderer extends AnimationTimer {
 
 
     public static double toScreenCoordinates(double d){
-        return ((d/(1e13)) * 300);
+        return ((d/(1e12)) * 800);
     }
 
 }

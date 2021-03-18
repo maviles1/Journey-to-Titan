@@ -27,8 +27,16 @@ public class SpaceObjectBuilder {
                 }
                 Vector3d pos = new Vector3d(arguments.get("x"), arguments.get("y"), arguments.get("z"));
                 Vector3d vel = new Vector3d(arguments.get("vx"), arguments.get("vy"), arguments.get("vz"));
-                titan.Planet planet = new titan.Planet(name, arguments.get("mass"), pos,vel, 0);
-                objects.add(planet);
+                SpaceObject body = null;
+                if (name.equals("Sun")) {
+                    body = new Sun(name, arguments.get("mass"), pos, vel);
+                } else if (name.equals("Moon")) {
+                    body = new Moon(name, arguments.get("mass"), pos, vel);
+                } else {
+                    body = new Planet(name, arguments.get("mass"), pos, vel, 0);
+                }
+
+                objects.add(body);
                 this.objects = objects;
                 spaceObjects = objects;
             }
