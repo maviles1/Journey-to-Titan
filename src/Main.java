@@ -40,6 +40,15 @@ public class Main extends Application {
 
         ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
 
+        //       Probe probe = new Probe("Probe", 15000, new Vector3d(0, 0, 0), new Vector3d(60, 0, 0));
+        //      spaceObjects.add(probe);
+
+   /*     for(int step=0; step<spaceObjects.size();step++){
+            System.out.println(spaceObjects.get(step).toString());
+        }
+    */
+
+
         //create positions and velocities arrays to represent the state
 //        Vector3d[] positions = new Vector3d[spaceObjects.size()];
 //        Vector3d[] velocities = new Vector3d[spaceObjects.size()];
@@ -69,7 +78,7 @@ public class Main extends Application {
         ODEFunction f = new ODEFunction();
 
         ProbeSimulator sim = new ProbeSimulator(spaceObjects);
-       // System.out.println(Arrays.toString(sim.trajectory(new Vector3d(1, 1, 1), new Vector3d(60, 0, 0),31556926, 1000)));
+        // System.out.println(Arrays.toString(sim.trajectory(new Vector3d(1, 1, 1), new Vector3d(60, 0, 0),31556926, 1000)));
         sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),31556926, 1000);
 
 
@@ -80,20 +89,41 @@ public class Main extends Application {
         //    State state1 = (State) state.addMul(1, f.call(0 + 1, state));
         // System.out.println(state1.toString());
 
-//
-//        double[] ts = new double[]{0, 31556926};
-//        Solver x = new Solver();
-//     //   StateInterface[] s = x.solve(f, state, ts);
-//     //   System.out.println(s[1]);
-//     //   System.out.println();
-//
-//        double tf = 31556926;
-//        StateInterface[] s1 = x.solve(f, state, tf, 10000);
-//
-//        System.out.println(s1[s1.length - 1]);
+ /*
+        double[] ts = new double[]{0, 31556926};
+        Solver x = new Solver();
+     //   StateInterface[] s = x.solve(f, state, ts);
+     //   System.out.println(s[1]);
+     //   System.out.println();
 
+        double tf = 31556926;
+        StateInterface[] s1 = x.solve(f, state, tf, 10000);
 
         Renderer renderer = new Renderer(canvas, planets);
+        System.out.println(s1[s1.length - 1]);
+
+
+        Renderer renderer = new Renderer(canvas, planets, state);
+        int count = 0;
+
+            ODEFunction func = new ODEFunction();
+            double[] tss = new double[]{0, 31556926};
+            Solver solver = new Solver();
+//        StateInterface[] s = solver.solve(func, state, ts);
+            //   System.out.println(s[1]);
+            double d = 31556926;
+            StateInterface[] s2 = solver.solve(func, state, d, 100000);
+            for (int ia = 0; ia < s2.length; ia++){
+                System.out.println(("STEP:  " + ia + "  | " + (State) s2[ia]));
+            }
+//            System.out.println("ASDASDASDASDASDASDASDASD: " + s2[count]);
+//            state = (State) s2[count];
+            count++;
+
+
+
+
+
 
         renderer.start();
 
@@ -107,39 +137,6 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-//        SpaceObjectBuilder builder = new SpaceObjectBuilder("src/solar_system_data-2020_04_01.txt");
-//        Solver solver = new Solver();
-//        ODEFunction func = new ODEFunction();
-//        ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
-//
-//        //create positions and velocities arrays to represent the state
-//        Vector3d[] positions = new Vector3d[spaceObjects.size()];
-//        Vector3d[] velocities = new Vector3d[spaceObjects.size()];
-//        double[] mass = new double[spaceObjects.size()];
-//        int i = 0;
-//        for (SpaceObject spaceObject : spaceObjects) {
-//            positions[i] = spaceObject.getPosition();
-//            velocities[i] = spaceObject.getVelocity();
-//            mass[i++] = spaceObject.getMass();
-//        }
-//        State state = new State(positions,velocities,0);
-//
-//        int count = 0;
-//        for (int in = 0; in < 3155; in++){
-//            StateInterface[] s1 = solver.solve(func, state, 31556926, 100000);
-//            System.out.println(s1[count]);
-//            state = (State) s1[count];
-//            count++;
-//        }
-//
-//
-//
-//
-//
-
-
-
-
         launch(args);
     }
 }

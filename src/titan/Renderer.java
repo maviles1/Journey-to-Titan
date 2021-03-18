@@ -19,6 +19,7 @@ public class Renderer extends AnimationTimer {
     ArrayList <Double []> paths = new ArrayList<>();
     State state;
     int count = 0;
+    StateInterface [] s1;
 
 
 
@@ -31,6 +32,13 @@ public class Renderer extends AnimationTimer {
 //        this.canvas = canvas;
 //        this.state = state;
 //    }
+    public Renderer(Canvas canvas, ArrayList<SpaceObject> system, State state) {
+        this.canvas = canvas;
+        this.state = state;
+        Solver solver = new Solver();
+        ODEFunction func = new ODEFunction();
+        this.s1 = solver.solve(func, state, 31556926, 10000);
+    }
 
     @Override
     public void handle(long now) {
@@ -73,15 +81,16 @@ public class Renderer extends AnimationTimer {
 //            state.positions[i] = state.positions[i].add(func.call(t,state).getRatePosition()[i]);
 //        }
 //        state = (State) solver.step(func, t, state, 1);
-        ODEFunction func = new ODEFunction();
-        double[] ts = new double[]{0, 31556926};
-        Solver solver = new Solver();
-//        StateInterface[] s = solver.solve(func, state, ts);
-        //   System.out.println(s[1]);
+//        ODEFunction func = new ODEFunction();
+//        double[] ts = new double[]{0, 31556926};
+//        Solver solver = new Solver();
+////        StateInterface[] s = solver.solve(func, state, ts);
+//        //   System.out.println(s[1]);
+////        StateInterface[] s1 = solver.solve(func, state, tf, 100000);
+////        System.out.println(s1[count]);
+//        state = (State) s1[count];
 
-        double tf = 31556926;
-        StateInterface[] s1 = solver.solve(func, state, tf, 100000);
-//        System.out.println(s1[count]);
+
         state = (State) s1[count];
         count++;
 //        state = (State) solver.step(func, t, state, 1000000);
@@ -94,13 +103,14 @@ public class Renderer extends AnimationTimer {
         for (int i = 0; i < paths.size(); i++){
             gc.fillOval(paths.get(i)[0],paths.get(i)[1],paths.get(i)[2],paths.get(i)[3]);
         }
-        paths.add(new Double[]{gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 2.0, 2.0});
+        paths.add(new Double[]{gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 1.0, 1.0});
         gc.setFill(Paint.valueOf("#DBF188"));
         gc.fillText(state.names.get(index), gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX() + 6), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY() + 30));
         gc.setFill(Paint.valueOf("#ffffff"));
 
 
     }
+
 
     public static double toScreenCoordinates(double d){
         return ((d/(1e13)) * 300);
