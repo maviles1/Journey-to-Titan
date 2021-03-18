@@ -62,13 +62,18 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
         //create probe
         Probe probe = new Probe("Probe", 15000, p, v);
 
+
         spaceObjects.add(probe);
         //create State with planets and probe
         State universe = initUn();
+        System.out.println(universe);
         //creates all the states of the simulation
         Solver solver = new Solver();
         StateInterface[] s = solver.solve(new ODEFunction(), universe, tf, h);
         states=s;
+        System.out.println(s[0]);
+        System.out.println(s[1]);
+        System.out.println(s[s.length - 1]);
 
         Vector3d[] vector = new Vector3d[s.length];
         for(int i=0;i<s.length;i++){
@@ -76,10 +81,13 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
             vector[i] = ph.getPosition()[ph.getPosition().length-1];
         }
         //  System.out.println(s[s.length-1]);
+     //  System.out.println(s[s.length-1]);
 
         return vector;
     }
-
+    public StateInterface[] getStates() {
+        return states;
+    }
 
     public State initUn() {
         //create positions and velocities arrays to represent the state
@@ -95,8 +103,8 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
 
         //create the initial state
         State state = new State(positions, velocities, 0);
-        state.setMass(mass);
-        state.setNames();
+        State.setMass(mass);
+        State.setNames();
         return state;
     }
 
