@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class ProbeSimulator implements ProbeSimulatorInterface{
 
     private ArrayList<SpaceObject> spaceObjects;
+    private StateInterface[] states;
 
     /**
      * @param space contains a List of all planets
@@ -29,16 +30,18 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
 
         //create probe
         Probe probe = new Probe("Probe", 15000, p, v);
+        spaceObjects.add(probe);
         //create State with planets and probe
-        State universe = initState(probe);
+        State universe = initUn();
 
         //creates all the states of the simulation
         Solver solver = new Solver();
-        State[] s = (State[]) solver.solve(new ODEFunction(), universe, ts);
-        states = s;
+        StateInterface[] s = solver.solve(new ODEFunction(), universe, ts);
+        states=s;
         Vector3d[] vector = new Vector3d[s.length];
         for(int i=0;i<s.length;i++){
-            vector[i] = s[i].getPosition()[s[i].getPosition().length-1];
+            State ph = (State) s[i];
+            vector[i] = ph.getPosition()[ph.getPosition().length-1];
         }
         return vector;
     }
@@ -62,23 +65,22 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
 
         spaceObjects.add(probe);
         //create State with planets and probe
-   //     State universe = initState(probe);
         State universe = initUn();
         //creates all the states of the simulation
         Solver solver = new Solver();
         StateInterface[] s = solver.solve(new ODEFunction(), universe, tf, h);
-        states = s;
+        states=s;
+
         Vector3d[] vector = new Vector3d[s.length];
         for(int i=0;i<s.length;i++){
             State ph = (State) s[i];
             vector[i] = ph.getPosition()[ph.getPosition().length-1];
         }
-        System.out.println(s[s.length-1]);
+     //  System.out.println(s[s.length-1]);
 
         return vector;
     }
 
-    StateInterface[] states;
     public StateInterface[] getStates() {
         return states;
     }
@@ -99,10 +101,13 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
 
         //create the initial state
         State state = new State(positions, velocities, 0);
-        State.setMass(mass);
-        State.setNames();
+        state.setMass(mass);
+        state.setNames();
         return state;
     }
 
+    public StateInterface[] simulation(){
+        return states;
+    }
 
 }

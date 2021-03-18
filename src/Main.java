@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import titan.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main extends Application {
 
@@ -26,6 +27,15 @@ public class Main extends Application {
         ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
 
         ProbeSimulator sim = new ProbeSimulator(spaceObjects);
+        double[] ts = new double[]{0, 31556926};
+       // System.out.println(Arrays.toString(sim.trajectory(new Vector3d(1, 1, 1), new Vector3d(60, 0, 0),31556926, 1000)));
+     //   sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),31556926, 1000);
+        sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),ts);
+
+        System.out.println(sim.simulation()[sim.simulation().length-1]);
+
+
+
 //        sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),31556926, 1000000);
         sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),315569260, 10000);
 
