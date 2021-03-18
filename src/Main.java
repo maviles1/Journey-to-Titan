@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import titan.*;
 import java.lang.Math;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -50,7 +51,17 @@ public class Main extends Application {
         Vector3d random_unit= random_vector.mul(1/random_vector.norm());
 
         //generate the position and velocity vector
+        double [] radius = new double[]{700000,2439.7,6051.8,6371,1737.1,3389.5,69911,58232,2575.7,25362,2462.2,10};
         Planet earth = (Planet) spaceObjects.get(3);
+
+        for (int j = 0; j < spaceObjects.size(); j++){
+            spaceObjects.get(j).setRadius(radius[j]);
+            System.out.println("RADIUS: " + radius[j]);
+        }
+
+        Planet e= (Planet) spaceObjects.get(3);
+
+        System.out.println(e.getRadius());
         Vector3d initial_probe_position = random_unit.mul(earth.getRadius());
         Vector3d initial_probe_velocity = random_unit.mul(PROBE_SPEED);
 

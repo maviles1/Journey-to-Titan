@@ -21,7 +21,4 @@ public class Planet extends SpaceObject{
         setVelocity(getVelocity().copy().add(vectorToOther.copy().mul(-1*mag)));
     }
 
-    public double getRadius() {
-        return this.radius;
-    }
 }

@@ -1,5 +1,7 @@
 package titan;
 
+import java.sql.SQLOutput;
+
 public abstract class SpaceObject {
 
     private String name;
@@ -8,6 +10,7 @@ public abstract class SpaceObject {
     private Vector3d velocity;
     private Vector3d force;
     private Vector3d acceleration;
+    private double radius;
 
     public SpaceObject(String n, double m, Vector3d pos, Vector3d vel) {
         this.name = n;
@@ -49,6 +52,12 @@ public abstract class SpaceObject {
     public String getName() {
         return this.name;
     }
+
+    public void setRadius(double r) {
+        this.radius = r;
+    }
+
+    public double getRadius() { return radius;}
 
     public abstract void attract(SpaceObject other);
 
