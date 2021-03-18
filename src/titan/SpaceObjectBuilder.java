@@ -29,9 +29,9 @@ public class SpaceObjectBuilder {
                 Vector3d vel = new Vector3d(arguments.get("vx"), arguments.get("vy"), arguments.get("vz"));
                 SpaceObject body = null;
                 if (name.equals("Sun")) {
-                    body = new Sun(name, arguments.get("mass"), pos, vel);
+                    body = new Planet(name, arguments.get("mass"), pos, vel, 0);
                 } else if (name.equals("Moon")) {
-                    body = new Moon(name, arguments.get("mass"), pos, vel);
+                    body = new Planet(name, arguments.get("mass"), pos, vel, 0);
                 } else {
                     body = new Planet(name, arguments.get("mass"), pos, vel, 0);
                 }
