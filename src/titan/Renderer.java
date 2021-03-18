@@ -109,7 +109,7 @@ public class Renderer extends AnimationTimer {
     }
 
     public static double toScreenRadius(double d){
-        System.out.println(d);
+
         return d/10000;
     }
 
