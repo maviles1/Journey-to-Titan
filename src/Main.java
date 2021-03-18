@@ -61,7 +61,7 @@ public class Main extends Application {
         double[] ts = new double[]{0, 31556926};
         Solver x = new Solver();
         double tf = 31556926;
-        StateInterface[] s1 = x.solve(f, state, tf, 10000);
+        StateInterface[] s1 = x.solve(f, state, tf, 100000);
 
 
         Renderer renderer = new Renderer(canvas, planets, state);
@@ -77,9 +77,9 @@ public class Main extends Application {
 //            System.out.println("ASDASDASDASDASDASDASDASD: " + s2[count]);
 //            state = (State) s2[count];
             count++;
-
-         GeneticAlgorithm ga = new GeneticAlgorithm(positions[0].add(new Vector3d(1000,1000,1000)),state);
-         ga.calculateTrajectory();
+//
+//         GeneticAlgorithm ga = new GeneticAlgorithm(positions[0].add(new Vector3d(1000,1000,1000)),state);
+//         ga.calculateTrajectory();
 
         renderer.start();
     }

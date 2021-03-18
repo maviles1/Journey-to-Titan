@@ -33,7 +33,7 @@ public class Renderer extends AnimationTimer {
         this.state = state;
         Solver solver = new Solver();
         ODEFunction func = new ODEFunction();
-        this.s1 = solver.solve(func, state, 315569260, 10000);
+        this.s1 = solver.solve(func, state, 315569260, 100000);
     }
 
     @Override
@@ -91,9 +91,9 @@ public class Renderer extends AnimationTimer {
     }
 
     public void drawSpaceObject(GraphicsContext gc,Vector3d vec, int index){
-        gc.fillOval(  gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()),toScreenRadius(State.radius[index]), toScreenRadius(State.radius[index]));
+        gc.fillOval(  gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()),5,5);
         gc.setFill(Paint.valueOf("#CC52D7"));
-        gc.strokeOval(gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), toScreenRadius(State.radius[index]), toScreenRadius(State.radius[index]));
+        gc.strokeOval(gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 5,5);
         for (int i = 0; i < paths.size(); i++){
             gc.fillOval(paths.get(i)[0],paths.get(i)[1],paths.get(i)[2],paths.get(i)[3]);
         }

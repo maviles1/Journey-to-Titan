@@ -50,9 +50,9 @@ public class GeneticAlgorithm {
     }
 
     public Individual [] topIndividuals(){
-        Individual [] top = new Individual[];
+        Individual [] top = new Individual[10];
         sort();
-        for (int i = 0; i < population.size(); i++){
+        for (int i = 0; i < top.length; i++){
             top[i] = population.get(i);
         }
         return top;
@@ -72,22 +72,22 @@ public class GeneticAlgorithm {
         }
     }
 
-    public Individual[]  breedTopIndividuals(Individual [] individuals){
-        Individual[] children = new Individual[individuals.length * individuals.length];
-        int index = 0;
-        for (int i = 0; i < individuals.length; i++){
-            for (int j = 0; j < individuals.length; j++){
-                if (i != j){
-                    Vector3d [] vectors = new Vector3d[];
-                    vectors = crossover(individuals[i].getChromosome(), individuals[j].getChromosome() );
-                    children[index] = new Individual(vectors[0]);
-                    index++;
-                    children[index] = new Individual(vectors[1]);
-                    index++;
-                }
-            }
-        }
-    }
+//    public Individual[]  breedTopIndividuals(Individual [] individuals){
+//        Individual[] children = new Individual[individuals.length * individuals.length];
+//        int index = 0;
+//        for (int i = 0; i < individuals.length; i++){
+//            for (int j = 0; j < individuals.length; j++){
+//                if (i != j){
+//                    Vector3d [] vectors = new Vector3d[];
+//                    vectors = crossover(individuals[i].getChromosome(), individuals[j].getChromosome() );
+//                    children[index] = new Individual(vectors[0]);
+//                    index++;
+//                    children[index] = new Individual(vectors[1]);
+//                    index++;
+//                }
+//            }
+//        }
+//    }
 
 //    public void mutate(){
 //
