@@ -39,8 +39,7 @@ public class Renderer extends AnimationTimer {
             startNanoTime = now;
 
         double t = (now - startNanoTime) / 1000000000.0;
-        double x = 500 + 20 * Math.cos(t);
-        double y = 500 + 20 * Math.sin(t);
+
         gc.setFill(Paint.valueOf("#469FCB"));
         for (int i = 0; i < state.positions.length; i++) {
             drawSpaceObject(gc, state.positions[i], i);
@@ -60,11 +59,10 @@ public class Renderer extends AnimationTimer {
         gc.fillOval(gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 5, 5);
         gc.setFill(Paint.valueOf("#CC52D7"));
         gc.strokeOval(gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 5, 5);
-        for (int i = 0; i < paths.size(); i++) {
-            gc.fillOval(paths.get(i)[0], paths.get(i)[1], paths.get(i)[2], paths.get(i)[3]);
+        for (Double[] path : paths) {
+            gc.fillOval(path[0], path[1], path[2], path[3]);
         }
-        paths.add(new Double[]{gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()) + toScreenRadius(toScreenCoordinates(vec.getX())), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()) + toScreenRadius(toScreenCoordinates(vec.getY())), 1.0, 1.0});
-        gc.setFill(Paint.valueOf("#DBF188"));
+        paths.add(new Double[]{gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 1.0, 1.0});        gc.setFill(Paint.valueOf("#DBF188"));
         gc.fillText(State.names.get(index), gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX() + 6), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY() + 30));
         gc.setFill(Paint.valueOf("#ffffff"));
     }

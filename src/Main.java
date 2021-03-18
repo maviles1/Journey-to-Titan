@@ -14,8 +14,9 @@ public class Main extends Application {
 
     public static final double PROBE_SPEED = 600000; //initial probe speed(scalar) relative to earth
     public static final double YEAR_IN_SECONDS = 31556926;
-    public static final double STEP_SIZE_TRAJECTORY = 500;
-
+    public static final double STEP_SIZE_TRAJECTORY = 1000;
+    public static final int CANVAS_WIDTH = 1600;
+    public static final int CANVAS_HEIGHT = 1200;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -23,7 +24,7 @@ public class Main extends Application {
 
         FXMLLoader loader = new FXMLLoader(new File("src/window.fxml").toURI().toURL());
 
-        Canvas canvas = new Canvas(1600, 1200);
+        Canvas canvas = new Canvas(CANVAS_HEIGHT, CANVAS_WIDTH);
         View view = new View(canvas);
         Window window = new Window(view);
 
@@ -49,7 +50,7 @@ public class Main extends Application {
 
         ProbeSimulator sim = new ProbeSimulator(spaceObjects);
 
-        Vector3d vel = new Vector3d(40188.42496797729, -41575.62743325709, -16011.17428935992);
+        Vector3d vel = new Vector3d(40289.2995, -41570.9400, -587.3099);
         Vector3d pos = new Vector3d(6371000.0, 1.0, 1.0);
         sim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
 
@@ -57,9 +58,7 @@ public class Main extends Application {
         window.attachRenderer(renderer);
 
         renderer.start();
-
     }
-
 
     public static void main(String[] args) {
         launch(args);
