@@ -43,10 +43,10 @@ public class Main extends Application {
         //       Probe probe = new Probe("Probe", 15000, new Vector3d(0, 0, 0), new Vector3d(60, 0, 0));
         //      spaceObjects.add(probe);
 
-   /*     for(int step=0; step<spaceObjects.size();step++){
-            System.out.println(spaceObjects.get(step).toString());
-        }
-    */
+//        for(int step=0; step<spaceObjects.size();step++){
+//            System.out.println(spaceObjects.get(step).toString());
+//        }
+
 
 
         //create positions and velocities arrays to represent the state
@@ -73,7 +73,6 @@ public class Main extends Application {
 //        State.setMass(mass);
 //        State.setNames();
 
-//TODO where did the minuses go????
         //System.out.println(state.toString());
         ODEFunction f = new ODEFunction();
 
@@ -89,41 +88,41 @@ public class Main extends Application {
         //    State state1 = (State) state.addMul(1, f.call(0 + 1, state));
         // System.out.println(state1.toString());
 
- /*
-        double[] ts = new double[]{0, 31556926};
-        Solver x = new Solver();
+
+//        double[] ts = new double[]{0, 31556926};
+//        Solver x = new Solver();
      //   StateInterface[] s = x.solve(f, state, ts);
      //   System.out.println(s[1]);
      //   System.out.println();
 
-        double tf = 31556926;
-        StateInterface[] s1 = x.solve(f, state, tf, 10000);
+//        double tf = 31556926;
+//        StateInterface[] s1 = x.solve(f, state, tf, 10000);
+//
+//        Renderer renderer = new Renderer(canvas, planets);
+//        System.out.println(s1[s1.length - 1]);
+//
+//
+//        Renderer renderer = new Renderer(canvas, planets, state);
+//        int count = 0;
+//
+//            ODEFunction func = new ODEFunction();
+//            double[] tss = new double[]{0, 31556926};
+//            Solver solver = new Solver();
+////        StateInterface[] s = solver.solve(func, state, ts);
+//            //   System.out.println(s[1]);
+//            double d = 31556926;
+//            StateInterface[] s2 = solver.solve(func, state, d, 100000);
+//            for (int ia = 0; ia < s2.length; ia++){
+//                System.out.println(("STEP:  " + ia + "  | " + (State) s2[ia]));
+//            }
+////            System.out.println("ASDASDASDASDASDASDASDASD: " + s2[count]);
+////            state = (State) s2[count];
+//            count++;
+
+
+
 
         Renderer renderer = new Renderer(canvas, planets);
-        System.out.println(s1[s1.length - 1]);
-
-
-        Renderer renderer = new Renderer(canvas, planets, state);
-        int count = 0;
-
-            ODEFunction func = new ODEFunction();
-            double[] tss = new double[]{0, 31556926};
-            Solver solver = new Solver();
-//        StateInterface[] s = solver.solve(func, state, ts);
-            //   System.out.println(s[1]);
-            double d = 31556926;
-            StateInterface[] s2 = solver.solve(func, state, d, 100000);
-            for (int ia = 0; ia < s2.length; ia++){
-                System.out.println(("STEP:  " + ia + "  | " + (State) s2[ia]));
-            }
-//            System.out.println("ASDASDASDASDASDASDASDASD: " + s2[count]);
-//            state = (State) s2[count];
-            count++;
-
-
-
-
-
 
         renderer.start();
 
