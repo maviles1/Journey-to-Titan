@@ -22,7 +22,7 @@ public class Main extends Application {
 
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.setPrefSize(800, 600);
-        Canvas canvas = new Canvas(1500, 800);
+        Canvas canvas = new Canvas(1600, 1200);
         View view = new View(canvas);
         anchorPane.getChildren().add(view);
 
@@ -70,8 +70,8 @@ public class Main extends Application {
 //        sim.trajectory(new Vector3d(6371000, 1, 1), initial_probe_velocity, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
 //        sim.trajectory(initial_probe_position, new Vector3d(60, 0, 0), YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
 
-        Vector3d vel = new Vector3d(-10000, 1000, 1);
-        vel.mul((1/vel.norm()) *60);
+        Vector3d vel = new Vector3d(5000, -35000, -400);
+        //vel.mul((1/vel.norm()) *60);
         sim.trajectory(new Vector3d(6371000, 1, 1), vel,31556926, 1000);
 
         Renderer renderer = new Renderer(canvas, sim.getStates());

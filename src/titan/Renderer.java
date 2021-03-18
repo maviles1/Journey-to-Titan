@@ -60,18 +60,18 @@ public class Renderer extends AnimationTimer {
 
         gc.setTextAlign(TextAlignment.CENTER );
         gc.setTextBaseline(VPos.CENTER);
-        gc.fillText(
-                "EARTH DISTANCE FROM SUN: " + state.positions[0].dist(state.positions[1]),
-                200, 10
-        );
-        gc.fillText(
-                "EARTH COORDINATES ON CANVAS: " + state.positions[1].mul((1/(1e11))*300).toString(),
-                400, 30
-        );
-        gc.fillText(
-                "SUN COORDINATES ON CANVAS: " + state.positions[0].mul((1/(1e11))*300).toString(),
-                400, 45
-        );
+//        gc.fillText(
+//                "EARTH DISTANCE FROM SUN: " + state.positions[0].dist(state.positions[1]),
+//                200, 10
+//        );
+//        gc.fillText(
+//                "EARTH COORDINATES ON CANVAS: " + state.positions[1].mul((1/(1e11))*300).toString(),
+//                400, 30
+//        );
+//        gc.fillText(
+//                "SUN COORDINATES ON CANVAS: " + state.positions[0].mul((1/(1e11))*300).toString(),
+//                400, 45
+//        );
 
         state = (State) s1[count];
         count += 50;

@@ -42,6 +42,8 @@ public class View extends ScrollPane {
         this.setHbarPolicy(ScrollBarPolicy.NEVER);
         this.setVbarPolicy(ScrollBarPolicy.NEVER);
 
+        setVvalue(0.5);
+        setHvalue(0.5);
         Scale scaleTransform = new Scale(scaleValue, scaleValue, 0, 0);
         zoomGroup.getTransforms().add(scaleTransform);
 
