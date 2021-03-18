@@ -73,10 +73,11 @@ public class Renderer extends AnimationTimer {
                 400, 45
         );
 
-
-
         state = (State) s1[count];
-        count++;
+        count += 50;
+        if (count > s1.length) {
+            this.stop();
+        }
 //        state = (State) solver.step(func, t, state, 1000000);
     }
 
@@ -97,7 +98,7 @@ public class Renderer extends AnimationTimer {
 
 
     public static double toScreenCoordinates(double d){
-        return ((d/(1e11)) * 200);
+        return ((d/(1e12)) * 200);
     }
 
 }

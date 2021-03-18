@@ -37,8 +37,8 @@ public class View extends ScrollPane {
         zoomGroup.getChildren().add(canvas);
 
         this.setContent(contentGroup);
-        canvas.widthProperty().bind(this.widthProperty());
-        canvas.heightProperty().bind(this.heightProperty());
+//        canvas.widthProperty().bind(this.widthProperty());
+//        canvas.heightProperty().bind(this.heightProperty());
         this.setHbarPolicy(ScrollBarPolicy.NEVER);
         this.setVbarPolicy(ScrollBarPolicy.NEVER);
 

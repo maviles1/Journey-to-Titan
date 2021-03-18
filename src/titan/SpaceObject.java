@@ -52,5 +52,6 @@ public abstract class SpaceObject {
 
     public abstract void attract(SpaceObject other);
 
+
     public abstract void update();
 }
