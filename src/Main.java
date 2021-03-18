@@ -51,11 +51,12 @@ public class Main extends Application {
 
         //generate the position and velocity vector
         Planet earth = (Planet) spaceObjects.get(3);
-        Vector3d initial_probe_position = random_unit.mul(earth.getRadius());
+        Vector3d initial_probe_position = random_unit.mul(6371000);
         Vector3d initial_probe_velocity = random_unit.mul(PROBE_SPEED);
 
         ProbeSimulator sim = new ProbeSimulator(spaceObjects);
         double[] ts = new double[]{0, 57869, YEAR_IN_SECONDS};
+
        // System.out.println(Arrays.toString(sim.trajectory(new Vector3d(1, 1, 1), new Vector3d(60, 0, 0),31556926, 1000)));
      //   sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),31556926, 1000);
         //sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),ts);
@@ -65,8 +66,10 @@ public class Main extends Application {
 
 
 //        sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),31556926, 1000000);
-        sim.trajectory(initial_probe_position, initial_probe_velocity, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
-        sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(1, 1, 0),31556926, 500);
+//        sim.trajectory(initial_probe_position, initial_probe_velocity, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
+//        sim.trajectory(new Vector3d(6371000, 1, 1), initial_probe_velocity, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
+//        sim.trajectory(initial_probe_position, new Vector3d(60, 0, 0), YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
+        sim.trajectory(new Vector3d(6371000, 1, 1), new Vector3d(60, 1, 1),31556926, 1000);
 
         Renderer renderer = new Renderer(canvas, sim.getStates());
 
