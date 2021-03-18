@@ -70,11 +70,18 @@ public class Main extends Application {
 //        sim.trajectory(new Vector3d(6371000, 1, 1), initial_probe_velocity, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
 //        sim.trajectory(initial_probe_position, new Vector3d(60, 0, 0), YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
 
-        Vector3d vel = new Vector3d(5000, -35000, -400);
+        //Vector3d vel = new Vector3d(5000, -35000, -400);
+        //Vector3d vel = new Vector3d(31336.554258164942,-31485.0256115705,40332.53685876744);
+        Vector3d vel = new Vector3d(31161.479822313646,-31236.70426509767,40659.937062646415);
+//        Vector3d pos = new Vector3d(6371000.0,1.0,1.0);
+        Vector3d pos = vel;
+        pos = pos.mul(1/pos.norm());
+        pos = pos.mul(6371000);
         //vel.mul((1/vel.norm()) *60);
-        sim.trajectory(new Vector3d(6371000, 1, 1), vel,31556926, 1000);
+        //new Vector3d(6371000, 1, 1)
+        sim.trajectory(pos, vel,31556926, 1000);
 
-        Renderer renderer = new Renderer(canvas, sim.getStates());
+        Renderer renderer = new Renderer(view, sim.getStates());
 
         renderer.start();
 

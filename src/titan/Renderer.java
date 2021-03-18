@@ -20,6 +20,7 @@ public class Renderer extends AnimationTimer {
     State state;
     int count = 0;
     StateInterface [] s1;
+    View view;
 
     public Renderer(Canvas canvas, ArrayList<SpaceObject> system) {
         this.canvas = canvas;
@@ -35,8 +36,9 @@ public class Renderer extends AnimationTimer {
     }
 
 
-    public Renderer(Canvas canvas, StateInterface[] states) {
-        this.canvas = canvas;
+    public Renderer(View view, StateInterface[] states) {
+        this.view = view;
+        this.canvas = view.getCanvas();
         this.state = (State) states[0];
         this.s1 = states;
     }
@@ -78,6 +80,8 @@ public class Renderer extends AnimationTimer {
         if (count > s1.length) {
             this.stop();
         }
+
+
 //        state = (State) solver.step(func, t, state, 1000000);
     }
 

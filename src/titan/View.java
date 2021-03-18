@@ -17,6 +17,7 @@ public class View extends ScrollPane {
     private double scaleValue = 1.0;
     private double delta = 1.05;
     private Canvas canvas;
+    private Group zoomGroup;
 
     public View(Canvas canvas) throws MalformedURLException {
         AnchorPane.setBottomAnchor(this, 0.0);
@@ -32,7 +33,7 @@ public class View extends ScrollPane {
         this.setPannable(true);
 
         Group contentGroup = new Group();
-        Group zoomGroup = new Group();
+        zoomGroup = new Group();
         contentGroup.getChildren().add(zoomGroup);
         zoomGroup.getChildren().add(canvas);
 
@@ -89,6 +90,18 @@ public class View extends ScrollPane {
 
         canvas.getGraphicsContext2D().drawImage(img, 0, 0);
 
+    }
+
+    public void centerViewOn(double x, double y){
+        double viewportWidth    = getViewportBounds().getWidth();
+        double maxHscrollPixels = zoomGroup.getLayoutBounds().getWidth() - viewportWidth;
+        double hscrollPixels    =  (x + 0.5) * zoomGroup.getLayoutBounds().getWidth() / zoomGroup.getLayoutBounds().getWidth() - viewportWidth / 2;
+        setHvalue(hscrollPixels / maxHscrollPixels);
+
+        double viewportHeight   = getViewportBounds().getHeight();
+        double maxVscrollPixels = zoomGroup.getLayoutBounds().getHeight() - viewportHeight;
+        double vscrollPixels    =  (y + 0.5) * zoomGroup.getLayoutBounds().getHeight() / zoomGroup.getLayoutBounds().getHeight() - viewportHeight / 2;
+        setVvalue(vscrollPixels / maxVscrollPixels);
     }
 
     public Canvas getCanvas() {
