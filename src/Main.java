@@ -69,9 +69,12 @@ public class Main extends Application {
         ODEFunction f = new ODEFunction();
 
         ProbeSimulator sim = new ProbeSimulator(spaceObjects);
+        double[] ts = new double[]{0, 31556926};
        // System.out.println(Arrays.toString(sim.trajectory(new Vector3d(1, 1, 1), new Vector3d(60, 0, 0),31556926, 1000)));
-        sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),31556926, 1000);
+     //   sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),31556926, 1000);
+        sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),ts);
 
+        System.out.println(sim.simulation()[sim.simulation().length-1]);
 
 
 
@@ -81,7 +84,7 @@ public class Main extends Application {
         // System.out.println(state1.toString());
 
 
-        double[] ts = new double[]{0, 31556926};
+     //   double[] ts = new double[]{0, 31556926};
         Solver x = new Solver();
      //   StateInterface[] s = x.solve(f, state, ts);
      //   System.out.println(s[1]);
