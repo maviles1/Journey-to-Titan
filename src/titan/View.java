@@ -96,8 +96,6 @@ public class View extends ScrollPane {
             }
         }
 
-        ZoomHandler handler = new ZoomHandler();
-
         //make sure that ScrollPane doesn't use ScrollEvent to pan
         addEventFilter(ScrollEvent.ANY, new ZoomHandler());
         //addEventFilter(ZoomEvent.ANY, handler);
