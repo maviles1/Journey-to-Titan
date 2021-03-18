@@ -23,9 +23,30 @@ public class Solver implements ODESolverInterface{
         s[0]=y0;
 
         double t=0;
+        State state1 = (State) s[0];
+        Vector3d posTitan1 =  state1.getPosition()[8];
+        Vector3d posProbe1 =  state1.getPosition()[11];
+        double dLast = posTitan1.dist(posProbe1);
+
         for(int i=1;i<size-1;i++){
             t+=h;
             s[i]=step(f,t,s[i-1],h);
+
+
+            //this is for the brute force
+            State state = (State) s[i];
+            Vector3d posTitan =  state.getPosition()[8];
+            Vector3d posProbe =  state.getPosition()[11];
+            double distance = posTitan.dist(posProbe);
+
+            if(distance<2575000){
+                State start = (State) s[0];
+                System.out.println("Start state: ");
+                System.out.println("Titan: " + start.getPosition()[8] + " vel: " + start.getVelocities()[8] );
+                System.out.println("Probe: " + start.getPosition()[11] + " vel: " + start.getVelocities()[11]);
+                System.out.println("End state: ");
+            }
+
         }
         //tf or tf/h
         s[size-1]=step(f,tf,s[size-2],tf-t);

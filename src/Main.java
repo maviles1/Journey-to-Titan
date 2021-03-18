@@ -28,15 +28,15 @@ public class Main extends Application {
 
         primaryStage.setTitle("Mission Titan");
         primaryStage.setScene(new Scene(anchorPane));
-        primaryStage.show();
+       // primaryStage.show();
 
         ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
 
         //starting position and velocity vector for probe launch
         //generate a random vector
-        double a = (Math.random()*100)-50;
-        double b = (Math.random()*100)-50;
-        double c = (Math.random()*100)-50;
+        double a = (Math.random()*1000)-500;
+        double b = (Math.random()*1000)-500;
+        double c = (Math.random()*1000)-500;
 
         //random_vector is not null
         while (a==0 && b==0 && c==0)
@@ -60,8 +60,8 @@ public class Main extends Application {
        // System.out.println(Arrays.toString(sim.trajectory(new Vector3d(1, 1, 1), new Vector3d(60, 0, 0),31556926, 1000)));
      //   sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),31556926, 1000);
         //sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),ts);
-
         //System.out.println(sim.simulation()[sim.simulation().length-1]);
+
 
 
 
@@ -70,9 +70,18 @@ public class Main extends Application {
 //        sim.trajectory(new Vector3d(6371000, 1, 1), initial_probe_velocity, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
 //        sim.trajectory(initial_probe_position, new Vector3d(60, 0, 0), YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
 
-        Vector3d vel = new Vector3d(5000, -35000, -400);
-        //vel.mul((1/vel.norm()) *60);
-        sim.trajectory(new Vector3d(6371000, 1, 1), vel,31556926, 1000);
+
+        double dist = spaceObjects.get(0).getPosition().dist(spaceObjects.get(3).getPosition());
+        Vector3d start = spaceObjects.get(0).getPosition().sub(spaceObjects.get(3).getPosition());
+        Vector3d startingPoint = (start.mul(1/dist)).mul((dist+6371000));
+
+        for(int i=0;i<50;i++){
+          //  Vector3d vel = new Vector3d(5000, -35000, -400);
+            //vel.mul((1/vel.norm()) *60);
+            sim.trajectory(startingPoint, initial_probe_velocity,31556926, 1000);
+            System.out.println(i);
+        }
+        System.out.println("END");
 
         Renderer renderer = new Renderer(canvas, sim.getStates());
 

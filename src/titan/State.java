@@ -49,7 +49,7 @@ public class State implements StateInterface {
 //        }
 //
 //      //  s.append("").append(names.get(0)).append(" { x=").append(positions[0].getX()).append(", y=").append(positions[0].getY()).append(", z=").append(positions[0].getZ()).append(" vx=").append(velocities[0].getX()).append(", vy=").append(velocities[0].getY()).append(", vz=").append(velocities[0].getZ()).append(" }\n");
-//        //s.append("").append(names.get(3)).append(" { x=").append(positions[3].getX()).append(", y=").append(positions[3].getY()).append(", z=").append(positions[3].getZ()).append(" vx=").append(velocities[3].getX()).append(", vy=").append(velocities[3].getY()).append(", vz=").append(velocities[3].getZ()).append(" }\n");
+//        s.append("").append(names.get(3)).append(" { x=").append(positions[3].getX()).append(", y=").append(positions[3].getY()).append(", z=").append(positions[3].getZ()).append(" vx=").append(velocities[3].getX()).append(", vy=").append(velocities[3].getY()).append(", vz=").append(velocities[3].getZ()).append(" }\n");
 //        return s.toString();
 //    }
 
@@ -57,9 +57,9 @@ public class State implements StateInterface {
         String s = "";
         for (int i = 0; i < positions.length; i++) {
             s += names.get(i)
-                    + " { x=" + Renderer.toScreenCoordinates(positions[i].getX())
-                    + ", y=" + Renderer.toScreenCoordinates(positions[i].getY())
-                    + ", z=" + Renderer.toScreenCoordinates(positions[i].getZ())
+                    + " { x=" + (positions[i].getX())
+                    + ", y=" + (positions[i].getY())
+                    + ", z=" + (positions[i].getZ())
                     + " vx=" + velocities[i].getX()
                     + ", vy="+ velocities[i].getY()
                     + ", vz="+ velocities[i].getZ()+" }\n";
