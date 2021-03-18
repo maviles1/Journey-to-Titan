@@ -45,7 +45,6 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image("titan.png"));
         primaryStage.show();
 
-
         ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
 
         //starting position and velocity vector for probe launch
@@ -78,8 +77,6 @@ public class Main extends Application {
         //sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),ts);
 
         //System.out.println(sim.simulation()[sim.simulation().length-1]);
-
-
 
 //        sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),31556926, 1000000);
 //        sim.trajectory(initial_probe_position, initial_probe_velocity, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);

@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.ScrollEvent;
@@ -94,35 +95,41 @@ public class View extends ScrollPane {
     }
 
     public void zoomIn() {
+//        scaleValue *= delta;
+//        double centerPosX = (zoomGroup.getLayoutBounds().getWidth() - getViewportBounds().getWidth())  * getHvalue() + getViewportBounds().getWidth()  / 2;
+//        double centerPosY = (zoomGroup.getLayoutBounds().getHeight() - getViewportBounds().getHeight())  * getVvalue() + getViewportBounds().getHeight()  / 2;
+//        double nscale = Math.max(scaleValue, Math.min(getViewportBounds().getWidth() / zoomGroup.getLayoutBounds().getWidth(),
+//                getViewportBounds().getHeight() / zoomGroup.getLayoutBounds().getHeight()));
+//
+//
+//        double newCenterX = centerPosX * nscale;
+//        double newCenterY = centerPosY * nscale;
+//        setHvalue((newCenterX - getViewportBounds().getWidth()/2) / (zoomGroup.getLayoutBounds().getWidth() * scaleValue - getViewportBounds().getWidth()));
+//        setVvalue((newCenterY - getViewportBounds().getHeight()/2) / (zoomGroup.getLayoutBounds().getHeight() * scaleValue  -getViewportBounds().getHeight()));
+//        scaleTransform.setX(nscale);
+//        scaleTransform.setY(nscale);
         scaleValue *= delta;
-        double centerPosX = (zoomGroup.getLayoutBounds().getWidth() - getViewportBounds().getWidth())  * getHvalue() + getViewportBounds().getWidth()  / 2;
-        double centerPosY = (zoomGroup.getLayoutBounds().getHeight() - getViewportBounds().getHeight())  * getVvalue() + getViewportBounds().getHeight()  / 2;
-        double nscale = Math.max(scaleValue, Math.min(getViewportBounds().getWidth() / zoomGroup.getLayoutBounds().getWidth(),
-                getViewportBounds().getHeight() / zoomGroup.getLayoutBounds().getHeight()));
-
-
-        double newCenterX = centerPosX * nscale;
-        double newCenterY = centerPosY * nscale;
-        setHvalue((newCenterX - getViewportBounds().getWidth()/2) / (zoomGroup.getLayoutBounds().getWidth() * scaleValue - getViewportBounds().getWidth()));
-        setVvalue((newCenterY - getViewportBounds().getHeight()/2) / (zoomGroup.getLayoutBounds().getHeight() * scaleValue  -getViewportBounds().getHeight()));
-        scaleTransform.setX(nscale);
-        scaleTransform.setY(nscale);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.scale(scaleValue, scaleValue);
     }
 
     public void zoomOut() {
+//        scaleValue /= delta;
+//        double centerPosX = (zoomGroup.getLayoutBounds().getWidth() - getViewportBounds().getWidth())  * getHvalue() + getViewportBounds().getWidth()  / 2;
+//        double centerPosY = (zoomGroup.getLayoutBounds().getHeight() - getViewportBounds().getHeight())  * getVvalue() + getViewportBounds().getHeight()  / 2;
+//        double nscale = Math.max(scaleValue, Math.min(getViewportBounds().getWidth() / zoomGroup.getLayoutBounds().getWidth(),
+//                getViewportBounds().getHeight() / zoomGroup.getLayoutBounds().getHeight()));
+//
+//
+//        double newCenterX = centerPosX * nscale;
+//        double newCenterY = centerPosY * nscale;
+//        setHvalue((newCenterX - getViewportBounds().getWidth()/2) / (zoomGroup.getLayoutBounds().getWidth() * scaleValue - getViewportBounds().getWidth()));
+//        setVvalue((newCenterY - getViewportBounds().getHeight()/2) / (zoomGroup.getLayoutBounds().getHeight() * scaleValue  -getViewportBounds().getHeight()));
+//        scaleTransform.setX(nscale);
+//        scaleTransform.setY(nscale);
         scaleValue /= delta;
-        double centerPosX = (zoomGroup.getLayoutBounds().getWidth() - getViewportBounds().getWidth())  * getHvalue() + getViewportBounds().getWidth()  / 2;
-        double centerPosY = (zoomGroup.getLayoutBounds().getHeight() - getViewportBounds().getHeight())  * getVvalue() + getViewportBounds().getHeight()  / 2;
-        double nscale = Math.max(scaleValue, Math.min(getViewportBounds().getWidth() / zoomGroup.getLayoutBounds().getWidth(),
-                getViewportBounds().getHeight() / zoomGroup.getLayoutBounds().getHeight()));
-
-
-        double newCenterX = centerPosX * nscale;
-        double newCenterY = centerPosY * nscale;
-        setHvalue((newCenterX - getViewportBounds().getWidth()/2) / (zoomGroup.getLayoutBounds().getWidth() * scaleValue - getViewportBounds().getWidth()));
-        setVvalue((newCenterY - getViewportBounds().getHeight()/2) / (zoomGroup.getLayoutBounds().getHeight() * scaleValue  -getViewportBounds().getHeight()));
-        scaleTransform.setX(nscale);
-        scaleTransform.setY(nscale);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.scale(scaleValue, scaleValue);
     }
 
     public void centerViewOn(double x, double y){

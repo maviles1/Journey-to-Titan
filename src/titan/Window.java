@@ -47,6 +47,7 @@ public class Window extends AnchorPane {
 
     public void init() {
         viewPane.getChildren().add(view);
+
     }
 
     public void attachRenderer(Renderer r) {
