@@ -58,6 +58,7 @@ public class State implements StateInterface {
         State.mass = mass;
     }
 
+    //TODO add name of the probe
     public static void setNames() {
         names = new HashMap<>();
         for (int i = 0; i < SpaceObjectBuilder.spaceObjects.size(); i++) {
