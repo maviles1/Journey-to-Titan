@@ -3,7 +3,6 @@ package titan;
 import java.util.ArrayList;
 
 public class ProbeSimulator implements ProbeSimulatorInterface{
-
     private ArrayList<SpaceObject> spaceObjects;
     private StateInterface[] states;
 
@@ -62,7 +61,6 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
 
         //create probe
         Probe probe = new Probe("Probe", 15000, p, v);
-
         spaceObjects.add(probe);
         //create State with planets and probe
         State universe = initUn();
@@ -80,11 +78,11 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
             State ph = (State) s[i];
             vector[i] = ph.getPosition()[ph.getPosition().length-1];
         }
+        //  System.out.println(s[s.length-1]);
      //  System.out.println(s[s.length-1]);
 
         return vector;
     }
-
     public StateInterface[] getStates() {
         return states;
     }

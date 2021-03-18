@@ -1,5 +1,7 @@
 package titan;
 
+import com.sun.jdi.VoidValue;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +12,7 @@ public class State implements StateInterface {
     private Vector3d[] velocities;
     static double[] mass;
     static Map<Integer, String> names;
+    static double[] radius;
 
     double time;
 
@@ -77,6 +80,20 @@ public class State implements StateInterface {
         for (int i = 0; i < SpaceObjectBuilder.spaceObjects.size(); i++) {
             names.put(i, SpaceObjectBuilder.spaceObjects.get(i).getName());
         }
+    }
+
+    public State copy(){
+        Vector3d [] positions = new Vector3d[this.positions.length];
+        Vector3d [] velocities = new Vector3d[this.velocities.length];
+        for (int i = 0; i < this.positions.length; i++){
+            positions[i] = this.positions[i];
+            velocities[i] = this.velocities[i];
+        }
+        return new State(positions, velocities, 0);
+    }
+
+    public static void setRadius(double [] radius){
+        State.radius = radius;
     }
 
     public Vector3d[] getPosition(){
