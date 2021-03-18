@@ -1,7 +1,5 @@
 package titan;
 
-import java.util.Arrays;
-
 public class ODEFunction implements ODEFunctionInterface{
     @Override
     public RateInterface call(double t, StateInterface y) {
@@ -10,7 +8,6 @@ public class ODEFunction implements ODEFunctionInterface{
 
         int size=state.getPosition().length;
         double dt = t - state.getTime();
-  //      System.out.println("T: " + t+ " stateTime " +state.getTime());
 
         double G = 6.67430E-11;
 
@@ -29,16 +26,12 @@ public class ODEFunction implements ODEFunctionInterface{
                 }
             }
             v=state.getVelocities()[i].addMul(dt,a);
-        //    System.out.println(v);
 
             aRates[i] = a;
             vRates[i] = v;
         }
 
-
-        Rate rate = new Rate(vRates, aRates);
-
-        return rate;
+        return new Rate(vRates, aRates);
     }
 
 

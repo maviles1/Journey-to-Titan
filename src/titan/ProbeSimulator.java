@@ -77,7 +77,6 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
             State ph = (State) s[i];
             vector[i] = ph.getPosition()[ph.getPosition().length-1];
         }
-     //  System.out.println(s[s.length-1]);
 
         return vector;
     }
@@ -101,9 +100,8 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
         //create the initial state
         State.setMass(mass);
         State.setNames();
-        State state = new State(positions, velocities, 0);
 
-        return state;
+        return new State(positions, velocities, 0);
     }
 
     public StateInterface[] simulation(){
