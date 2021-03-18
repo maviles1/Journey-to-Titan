@@ -12,7 +12,7 @@ public class Testing {
         Vector3d startingVel = new Vector3d(0,0,0);
         //2.147483647E9;
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 50000; i++) {
             SpaceObjectBuilder builder = new SpaceObjectBuilder("src/solar_system_data-2020_04_01.txt");
             ArrayList<SpaceObject> spaceObjects = new ArrayList<>(builder.getSpaceObjects());
             ProbeSimulator sim = new ProbeSimulator(spaceObjects);
@@ -65,18 +65,14 @@ public class Testing {
             }
         }
 
-        if (absMinDist < 1.6981256563079128E8) {
+        if (absMinDist < 1.1451975395278286E7) {
             System.out.println("NEW");
-        } else if (absMinDist < 2.7017760706283194E8) {
-            System.out.println("kinda better");
         } else if (absMinDist == 2.7017760706283194E8) {
             System.out.println("equal");
         }
         System.out.println("Absolute minimum: " + absMinDist);
         System.out.println("Starting pos " + startingPos);
         System.out.println("Starting vel " + startingVel);
-
-
 
 
     }

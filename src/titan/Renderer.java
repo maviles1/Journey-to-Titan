@@ -14,6 +14,8 @@ public class Renderer extends AnimationTimer {
 
     private long startNanoTime = 0;
 
+    private int speedOffset = 1;
+
     private Canvas canvas;
     ArrayList <SpaceObject> system;
     ArrayList <Double []> paths = new ArrayList<>();
@@ -76,7 +78,7 @@ public class Renderer extends AnimationTimer {
 //        );
 
         state = (State) s1[count];
-        count += 50;
+        count += speedOffset;
         if (count > s1.length) {
             this.stop();
         }
@@ -97,7 +99,14 @@ public class Renderer extends AnimationTimer {
         gc.fillText(State.names.get(index), gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX() + 6), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY() + 30));
         gc.setFill(Paint.valueOf("#ffffff"));
 
+    }
 
+    public void setSpeedOffset(int offset) {
+        this.speedOffset = offset;
+    }
+
+    public int getSpeedOffset() {
+        return speedOffset;
     }
 
 

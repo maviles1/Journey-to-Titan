@@ -18,6 +18,7 @@ public class View extends ScrollPane {
     private double delta = 1.05;
     private Canvas canvas;
     private Group zoomGroup;
+    private Scale scaleTransform;
 
     public View(Canvas canvas) throws MalformedURLException {
         AnchorPane.setBottomAnchor(this, 0.0);
@@ -45,7 +46,7 @@ public class View extends ScrollPane {
 
         setVvalue(0.5);
         setHvalue(0.5);
-        Scale scaleTransform = new Scale(scaleValue, scaleValue, 0, 0);
+        scaleTransform = new Scale(scaleValue, scaleValue, 0, 0);
         zoomGroup.getTransforms().add(scaleTransform);
 
         class ZoomHandler implements EventHandler<ScrollEvent> {
@@ -61,8 +62,8 @@ public class View extends ScrollPane {
                 else
                     scaleValue *= delta;    //smooth zoom in
 
-                double centerPosX = (zoomGroup.getLayoutBounds().getWidth() - getViewportBounds().getWidth())  * getHvalue() + getViewportBounds().getWidth()  / 2;
-                double centerPosY = (zoomGroup.getLayoutBounds().getHeight() - getViewportBounds().getHeight())  * getVvalue() + getViewportBounds().getHeight()  / 2;
+                double centerPosX = (zoomGroup.getLayoutBounds().getWidth() - getViewportBounds().getWidth())  * getHvalue() /*+ getViewportBounds().getWidth()*/  / 2;
+                double centerPosY = (zoomGroup.getLayoutBounds().getHeight() - getViewportBounds().getHeight())  * getVvalue() /*+ getViewportBounds().getHeight()*/  / 2;
 
                 //When zooming out, zoomGroup should only be zoomed until the entire content fits in the Viewport.
                 //This prevents the content from being zoomed out of existence
@@ -90,6 +91,38 @@ public class View extends ScrollPane {
 
         canvas.getGraphicsContext2D().drawImage(img, 0, 0);
 
+    }
+
+    public void zoomIn() {
+        scaleValue *= delta;
+        double centerPosX = (zoomGroup.getLayoutBounds().getWidth() - getViewportBounds().getWidth())  * getHvalue() + getViewportBounds().getWidth()  / 2;
+        double centerPosY = (zoomGroup.getLayoutBounds().getHeight() - getViewportBounds().getHeight())  * getVvalue() + getViewportBounds().getHeight()  / 2;
+        double nscale = Math.max(scaleValue, Math.min(getViewportBounds().getWidth() / zoomGroup.getLayoutBounds().getWidth(),
+                getViewportBounds().getHeight() / zoomGroup.getLayoutBounds().getHeight()));
+
+
+        double newCenterX = centerPosX * nscale;
+        double newCenterY = centerPosY * nscale;
+        setHvalue((newCenterX - getViewportBounds().getWidth()/2) / (zoomGroup.getLayoutBounds().getWidth() * scaleValue - getViewportBounds().getWidth()));
+        setVvalue((newCenterY - getViewportBounds().getHeight()/2) / (zoomGroup.getLayoutBounds().getHeight() * scaleValue  -getViewportBounds().getHeight()));
+        scaleTransform.setX(nscale);
+        scaleTransform.setY(nscale);
+    }
+
+    public void zoomOut() {
+        scaleValue /= delta;
+        double centerPosX = (zoomGroup.getLayoutBounds().getWidth() - getViewportBounds().getWidth())  * getHvalue() + getViewportBounds().getWidth()  / 2;
+        double centerPosY = (zoomGroup.getLayoutBounds().getHeight() - getViewportBounds().getHeight())  * getVvalue() + getViewportBounds().getHeight()  / 2;
+        double nscale = Math.max(scaleValue, Math.min(getViewportBounds().getWidth() / zoomGroup.getLayoutBounds().getWidth(),
+                getViewportBounds().getHeight() / zoomGroup.getLayoutBounds().getHeight()));
+
+
+        double newCenterX = centerPosX * nscale;
+        double newCenterY = centerPosY * nscale;
+        setHvalue((newCenterX - getViewportBounds().getWidth()/2) / (zoomGroup.getLayoutBounds().getWidth() * scaleValue - getViewportBounds().getWidth()));
+        setVvalue((newCenterY - getViewportBounds().getHeight()/2) / (zoomGroup.getLayoutBounds().getHeight() * scaleValue  -getViewportBounds().getHeight()));
+        scaleTransform.setX(nscale);
+        scaleTransform.setY(nscale);
     }
 
     public void centerViewOn(double x, double y){

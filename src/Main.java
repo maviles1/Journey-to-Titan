@@ -1,9 +1,14 @@
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import titan.*;
+
+import java.io.File;
 import java.lang.Math;
 
 import java.util.ArrayList;
@@ -20,15 +25,26 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         SpaceObjectBuilder builder = new SpaceObjectBuilder("src/solar_system_data-2020_04_01.txt");
 
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.setPrefSize(800, 600);
+        FXMLLoader loader = new FXMLLoader(new File("src/window.fxml").toURI().toURL());
+
+
+        //AnchorPane anchorPane = new AnchorPane();
+        //anchorPane.setPrefSize(800, 600);
         Canvas canvas = new Canvas(1600, 1200);
         View view = new View(canvas);
-        anchorPane.getChildren().add(view);
+        //anchorPane.getChildren().add(view);
+        Window window = new Window(view);
+
+        loader.setController(window);
+        loader.setRoot(window);
+        Parent root = loader.load();
+        window.init();
 
         primaryStage.setTitle("Mission Titan");
-        primaryStage.setScene(new Scene(anchorPane));
+        primaryStage.setScene(new Scene(root));
+        primaryStage.getIcons().add(new Image("titan.png"));
         primaryStage.show();
+
 
         ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
 
@@ -72,16 +88,18 @@ public class Main extends Application {
 
         //Vector3d vel = new Vector3d(5000, -35000, -400);
         //Vector3d vel = new Vector3d(31336.554258164942,-31485.0256115705,40332.53685876744);
-        Vector3d vel = new Vector3d(31161.479822313646,-31236.70426509767,40659.937062646415);
-//        Vector3d pos = new Vector3d(6371000.0,1.0,1.0);
-        Vector3d pos = vel;
-        pos = pos.mul(1/pos.norm());
-        pos = pos.mul(6371000);
+//        Vector3d vel = new Vector3d(31161.479822313646,-31236.70426509767,40659.937062646415);
+        Vector3d vel = new Vector3d(40188.42496797729,-41575.62743325709,-16011.17428935992);
+        Vector3d pos = new Vector3d(6371000.0,1.0,1.0);
+//        Vector3d pos = vel;
+//        pos = pos.mul(1/pos.norm());
+//        pos = pos.mul(6371000);
         //vel.mul((1/vel.norm()) *60);
         //new Vector3d(6371000, 1, 1)
         sim.trajectory(pos, vel,31556926, 1000);
 
         Renderer renderer = new Renderer(view, sim.getStates());
+        window.attachRenderer(renderer);
 
         renderer.start();
 
