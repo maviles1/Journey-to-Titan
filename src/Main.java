@@ -4,11 +4,14 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import titan.*;
+import java.lang.Math;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main extends Application {
+
+    public static final double PROBE_SPEED = 600000; //initial probe speed(scalar) relative to earth
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -100,7 +103,19 @@ public class Main extends Application {
 
         renderer.start();
 
+        //starting position and velocity vector for probe launch
+        //generate a random vector
+        double a = (Math.random()*100)-50;
+        double b = (Math.random()*100)-50;
+        double c = (Math.random()*100)-50;
+        Vector3d random_vector = new Vector3d(a,b,c);
 
+        //normalize the vector to generate unit vector
+        Vector3d random_unit= random_vector.mul(1/random_vector.norm());
+
+        //generate the position and velocity vector
+        Vector3d initial_probe_position = random_unit.mul(earth.getRadius());
+        Vector3d initial_probe_velocity = random_unit.mul(PROBE_SPEED);
     }
 
     private void initialiseCanvas(Canvas canvas) {
