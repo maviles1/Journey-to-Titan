@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class State implements StateInterface {
 
-    private Vector3d[] positions;
+    public Vector3d[] positions;
     private Vector3d[] velocities;
     static double[] mass;
     static Map<Integer, String> names;
@@ -46,7 +46,7 @@ public class State implements StateInterface {
     public String toString() {
         StringBuilder s = new StringBuilder();
           for (int i = 0; i < positions.length; i++) {
-            s.append("").append(names.get(i)).append(" { x=").append(positions[i].getX()).append(", y=").append(positions[i].getY()).append(", z=").append(positions[i].getZ()).append(" vx=").append(velocities[i].getX()).append(", vy=").append(velocities[i].getY()).append(", vz=").append(velocities[i].getZ()).append(" }\n");
+            s.append("").append(names.get(i)).append(" { x=").append(Renderer.toScreenCoordinates(positions[i].getX())).append(", y=").append(Renderer.toScreenCoordinates(positions[i].getY())).append(", z=").append(Renderer.toScreenCoordinates(positions[i].getZ())).append(" vx=").append(Renderer.toScreenCoordinates(velocities[i].getX())).append(", vy=").append(Renderer.toScreenCoordinates(velocities[i].getY())).append(", vz=").append(Renderer.toScreenCoordinates(velocities[i].getZ())).append(" }\n");
         }
 
       //  s.append("").append(names.get(0)).append(" { x=").append(positions[0].getX()).append(", y=").append(positions[0].getY()).append(", z=").append(positions[0].getZ()).append(" vx=").append(velocities[0].getX()).append(", vy=").append(velocities[0].getY()).append(", vz=").append(velocities[0].getZ()).append(" }\n");
