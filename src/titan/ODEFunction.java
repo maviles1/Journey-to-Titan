@@ -31,7 +31,6 @@ public class ODEFunction implements ODEFunctionInterface{
             v=state.getVelocities()[i].addMul(dt,a);
         //    System.out.println(v);
 
-
             aRates[i] = a;
             vRates[i] = v;
         }

@@ -37,7 +37,7 @@ public class Main extends Application {
 
 
 //        sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),31556926, 1000000);
-        sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),31556926, 500);
+        sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(1, 1, 0),31556926, 500);
 
         Renderer renderer = new Renderer(canvas, sim.getStates());
 
