@@ -60,25 +60,27 @@ public class Main extends Application {
             mass[i++] = spaceObject.getMass();
         }
 
-        ProbeSimulator sim = new ProbeSimulator(spaceObjects);
-        System.out.println(Arrays.toString(sim.trajectory(new Vector3d(0, 0, 0), new Vector3d(60, 0, 0),31556926, 1000)));
-
-
-
-
-
         //create the initial state
         State state = new State(positions, velocities, 0);
         State.setMass(mass);
         State.setNames();
 
         System.out.println(state.toString());
-       ODEFunction f = new ODEFunction();
+        ODEFunction f = new ODEFunction();
+
+        ProbeSimulator sim = new ProbeSimulator(spaceObjects);
+       // System.out.println(Arrays.toString(sim.trajectory(new Vector3d(1, 1, 1), new Vector3d(60, 0, 0),31556926, 1000)));
+        sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),31556926, 1000);
+
+
+
+
+
 
         //    State state1 = (State) state.addMul(1, f.call(0 + 1, state));
         // System.out.println(state1.toString());
 
- /*
+
         double[] ts = new double[]{0, 31556926};
         Solver x = new Solver();
      //   StateInterface[] s = x.solve(f, state, ts);
@@ -89,7 +91,7 @@ public class Main extends Application {
         StateInterface[] s1 = x.solve(f, state, tf, 10000);
 
         System.out.println(s1[s1.length - 1]);
-*/
+
 
         Renderer renderer = new Renderer(canvas, planets, state);
 
