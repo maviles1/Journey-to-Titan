@@ -27,10 +27,10 @@ public class Renderer extends AnimationTimer {
         this.system = system;
     }
 
-    public Renderer(Canvas canvas, ArrayList<SpaceObject> system, State state) {
-        this.canvas = canvas;
-        this.state = state;
-    }
+//    public Renderer(Canvas canvas, ArrayList<SpaceObject> system, State state) {
+//        this.canvas = canvas;
+//        this.state = state;
+//    }
 
     @Override
     public void handle(long now) {

@@ -41,31 +41,31 @@ public class Main extends Application {
         ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
 
         //create positions and velocities arrays to represent the state
-        Vector3d[] positions = new Vector3d[spaceObjects.size()];
-        Vector3d[] velocities = new Vector3d[spaceObjects.size()];
-        double[] mass = new double[spaceObjects.size()];
-        int i = 0;
-        for (SpaceObject spaceObject : spaceObjects) {
-            positions[i] = spaceObject.getPosition();
-            velocities[i] = spaceObject.getVelocity();
-            mass[i++] = spaceObject.getMass();
-        }
+//        Vector3d[] positions = new Vector3d[spaceObjects.size()];
+//        Vector3d[] velocities = new Vector3d[spaceObjects.size()];
+//        double[] mass = new double[spaceObjects.size()];
+//        int i = 0;
+//        for (SpaceObject spaceObject : spaceObjects) {
+//            positions[i] = spaceObject.getPosition();
+//            velocities[i] = spaceObject.getVelocity();
+//            mass[i++] = spaceObject.getMass();
+//        }
 //        for (int i = 0; i < planets.size(); i++){
 //            positions[i] = new Vector3d(planets.get(i).getPosition().getX(),planets.get(i).getPosition().getY(),planets.get(i).getPosition().getZ());
 //            velocities[i] = new Vector3d(planets.get(i).getPosition().getX(),planets.get(i).getPosition().getY(),planets.get(i).getPosition().getZ());
 //
 //        }
 
-        ProbeSimulator sim = new ProbeSimulator(spaceObjects);
-        System.out.println(Arrays.toString(sim.trajectory(new Vector3d(0, 0, 0), new Vector3d(60, 0, 0),31556926, 1000)));
-
-        //create the initial state
-        State state = new State(positions, velocities, 0);
-        State.setMass(mass);
-        State.setNames();
+//        ProbeSimulator sim = new ProbeSimulator(spaceObjects);
+//        System.out.println(Arrays.toString(sim.trajectory(new Vector3d(0, 0, 0), new Vector3d(60, 0, 0),31556926, 1000)));
+//
+//        //create the initial state
+//        State state = new State(positions, velocities, 0);
+//        State.setMass(mass);
+//        State.setNames();
 
 //TODO where did the minuses go????
-        System.out.println(state.toString());
+        //System.out.println(state.toString());
         ODEFunction f = new ODEFunction();
 
         ProbeSimulator sim = new ProbeSimulator(spaceObjects);
@@ -80,22 +80,22 @@ public class Main extends Application {
         //    State state1 = (State) state.addMul(1, f.call(0 + 1, state));
         // System.out.println(state1.toString());
 
+//
+//        double[] ts = new double[]{0, 31556926};
+//        Solver x = new Solver();
+//     //   StateInterface[] s = x.solve(f, state, ts);
+//     //   System.out.println(s[1]);
+//     //   System.out.println();
+//
+//        double tf = 31556926;
+//        StateInterface[] s1 = x.solve(f, state, tf, 10000);
+//
+//        System.out.println(s1[s1.length - 1]);
 
-        double[] ts = new double[]{0, 31556926};
-        Solver x = new Solver();
-     //   StateInterface[] s = x.solve(f, state, ts);
-     //   System.out.println(s[1]);
-     //   System.out.println();
 
-        double tf = 31556926;
-        StateInterface[] s1 = x.solve(f, state, tf, 10000);
+        Renderer renderer = new Renderer(canvas, planets);
 
-        System.out.println(s1[s1.length - 1]);
-
-
-        Renderer renderer = new Renderer(canvas, planets, state);
-
-//        renderer.start();
+        renderer.start();
 
 
     }
@@ -107,35 +107,35 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        SpaceObjectBuilder builder = new SpaceObjectBuilder("src/solar_system_data-2020_04_01.txt");
-        Solver solver = new Solver();
-        ODEFunction func = new ODEFunction();
-        ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
-
-        //create positions and velocities arrays to represent the state
-        Vector3d[] positions = new Vector3d[spaceObjects.size()];
-        Vector3d[] velocities = new Vector3d[spaceObjects.size()];
-        double[] mass = new double[spaceObjects.size()];
-        int i = 0;
-        for (SpaceObject spaceObject : spaceObjects) {
-            positions[i] = spaceObject.getPosition();
-            velocities[i] = spaceObject.getVelocity();
-            mass[i++] = spaceObject.getMass();
-        }
-        State state = new State(positions,velocities,0);
-
-        int count = 0;
-        for (int in = 0; in < 3155; in++){
-            StateInterface[] s1 = solver.solve(func, state, 31556926, 100000);
-            System.out.println(s1[count]);
-            state = (State) s1[count];
-            count++;
-        }
-
-
-
-
-
+//        SpaceObjectBuilder builder = new SpaceObjectBuilder("src/solar_system_data-2020_04_01.txt");
+//        Solver solver = new Solver();
+//        ODEFunction func = new ODEFunction();
+//        ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
+//
+//        //create positions and velocities arrays to represent the state
+//        Vector3d[] positions = new Vector3d[spaceObjects.size()];
+//        Vector3d[] velocities = new Vector3d[spaceObjects.size()];
+//        double[] mass = new double[spaceObjects.size()];
+//        int i = 0;
+//        for (SpaceObject spaceObject : spaceObjects) {
+//            positions[i] = spaceObject.getPosition();
+//            velocities[i] = spaceObject.getVelocity();
+//            mass[i++] = spaceObject.getMass();
+//        }
+//        State state = new State(positions,velocities,0);
+//
+//        int count = 0;
+//        for (int in = 0; in < 3155; in++){
+//            StateInterface[] s1 = solver.solve(func, state, 31556926, 100000);
+//            System.out.println(s1[count]);
+//            state = (State) s1[count];
+//            count++;
+//        }
+//
+//
+//
+//
+//
 
 
 

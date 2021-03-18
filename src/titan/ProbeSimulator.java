@@ -3,14 +3,8 @@ package titan;
 import java.util.ArrayList;
 
 public class ProbeSimulator implements ProbeSimulatorInterface{
-    private ODEFunction function;
-    private State state;
-    private ArrayList<SpaceObject> spaceObjects;
 
-    public ProbeSimulator(ODEFunctionInterface f, StateInterface y){
-        function=(ODEFunction) f;
-        state= (State) y;
-    }
+    private ArrayList<SpaceObject> spaceObjects;
 
     /**
      * @param space contains a List of all planets
@@ -101,8 +95,8 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
 
         //create the initial state
         State state = new State(positions, velocities, 0);
-        state.setMass(mass);
-        state.setNames();
+        State.setMass(mass);
+        State.setNames();
         return state;
     }
 
