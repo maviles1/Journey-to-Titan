@@ -17,6 +17,7 @@ public class Solver implements ODESolverInterface{
     @Override
     public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
         //check if t should be the total time
+        //TODO or just cast to int? does it give the correct arraysize???
         int size= (int) Math.round(tf/h+1);
         StateInterface[] s = new StateInterface[size];
         s[0]=y0;
@@ -28,6 +29,9 @@ public class Solver implements ODESolverInterface{
         }
         //tf or tf/h
         s[size-1]=step(f,tf,s[size-2],tf-t);
+        for(int i=1;i<size;i++){
+   //         System.out.println(s[i]);
+        }
         return s;
     }
 

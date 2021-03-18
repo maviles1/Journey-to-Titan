@@ -10,6 +10,8 @@ public class ODEFunction implements ODEFunctionInterface{
 
         int size=state.getPosition().length;
         double dt = t - state.getTime();
+  //      System.out.println("T: " + t+ " stateTime " +state.getTime());
+
         double G = 6.67430E-11;
 
         Vector3d[] aRates = new Vector3d[size];
@@ -24,7 +26,6 @@ public class ODEFunction implements ODEFunctionInterface{
 
                     double p = (G * State.mass[j])/Math.pow(state.getPosition()[j].dist(state.getPosition()[i]),3);
                     a = a.addMul(p, state.getPosition()[j].sub(state.getPosition()[i]));
-
                 }
             }
             v=state.getVelocities()[i].addMul(dt,a);
