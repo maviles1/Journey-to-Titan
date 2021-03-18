@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class State implements StateInterface {
 
-    private Vector3d[] positions;
+    public Vector3d[] positions;
     private Vector3d[] velocities;
     static double[] mass;
     static Map<Integer, String> names;
