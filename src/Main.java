@@ -40,15 +40,6 @@ public class Main extends Application {
 
         ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
 
- //       Probe probe = new Probe("Probe", 15000, new Vector3d(0, 0, 0), new Vector3d(60, 0, 0));
-  //      spaceObjects.add(probe);
-
-   /*     for(int step=0; step<spaceObjects.size();step++){
-            System.out.println(spaceObjects.get(step).toString());
-        }
-    */
-
-
         //create positions and velocities arrays to represent the state
         Vector3d[] positions = new Vector3d[spaceObjects.size()];
         Vector3d[] velocities = new Vector3d[spaceObjects.size()];
@@ -104,7 +95,7 @@ public class Main extends Application {
 
         Renderer renderer = new Renderer(canvas, planets, state);
 
-        renderer.start();
+//        renderer.start();
 
 
     }
@@ -116,6 +107,39 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+        SpaceObjectBuilder builder = new SpaceObjectBuilder("src/solar_system_data-2020_04_01.txt");
+        Solver solver = new Solver();
+        ODEFunction func = new ODEFunction();
+        ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
+
+        //create positions and velocities arrays to represent the state
+        Vector3d[] positions = new Vector3d[spaceObjects.size()];
+        Vector3d[] velocities = new Vector3d[spaceObjects.size()];
+        double[] mass = new double[spaceObjects.size()];
+        int i = 0;
+        for (SpaceObject spaceObject : spaceObjects) {
+            positions[i] = spaceObject.getPosition();
+            velocities[i] = spaceObject.getVelocity();
+            mass[i++] = spaceObject.getMass();
+        }
+        State state = new State(positions,velocities,0);
+
+        int count = 0;
+        for (int in = 0; in < 3155; in++){
+            StateInterface[] s1 = solver.solve(func, state, 31556926, 100000);
+            System.out.println(s1[count]);
+            state = (State) s1[count];
+            count++;
+        }
+
+
+
+
+
+
+
+
+
         launch(args);
     }
 }

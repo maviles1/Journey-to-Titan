@@ -7,6 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.TextAlignment;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Renderer extends AnimationTimer {
@@ -16,10 +17,9 @@ public class Renderer extends AnimationTimer {
     private Canvas canvas;
     ArrayList <SpaceObject> system;
     ArrayList <Double []> paths = new ArrayList<>();
-
     State state;
+    int count = 0;
 
-    double count = 0;
 
 
     public Renderer(Canvas canvas, ArrayList<SpaceObject> system) {
@@ -30,74 +30,80 @@ public class Renderer extends AnimationTimer {
     public Renderer(Canvas canvas, ArrayList<SpaceObject> system, State state) {
         this.canvas = canvas;
         this.state = state;
-        this.system = system;
     }
 
     @Override
     public void handle(long now) {
+        Button button = new Button("PENIS");
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(Paint.valueOf("#003366"));
+        gc.setFill(Paint.valueOf("#000000"));
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         if (startNanoTime == 0)
             startNanoTime = now;
 
         double t = (now - startNanoTime) / 1000000000.0;
-
         double x = 500 + 20 * Math.cos(t);
         double y = 500 + 20 * Math.sin(t);
-        gc.setFill(Paint.valueOf("#ffffff"));
-
-//        for (int i = 0; i < system.size(); i++){
-//            drawSpaceObject(gc, system.get(i));
-//            system.get(i).update();
-//            for (int j = 0; j < system.size(); j++){
-//                if (!system.get(i).getName().equals(system.get(j).getName())){
-//                    system.get(i).attract(system.get(j));
-//                }
-//            }
-//
-//        }
-
-        gc.fillOval(0 + x, 0 + y, 50, 50);
-
-        for (int i = 0; i < state.getPositions().length; i++) {
-            gc.fillOval(state.getPositions()[i].getX() / (1e8), state.getPositions()[i].getY() / (1e8), 50, 50);
+        gc.setFill(Paint.valueOf("#469FCB"));
+        for (int i = 0; i < state.positions.length; i++){
+            drawSpaceObject(gc, state.positions[i],i);
         }
+//
 
-        state = (State)state.addMul(1/500, new ODEFunction().call(t, state));
 
-        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setTextAlign(TextAlignment.CENTER );
         gc.setTextBaseline(VPos.CENTER);
         gc.fillText(
-                "t: " + t,
-                50, 10
+                "EARTH DISTANCE FROM SUN: " + state.positions[0].dist(state.positions[1]),
+                200, 10
+        );
+        gc.fillText(
+                "EARTH COORDINATES ON CANVAS: " + state.positions[1].mul((1/(1e11))*300).toString(),
+                400, 30
+        );
+        gc.fillText(
+                "SUN COORDINATES ON CANVAS: " + state.positions[0].mul((1/(1e11))*300).toString(),
+                400, 45
         );
 
-        gc.fillOval(0 + x, 0 + y, 50, 50);
-        gc.fillOval(0 + state.getPosition()[0].getX(), 0 + state.getPosition()[0].getY(), 50, 50);
 
+//        state.positions = func.call(t,state).getRatePosition();
+//        for (int i = 0; i < state.positions.length; i++){
+//            state.positions[i] = state.positions[i].add(func.call(t,state).getRatePosition()[i]);
+//        }
+//        state = (State) solver.step(func, t, state, 1);
+        ODEFunction func = new ODEFunction();
+        double[] ts = new double[]{0, 31556926};
+        Solver solver = new Solver();
+//        StateInterface[] s = solver.solve(func, state, ts);
+        //   System.out.println(s[1]);
+
+        double tf = 31556926;
+        StateInterface[] s1 = solver.solve(func, state, tf, 100000);
+//        System.out.println(s1[count]);
+        state = (State) s1[count];
+        count++;
+//        state = (State) solver.step(func, t, state, 1000000);
     }
 
-    public void drawSpaceObject(GraphicsContext gc, SpaceObject object){
-        gc.fillOval(  gc.getCanvas().getLayoutBounds().getCenterX() + object.getPosition().getX(), gc.getCanvas().getLayoutBounds().getCenterY() + object.getPosition().getY(), 50, 50);
-        gc.setFill(Paint.valueOf("#000000"));
-        gc.strokeOval(gc.getCanvas().getLayoutBounds().getCenterX() + object.getPosition().getX(), gc.getCanvas().getLayoutBounds().getCenterY() + object.getPosition().getY(), 50, 50);
+    public void drawSpaceObject(GraphicsContext gc,Vector3d vec, int index){
+        gc.fillOval(  gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 5, 5);
+        gc.setFill(Paint.valueOf("#CC52D7"));
+        gc.strokeOval(gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 5, 5);
         for (int i = 0; i < paths.size(); i++){
             gc.fillOval(paths.get(i)[0],paths.get(i)[1],paths.get(i)[2],paths.get(i)[3]);
         }
-        paths.add(new Double[]{gc.getCanvas().getLayoutBounds().getCenterX() + object.getPosition().getX(), gc.getCanvas().getLayoutBounds().getCenterY() + object.getPosition().getY(), 10.0, 10.0});
-        gc.fillText(object.getName(), gc.getCanvas().getLayoutBounds().getCenterX() + object.getPosition().getX() + 6, gc.getCanvas().getLayoutBounds().getCenterY() + object.getPosition().getY() + 30);
+        paths.add(new Double[]{gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 2.0, 2.0});
+        gc.setFill(Paint.valueOf("#DBF188"));
+        gc.fillText(state.names.get(index), gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX() + 6), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY() + 30));
         gc.setFill(Paint.valueOf("#ffffff"));
 
+
     }
 
-    private static double standardize(double d){
-        return d/1000000000/1000000000/7000000;
-    }
-
-    private static double unstandardize(double d){
-        return d*1000000000*1000000000*7000000;
+    public static double toScreenCoordinates(double d){
+        return ((d/(1e13)) * 300);
     }
 
 }
