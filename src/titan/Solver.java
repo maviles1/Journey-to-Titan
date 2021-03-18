@@ -1,12 +1,14 @@
 package titan;
 
+import java.util.Arrays;
+
 public class Solver implements ODESolverInterface{
     @Override
     public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double[] ts) {
+        int stepSize=1000;
         StateInterface[] s = new StateInterface[ts.length];
         s[0]=step(f,ts[0],y0,ts[0]);
         for(int i=1;i<ts.length;i++){
-            double stepSize=ts[i]-ts[i-1];
             s[i]=step(f,ts[i],s[i-1],stepSize);
         }
         return s;
@@ -15,18 +17,21 @@ public class Solver implements ODESolverInterface{
     @Override
     public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
         //check if t should be the total time
-        int size= (int) (tf/h+1);
-        State state = (State) y0;
+        //TODO or just cast to int? does it give the correct arraysize???
+        int size= (int) Math.round(tf/h+1);
         StateInterface[] s = new StateInterface[size];
-        s[0]=step(f,0,state,h);
+        s[0]=y0;
+
         double t=0;
         for(int i=1;i<size-1;i++){
             t+=h;
-            s[i]=step(f,t,y0,h);
-
+            s[i]=step(f,t,s[i-1],h);
         }
         //tf or tf/h
         s[size-1]=step(f,tf,s[size-2],tf-t);
+        for(int i=1;i<size;i++){
+   //         System.out.println(s[i]);
+        }
         return s;
     }
 

@@ -1,20 +1,13 @@
 package titan;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class State implements StateInterface {
 
-    public Vector3d[] getPositions() {
-        return positions;
-    }
-
-    public Vector3d[] getVelocities() {
-        return velocities;
-    }
-
-    Vector3d[] positions;
-    Vector3d[] velocities;
+    private Vector3d[] positions;
+    private Vector3d[] velocities;
     static double[] mass;
     static Map<Integer, String> names;
 
@@ -24,27 +17,40 @@ public class State implements StateInterface {
         this.positions = positions;
         this.velocities = velocities;
         this.time = time;
+//   System.out.println(Arrays.toString(this.positions));
     }
 
 
 
     @Override
     public StateInterface addMul(double step, RateInterface r) {
+  //      System.out.println("STEP: " + step);
         Rate rate = (Rate) r;
+
         Vector3d[] newPositions = new Vector3d[positions.length];
         Vector3d[] newVelocities = new Vector3d[velocities.length];
-        for (int i = 0; i < positions.length; i++) {
+//        System.out.println(Arrays.toString(positions));
+        for (int i = 0; i < velocities.length; i++) {
             newPositions[i] = positions[i].addMul(step, rate.getRatePosition()[i]);
             newVelocities[i] = velocities[i].addMul(step, rate.getRateVelocity()[i]);
         }
+
+     //   System.out.println("NEWW " +Arrays.toString(rate.getRatePosition()));
+      //  System.out.println("NEWW " +Arrays.toString(positions));
+
+
         return new State(newPositions, newVelocities, time + step);
     }
 
+
     public String toString() {
         StringBuilder s = new StringBuilder();
-        for (int i = 0; i < positions.length; i++) {
+          for (int i = 0; i < positions.length; i++) {
             s.append("").append(names.get(i)).append(" { x=").append(positions[i].getX()).append(", y=").append(positions[i].getY()).append(", z=").append(positions[i].getZ()).append(" vx=").append(velocities[i].getX()).append(", vy=").append(velocities[i].getY()).append(", vz=").append(velocities[i].getZ()).append(" }\n");
         }
+
+      //  s.append("").append(names.get(0)).append(" { x=").append(positions[0].getX()).append(", y=").append(positions[0].getY()).append(", z=").append(positions[0].getZ()).append(" vx=").append(velocities[0].getX()).append(", vy=").append(velocities[0].getY()).append(", vz=").append(velocities[0].getZ()).append(" }\n");
+        //s.append("").append(names.get(3)).append(" { x=").append(positions[3].getX()).append(", y=").append(positions[3].getY()).append(", z=").append(positions[3].getZ()).append(" vx=").append(velocities[3].getX()).append(", vy=").append(velocities[3].getY()).append(", vz=").append(velocities[3].getZ()).append(" }\n");
         return s.toString();
     }
 
@@ -52,11 +58,20 @@ public class State implements StateInterface {
         State.mass = mass;
     }
 
+    //TODO add name of the probe
     public static void setNames() {
         names = new HashMap<>();
         for (int i = 0; i < SpaceObjectBuilder.spaceObjects.size(); i++) {
             names.put(i, SpaceObjectBuilder.spaceObjects.get(i).getName());
         }
+    }
+
+    public Vector3d[] getPosition(){
+        return positions;
+    }
+
+    public Vector3d[] getVelocities(){
+        return velocities;
     }
 
     public double getTime() {

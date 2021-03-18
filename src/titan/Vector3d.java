@@ -56,11 +56,11 @@ public class Vector3d implements Vector3dInterface {
 	}
 
 	public Vector3d addMul(double scalar, Vector3dInterface other){
-//		setX(getX() + scalar * other.getX());
-//		setY(getY() + scalar * other.getY());
-//		setZ(getZ() + scalar * other.getZ());
+		double x = (getX() + scalar * other.getX());
+		double y = (getY() + scalar * other.getY());
+		double z = (getZ() + scalar * other.getZ());
 
-		return new Vector3d(getX() + scalar * other.getX(), getY() + scalar * other.getY(), getZ() + scalar * other.getZ());
+		return new Vector3d(x, y, z);
 	}
 
 	public double norm(){
