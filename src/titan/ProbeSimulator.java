@@ -35,7 +35,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
         //creates all the states of the simulation
         Solver solver = new Solver();
         State[] s = (State[]) solver.solve(new ODEFunction(), universe, ts);
-
+        states = s;
         Vector3d[] vector = new Vector3d[s.length];
         for(int i=0;i<s.length;i++){
             vector[i] = s[i].getPosition()[s[i].getPosition().length-1];
@@ -67,7 +67,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
         //creates all the states of the simulation
         Solver solver = new Solver();
         StateInterface[] s = solver.solve(new ODEFunction(), universe, tf, h);
-
+        states = s;
         Vector3d[] vector = new Vector3d[s.length];
         for(int i=0;i<s.length;i++){
             State ph = (State) s[i];
@@ -78,27 +78,12 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
         return vector;
     }
 
-    public State initState(Probe p) {
-        //create positions and velocities arrays to represent the state
-        Vector3d[] positions = new Vector3d[spaceObjects.size()+1];
-        Vector3d[] velocities = new Vector3d[spaceObjects.size()+1];
-        double[] mass = new double[spaceObjects.size()+1];
-        int i = 0;
-        for (SpaceObject spaceObject : spaceObjects) {
-            positions[i] = spaceObject.getPosition();
-            velocities[i] = spaceObject.getVelocity();
-            mass[i++] = spaceObject.getMass();
-        }
-        positions[spaceObjects.size()] = p.getPosition();
-        velocities[spaceObjects.size()] = p.getVelocity();
-        mass[spaceObjects.size()]=p.getMass();
-
-        //create the initial state
-        State state = new State(positions, velocities, 0);
-        State.setMass(mass);
-        State.setNames();
-        return state;
+    StateInterface[] states;
+    public StateInterface[] getStates() {
+        return states;
     }
+
+
 
     public State initUn() {
         //create positions and velocities arrays to represent the state
@@ -114,8 +99,8 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
 
         //create the initial state
         State state = new State(positions, velocities, 0);
-        state.setMass(mass);
-        state.setNames();
+        State.setMass(mass);
+        State.setNames();
         return state;
     }
 

@@ -6,7 +6,6 @@ import javafx.stage.Stage;
 import titan.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Main extends Application {
 
@@ -23,115 +22,17 @@ public class Main extends Application {
         primaryStage.setTitle("Mission Titan");
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.show();
-        //initialiseCanvas(canvas);
-        ArrayList<SpaceObject> planets = new ArrayList<>();
-        Planet earth = new Planet("earth", 5.97219e24, new Vector3d(-1.471922101663588e+11, -2.860995816266412e+10, 8.278183193596080e+06), new Vector3d(5.427193405797901e+03, -2.931056622265021e+04, 6.575428158157592e-01), 70);
-//        Planet mars = new Planet("mars", 400, new Vector3d(400, 75, 87), new Vector3d(0.0, 0.0, 0.0), 80);
-//        Planet saturn = new Planet("saturn", 3000, new Vector3d(50, 400, 640), new Vector3d(0.0, 0.0, 0.0), 1000);
-//        Planet uranus = new Planet("uranus", 2700, new Vector3d(97, 280, 90), new Vector3d(0.0, 0.0, 0.0), 800);
-        Planet sun = new Planet("sun", 1.988500e30, new Vector3d(-6.806783239281648e+08, 1.080005533878725e+09, 6.564012751690170e+06), new Vector3d(-1.420511669610689e+01, -4.954714716629277e+00, 3.994237625449041e-01), 800);
-        planets.add(earth);
-//        planets.add(mars);
-//        planets.add(saturn);
-//        planets.add(uranus);
-        planets.add(sun);
-
-        //StateInterface state = new State();
 
         ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
 
-        //       Probe probe = new Probe("Probe", 15000, new Vector3d(0, 0, 0), new Vector3d(60, 0, 0));
-        //      spaceObjects.add(probe);
-
-//        for(int step=0; step<spaceObjects.size();step++){
-//            System.out.println(spaceObjects.get(step).toString());
-//        }
-
-
-
-        //create positions and velocities arrays to represent the state
-//        Vector3d[] positions = new Vector3d[spaceObjects.size()];
-//        Vector3d[] velocities = new Vector3d[spaceObjects.size()];
-//        double[] mass = new double[spaceObjects.size()];
-//        int i = 0;
-//        for (SpaceObject spaceObject : spaceObjects) {
-//            positions[i] = spaceObject.getPosition();
-//            velocities[i] = spaceObject.getVelocity();
-//            mass[i++] = spaceObject.getMass();
-//        }
-//        for (int i = 0; i < planets.size(); i++){
-//            positions[i] = new Vector3d(planets.get(i).getPosition().getX(),planets.get(i).getPosition().getY(),planets.get(i).getPosition().getZ());
-//            velocities[i] = new Vector3d(planets.get(i).getPosition().getX(),planets.get(i).getPosition().getY(),planets.get(i).getPosition().getZ());
-//
-//        }
-
-//        ProbeSimulator sim = new ProbeSimulator(spaceObjects);
-//        System.out.println(Arrays.toString(sim.trajectory(new Vector3d(0, 0, 0), new Vector3d(60, 0, 0),31556926, 1000)));
-//
-//        //create the initial state
-//        State state = new State(positions, velocities, 0);
-//        State.setMass(mass);
-//        State.setNames();
-
-        //System.out.println(state.toString());
-        ODEFunction f = new ODEFunction();
-
         ProbeSimulator sim = new ProbeSimulator(spaceObjects);
-        // System.out.println(Arrays.toString(sim.trajectory(new Vector3d(1, 1, 1), new Vector3d(60, 0, 0),31556926, 1000)));
-        sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),31556926, 1000);
+//        sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),31556926, 1000000);
+        sim.trajectory(new Vector3d(1, 1, 5), new Vector3d(60, 60, 0),315569260, 10000);
 
-
-
-
-
-
-        //    State state1 = (State) state.addMul(1, f.call(0 + 1, state));
-        // System.out.println(state1.toString());
-
-
-//        double[] ts = new double[]{0, 31556926};
-//        Solver x = new Solver();
-     //   StateInterface[] s = x.solve(f, state, ts);
-     //   System.out.println(s[1]);
-     //   System.out.println();
-
-//        double tf = 31556926;
-//        StateInterface[] s1 = x.solve(f, state, tf, 10000);
-//
-//        Renderer renderer = new Renderer(canvas, planets);
-//        System.out.println(s1[s1.length - 1]);
-//
-//
-//        Renderer renderer = new Renderer(canvas, planets, state);
-//        int count = 0;
-//
-//            ODEFunction func = new ODEFunction();
-//            double[] tss = new double[]{0, 31556926};
-//            Solver solver = new Solver();
-////        StateInterface[] s = solver.solve(func, state, ts);
-//            //   System.out.println(s[1]);
-//            double d = 31556926;
-//            StateInterface[] s2 = solver.solve(func, state, d, 100000);
-//            for (int ia = 0; ia < s2.length; ia++){
-//                System.out.println(("STEP:  " + ia + "  | " + (State) s2[ia]));
-//            }
-////            System.out.println("ASDASDASDASDASDASDASDASD: " + s2[count]);
-////            state = (State) s2[count];
-//            count++;
-
-
-
-
-        Renderer renderer = new Renderer(canvas, planets);
+        Renderer renderer = new Renderer(canvas, sim.getStates());
 
         renderer.start();
 
-
-    }
-
-    private void initialiseCanvas(Canvas canvas) {
-        canvas.widthProperty().bind(((AnchorPane)canvas.getParent()).widthProperty());
-        canvas.heightProperty().bind(((AnchorPane)canvas.getParent()).heightProperty());
     }
 
 
