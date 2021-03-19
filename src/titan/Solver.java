@@ -1,6 +1,14 @@
 package titan;
 
 public class Solver implements ODESolverInterface {
+    /*
+     * Solve the differential equation by taking multiple steps.
+     *
+     * @param   f       the function defining the differential equation dy/dt=f(t,y)
+     * @param   y0      the starting state
+     * @param   ts      the times at which the states should be output, with ts[0] being the initial time
+     * @return  an array of size ts.length with all intermediate states along the path
+     */
     @Override
     public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double[] ts) {
         int stepSize = 1000;
