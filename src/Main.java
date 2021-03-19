@@ -20,9 +20,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        SpaceObjectBuilder builder = new SpaceObjectBuilder("src/solar_system_data-2020_04_01.txt");
+        //SpaceObjectBuilder builder = new SpaceObjectBuilder("src/solar_system_data-2020_04_01.txt");
+        SpaceObjectBuilder builder = new SpaceObjectBuilder(getClass().getResource("solar_system_data-2020_04_01.txt").getPath());
 
-        FXMLLoader loader = new FXMLLoader(new File("src/window.fxml").toURI().toURL());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("window.fxml"));
 
         Canvas canvas = new Canvas(CANVAS_HEIGHT, CANVAS_WIDTH);
         View view = new View(canvas);
