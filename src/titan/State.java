@@ -6,7 +6,7 @@ import java.util.Map;
 public class State implements StateInterface {
 
     static double[] mass;
-    static Map<Integer, String> names;
+    public static Map<Integer, String> names;
     public Vector3d[] positions;
     static double[] radius;
 
@@ -17,6 +17,9 @@ public class State implements StateInterface {
         this.positions = positions;
         this.velocities = velocities;
         this.time = time;
+    }
+    public Vector3d [] getPositions(){
+        return positions;
     }
 
     public static void setMass(double[] mass) {

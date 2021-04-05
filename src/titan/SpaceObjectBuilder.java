@@ -46,4 +46,8 @@ public class SpaceObjectBuilder {
         return objects;
     }
 
+
+    public static void main(String [] args){
+//        SpaceObjectBuilder builder = new SpaceObjectBuilder("solar_system_data-2020_04_01.txt");
+    }
 }
