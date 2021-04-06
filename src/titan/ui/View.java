@@ -1,4 +1,4 @@
-package titan;
+package titan.ui;
 
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -14,13 +14,14 @@ import java.io.File;
 import java.net.MalformedURLException;
 
 public class View extends ScrollPane {
-    private double scaleValue = 1.0;
-    private double delta = 1.05;
+    private double scaleValue = 1.0;    //initial scale
+    private final double DELTA = 1.05;  //how much to change the scale by
     private Canvas canvas;
     private Group zoomGroup;
     private Scale scaleTransform;
 
     public View(Canvas canvas) throws MalformedURLException {
+        //some basic styling
         AnchorPane.setBottomAnchor(this, 0.0);
         AnchorPane.setTopAnchor(this, 0.0);
         AnchorPane.setLeftAnchor(this, 0.0);
@@ -33,22 +34,24 @@ public class View extends ScrollPane {
 //        this.setFitToHeight(true);
         this.setPannable(true);
 
+        //wrap content in Group that can be scaled
         Group contentGroup = new Group();
         zoomGroup = new Group();
         contentGroup.getChildren().add(zoomGroup);
         zoomGroup.getChildren().add(canvas);
 
+        //Hide the scroll bars
         this.setContent(contentGroup);
-//        canvas.widthProperty().bind(this.widthProperty());
-//        canvas.heightProperty().bind(this.heightProperty());
         this.setHbarPolicy(ScrollBarPolicy.NEVER);
         this.setVbarPolicy(ScrollBarPolicy.NEVER);
 
+        //position scoll bars in center
         setVvalue(0.5);
         setHvalue(0.5);
         scaleTransform = new Scale(scaleValue, scaleValue, 0, 0);
         zoomGroup.getTransforms().add(scaleTransform);
 
+        //Zoomhandler class will handle the zooming with mouse scroll wheel
         class ZoomHandler implements EventHandler<ScrollEvent> {
 
             /**
@@ -58,9 +61,9 @@ public class View extends ScrollPane {
             @Override
             public void handle(ScrollEvent scrollEvent) {
                 if (scrollEvent.getDeltaY() < 0)
-                    scaleValue /= delta;    //smooth zoom out
+                    scaleValue /= DELTA;    //smooth zoom out
                 else
-                    scaleValue *= delta;    //smooth zoom in
+                    scaleValue *= DELTA;    //smooth zoom in
 
                 double centerPosX = (zoomGroup.getLayoutBounds().getWidth() - getViewportBounds().getWidth())  * getHvalue() /*+ getViewportBounds().getWidth()*/  / 2;
                 double centerPosY = (zoomGroup.getLayoutBounds().getHeight() - getViewportBounds().getHeight())  * getVvalue() /*+ getViewportBounds().getHeight()*/  / 2;
@@ -87,46 +90,22 @@ public class View extends ScrollPane {
         //make sure that ScrollPane doesn't use ScrollEvent to pan
         addEventFilter(ScrollEvent.ANY, new ZoomHandler());
 
-        Image img = new Image(new File("src/space.png").toURI().toURL().toExternalForm());
-
-        canvas.getGraphicsContext2D().drawImage(img, 0, 0);
-
     }
 
+    /**
+     * Method used by the zoom in button in order to scale the canvas
+     */
     public void zoomIn() {
-//        scaleValue *= delta;
-//        double centerPosX = (zoomGroup.getLayoutBounds().getWidth() - getViewportBounds().getWidth())  * getHvalue() + getViewportBounds().getWidth()  / 2;
-//        double centerPosY = (zoomGroup.getLayoutBounds().getHeight() - getViewportBounds().getHeight())  * getVvalue() + getViewportBounds().getHeight()  / 2;
-//        double nscale = Math.max(scaleValue, Math.min(getViewportBounds().getWidth() / zoomGroup.getLayoutBounds().getWidth(),
-//                getViewportBounds().getHeight() / zoomGroup.getLayoutBounds().getHeight()));
-//
-//
-//        double newCenterX = centerPosX * nscale;
-//        double newCenterY = centerPosY * nscale;
-//        setHvalue((newCenterX - getViewportBounds().getWidth()/2) / (zoomGroup.getLayoutBounds().getWidth() * scaleValue - getViewportBounds().getWidth()));
-//        setVvalue((newCenterY - getViewportBounds().getHeight()/2) / (zoomGroup.getLayoutBounds().getHeight() * scaleValue  -getViewportBounds().getHeight()));
-//        scaleTransform.setX(nscale);
-//        scaleTransform.setY(nscale);
-        scaleValue *= delta;
+        scaleValue *= DELTA;
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.scale(scaleValue, scaleValue);
     }
 
+    /**
+     * Method used by zoom out button in order to scale the canvas
+     */
     public void zoomOut() {
-//        scaleValue /= delta;
-//        double centerPosX = (zoomGroup.getLayoutBounds().getWidth() - getViewportBounds().getWidth())  * getHvalue() + getViewportBounds().getWidth()  / 2;
-//        double centerPosY = (zoomGroup.getLayoutBounds().getHeight() - getViewportBounds().getHeight())  * getVvalue() + getViewportBounds().getHeight()  / 2;
-//        double nscale = Math.max(scaleValue, Math.min(getViewportBounds().getWidth() / zoomGroup.getLayoutBounds().getWidth(),
-//                getViewportBounds().getHeight() / zoomGroup.getLayoutBounds().getHeight()));
-//
-//
-//        double newCenterX = centerPosX * nscale;
-//        double newCenterY = centerPosY * nscale;
-//        setHvalue((newCenterX - getViewportBounds().getWidth()/2) / (zoomGroup.getLayoutBounds().getWidth() * scaleValue - getViewportBounds().getWidth()));
-//        setVvalue((newCenterY - getViewportBounds().getHeight()/2) / (zoomGroup.getLayoutBounds().getHeight() * scaleValue  -getViewportBounds().getHeight()));
-//        scaleTransform.setX(nscale);
-//        scaleTransform.setY(nscale);
-        scaleValue /= delta;
+        scaleValue /= DELTA;
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.scale(scaleValue, scaleValue);
     }

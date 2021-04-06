@@ -1,4 +1,6 @@
-package titan;
+package titan.genetic;
+
+import titan.Vector3d;
 
 public class Individual {
     Vector3d chromosome;

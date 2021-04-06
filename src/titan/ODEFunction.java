@@ -1,6 +1,10 @@
 package titan;
 
-public class ODEFunction implements ODEFunctionInterface{
+import titan.interfaces.ODEFunctionInterface;
+import titan.interfaces.RateInterface;
+import titan.interfaces.StateInterface;
+
+public class ODEFunction implements ODEFunctionInterface {
     @Override
     public RateInterface call(double t, StateInterface y) {
 

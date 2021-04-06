@@ -1,8 +1,12 @@
 package titan;
 
+import titan.interfaces.ProbeSimulatorInterface;
+import titan.interfaces.StateInterface;
+import titan.interfaces.Vector3dInterface;
+
 import java.util.ArrayList;
 
-public class ProbeSimulator implements ProbeSimulatorInterface{
+public class ProbeSimulator implements ProbeSimulatorInterface {
 
     private ArrayList<SpaceObject> spaceObjects;
     private StateInterface[] states;
@@ -66,7 +70,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
         spaceObjects.add(probe);
         //create State with planets and probe
         State universe = initUn();
-        //System.out.println(universe);
+
         //creates all the states of the simulation
         Solver solver = new Solver();
         StateInterface[] s = solver.solve(new ODEFunction(), universe, tf, h);

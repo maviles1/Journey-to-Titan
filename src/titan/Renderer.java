@@ -6,22 +6,33 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.TextAlignment;
+import titan.interfaces.StateInterface;
+import titan.ui.View;
 
 import java.util.ArrayList;
 
+/**
+ * Class responsible for actually drawing the results of the simulation onto the canvas
+ * extends the AnimationTimer class in order to handle the updates
+ */
 public class Renderer extends AnimationTimer {
 
     private long startNanoTime = 0;
 
-    private int speedOffset = 1;
+    private int speedOffset = 1; //default render speed, 1 state/frame
 
     private Canvas canvas;
-    ArrayList<Double[]> paths = new ArrayList<>();
-    State state;
-    int count = 0;
-    StateInterface[] s1;
-    View view;
+    private ArrayList<Double[]> paths = new ArrayList<>();
+    private State state;
+    private int count = 0;
+    private StateInterface[] s1;
+    private View view;
 
+    /**
+     * Constructor for creating the Renderer
+     * @param view the View class which contains the Canvas
+     * @param states The list of states calculated by the Solver class
+     */
     public Renderer(View view, StateInterface[] states) {
         this.view = view;
         this.canvas = view.getCanvas();
@@ -29,6 +40,10 @@ public class Renderer extends AnimationTimer {
         this.s1 = states;
     }
 
+    /**
+     * Method inherited from AnimationTimer class, gets called ~60 times per second
+     * @param now current time
+     */
     @Override
     public void handle(long now) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -37,8 +52,6 @@ public class Renderer extends AnimationTimer {
 
         if (startNanoTime == 0)
             startNanoTime = now;
-
-        double t = (now - startNanoTime) / 1000000000.0;
 
         gc.setFill(Paint.valueOf("#469FCB"));
         for (int i = 0; i < state.positions.length; i++) {
@@ -68,6 +81,11 @@ public class Renderer extends AnimationTimer {
     }
 
 
+    /**
+     * Updates the speed offset to a new offset. The speed offset determines how many intermediate states are skipped
+     * when drawing the simulation
+     * @param offset
+     */
     public void setSpeedOffset(int offset) {
         this.speedOffset = offset;
     }

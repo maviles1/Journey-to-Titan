@@ -5,7 +5,7 @@
  * This interface serves as the API for students in phase 1.
  */
 
-package titan;
+package titan.interfaces;
 
 public interface ProbeSimulatorInterface {
     /*

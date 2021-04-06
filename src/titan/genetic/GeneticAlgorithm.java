@@ -1,6 +1,8 @@
-package titan;
+package titan.genetic;
 
-import java.lang.reflect.Array;
+import titan.*;
+import titan.interfaces.StateInterface;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
@@ -35,7 +37,7 @@ public class GeneticAlgorithm {
         Solver solver = new Solver();
         State state2 = startingState.copy();
         state2.getVelocities()[state2.getVelocities().length - 1] = ind.getChromosome();
-        StateInterface [] states = solver.solve(func, state2, 31556926, 1000);
+        StateInterface[] states = solver.solve(func, state2, 31556926, 1000);
         finalState = (State) states[states.length - 1];
         return 1 / (finalState.getPosition()[finalState.getPosition().length - 1].dist(finalState.getPosition()[8]));
     }

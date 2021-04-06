@@ -1,5 +1,10 @@
 package titan;
 
+import titan.interfaces.ODEFunctionInterface;
+import titan.interfaces.ODESolverInterface;
+import titan.interfaces.RateInterface;
+import titan.interfaces.StateInterface;
+
 public class Solver implements ODESolverInterface {
     /*
      * Solve the differential equation by taking multiple steps.

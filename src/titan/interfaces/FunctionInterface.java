@@ -1,4 +1,4 @@
-package titan;/*
+package titan.interfaces;/*
  * @author Pieter Collins, Christof Seiler, Katerina Stankova, Nico Roos, Katharina Schueller
  * @version 0.99.0
  *

@@ -1,5 +1,7 @@
 package titan;
 
+import titan.interfaces.Vector3dInterface;
+
 public class Vector3d implements Vector3dInterface {
     private double x;
     private double y;
@@ -63,8 +65,12 @@ public class Vector3d implements Vector3dInterface {
         return Math.sqrt(getX() * getX() + getY() * getY() + getZ() * getZ());
     }
 
-    public double dist(Vector3dInterface other) {
-        return Math.sqrt((getX() - other.getX()) * (getX() - other.getX()) + (getY() - other.getY()) * (getY() - other.getY()));
+//    public double dist(Vector3dInterface other) {
+//        return Math.sqrt((getX() - other.getX()) * (getX() - other.getX()) + (getY() - other.getY()) * (getY() - other.getY()));
+//    }
+
+    public double dist(Vector3dInterface other){
+        return Math.sqrt( (getX()-other.getX())*(getX()-other.getX()) + (getY()-other.getY())*(getY()-other.getY()) + (getZ()-other.getZ())*(getZ()-other.getZ()) );
     }
 
     public String toString() {

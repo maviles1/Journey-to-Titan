@@ -5,7 +5,7 @@
  * This interface serves as the API for students in phase 1.
  */
 
-package titan;
+package titan.interfaces;
 
 /**
  * An interface representing the time-derivative (rate-of-change) of the state of a system.

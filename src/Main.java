@@ -6,8 +6,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import titan.*;
+import titan.ui.View;
+import titan.ui.Window;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class Main extends Application {
@@ -17,13 +18,14 @@ public class Main extends Application {
     public static final double STEP_SIZE_TRAJECTORY = 1000;
     public static final int CANVAS_WIDTH = 1600;
     public static final int CANVAS_HEIGHT = 1200;
+    public static final double[] LAUNCH_VELOCITY = {40289.2995, -41570.9400, -587.3099};
+    public static final double[] LAUNCH_POSITION = {6371000.0, 1.0, 1.0};
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //SpaceObjectBuilder builder = new SpaceObjectBuilder("src/solar_system_data-2020_04_01.txt");
-        SpaceObjectBuilder builder = new SpaceObjectBuilder(getClass().getResource("solar_system_data-2020_04_01.txt").getPath());
+        SpaceObjectBuilder builder = new SpaceObjectBuilder(getClass().getResource("resources/solar_system_data-2020_04_01.txt").getPath());
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("window.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/fxml/window.fxml"));
 
         Canvas canvas = new Canvas(CANVAS_HEIGHT, CANVAS_WIDTH);
         View view = new View(canvas);
@@ -36,7 +38,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Mission Titan");
         primaryStage.setScene(new Scene(root));
-        primaryStage.getIcons().add(new Image("titan.png"));
+        primaryStage.getIcons().add(new Image("resources/titan.png"));
         primaryStage.show();
 
         ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
@@ -51,8 +53,8 @@ public class Main extends Application {
 
         ProbeSimulator sim = new ProbeSimulator(spaceObjects);
 
-        Vector3d vel = new Vector3d(40289.2995, -41570.9400, -587.3099);
-        Vector3d pos = new Vector3d(6371000.0, 1.0, 1.0);
+        Vector3d vel = new Vector3d(LAUNCH_VELOCITY[0], LAUNCH_VELOCITY[1], LAUNCH_VELOCITY[2]);
+        Vector3d pos = new Vector3d(LAUNCH_POSITION[0], LAUNCH_POSITION[1], LAUNCH_POSITION[2]);
         sim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
 
         Renderer renderer = new Renderer(view, sim.getStates());

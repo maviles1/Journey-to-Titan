@@ -1,5 +1,7 @@
 package titan;
 
+import titan.interfaces.RateInterface;
+
 public class Rate implements RateInterface {
 
     private Vector3d[] positionRates;
