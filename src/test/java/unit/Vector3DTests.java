@@ -1,4 +1,4 @@
-package tests;
+package unit;
 
 import org.junit.Test;
 import titan.Vector3d;
