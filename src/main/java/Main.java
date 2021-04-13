@@ -23,7 +23,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        SpaceObjectBuilder builder = new SpaceObjectBuilder(getClass().getResource("resources/solar_system_data-2020_04_01.txt").getPath());
+        SpaceObjectBuilder builder = new SpaceObjectBuilder(getClass().getResource("main/java/resources/solar_system_data-2020_04_01.txt").getPath());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/fxml/window.fxml"));
 
@@ -38,7 +38,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Mission Titan");
         primaryStage.setScene(new Scene(root));
-        primaryStage.getIcons().add(new Image("resources/titan.png"));
+        primaryStage.getIcons().add(new Image("main/java/resources/titan.png"));
         primaryStage.show();
 
         ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();

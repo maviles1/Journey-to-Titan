@@ -5,12 +5,10 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.transform.Scale;
 
-import java.io.File;
 import java.net.MalformedURLException;
 
 public class View extends ScrollPane {

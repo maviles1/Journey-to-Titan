@@ -1,6 +1,9 @@
 package titan.genetic;
 
-import titan.*;
+import titan.ODEFunction;
+import titan.Solver;
+import titan.State;
+import titan.Vector3d;
 import titan.interfaces.StateInterface;
 
 import java.util.Collections;

@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  */
 public class Vector3DTests {
 
-    //TODO: may have to make some tests on double imprecision
+    //TODO: may have to make some main.java.tests on double imprecision
 
     @Test
     public void equalsTest() {
@@ -29,7 +29,6 @@ public class Vector3DTests {
         secondVector = new Vector3d(1.0,2.0,3.0);
         assertTrue(firstVector.equals(secondVector));
     }
-
 
     @Test
     public void addVector3DTest() {
@@ -120,12 +119,32 @@ public class Vector3DTests {
         solution = new Vector3d(4, 6, 8);
         assertTrue(vector.mul(scalar).equals(solution));
 
-
     }
 
     @Test
-    public void addMulTest() {
+    public void addMulTestPositiveScalarAndVector() {
+        Vector3d positiveVector = new Vector3d(1, 2, 3);
+        Vector3d addMulVector = new Vector3d(4, 5, 6);
 
+        double positiveScalar = 4;
+        Vector3d solutionVector = new Vector3d(17, 22, 27);
+        assertTrue(positiveVector.addMul(positiveScalar, addMulVector).equals(solutionVector));
+
+        double negativeScalar = -4;
+        solutionVector = new Vector3d(-15, -18, -21);
+        assertTrue(positiveVector.addMul(negativeScalar, addMulVector).equals(solutionVector));
+    }
+
+    @Test
+    public void addMulTestNegativeScalarAndVector() {
+        Vector3d negativeVector = new Vector3d(-1, -2, -3);
+        Vector3d addMulVector = new Vector3d(-4, -5, -6);
+
+        double negativeScalar = -4;
+        Vector3d solutionVector = new Vector3d(15, 18, 21);
+        assertTrue(negativeVector.addMul(negativeScalar, addMulVector).equals(solutionVector));
+
+        double positiveScalar = 4;
     }
 
 }

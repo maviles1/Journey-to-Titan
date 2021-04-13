@@ -82,4 +82,9 @@ public class Vector3d implements Vector3dInterface {
         return new Vector3d(x, y, z);
     }
 
+    public boolean equals(Vector3dInterface other) {
+        Vector3d v = (Vector3d) other;
+        return this.x == v.getX() && this.y == v.getY() && this.z == v.getZ();
+    }
+
 }
