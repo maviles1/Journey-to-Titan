@@ -26,9 +26,10 @@ public class Main extends Application {
         String url = getClass().getResource("solar_system_data-2020_04_01.txt").getPath();
         SpaceObjectBuilder builder = new SpaceObjectBuilder(url);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../main/fxml/window.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/window.fxml"));
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("../main/fxml/window.fxml"));
 
-        Canvas canvas = new Canvas(CANVAS_HEIGHT, CANVAS_WIDTH);
+        Canvas canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
         View view = new View(canvas);
         Window window = new Window(view);
 
@@ -62,6 +63,12 @@ public class Main extends Application {
         window.attachRenderer(renderer);
 
         renderer.start();
+
+    }
+
+    @Override
+    public void stop() {
+        System.exit(0);
     }
 
     public static void main(String[] args) {

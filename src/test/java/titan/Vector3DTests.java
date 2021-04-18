@@ -1,7 +1,6 @@
-package unit;
+package titan;
 
 import org.junit.Test;
-import titan.Vector3d;
 
 import static org.junit.Assert.*;
 
