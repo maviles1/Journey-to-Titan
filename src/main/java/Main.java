@@ -25,6 +25,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         String url = getClass().getResource("solar_system_data-2020_04_01.txt").getPath();
         SpaceObjectBuilder builder = new SpaceObjectBuilder(url);
+        System.out.println(url);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/window.fxml"));
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("../main/fxml/window.fxml"));

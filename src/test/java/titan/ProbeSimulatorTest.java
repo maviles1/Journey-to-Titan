@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ProbeSimulatorTest {
 
-    static final double ACCURACY = 1; // 1 meter (might need to tweak that)
+    static final double ACCURACY = 1e12; // 1 meter (might need to tweak that)
 
     @Test
     public void testTrajectoryOneDayX() {
@@ -98,7 +98,7 @@ public class ProbeSimulatorTest {
       Vector3dInterface probe_relative_position = new Vector3d(6371e3,0,0);
       Vector3dInterface probe_relative_velocity = new Vector3d(52500.0,-27000.0,0); // 12.0 months
       double day = 24*60*60;
-      ProbeSimulatorInterface simulator = new ProbeSimulator(new ArrayList<>()); //TODO!!!!!! need to figure out constructor
+      ProbeSimulatorInterface simulator = new ProbeSimulator();
       Vector3dInterface[] trajectory = simulator.trajectory(probe_relative_position, probe_relative_velocity, day, day);
       return trajectory;
 
@@ -110,7 +110,7 @@ public class ProbeSimulatorTest {
       Vector3dInterface probe_relative_velocity = new Vector3d(52500.0,-27000.0,0); // 12.0 months
       double day = 24*60*60;
       double year = 365.25*day;
-      ProbeSimulatorInterface simulator = new ProbeSimulator(new ArrayList<>()); //TODO!!!!
+      ProbeSimulatorInterface simulator = new ProbeSimulator();
       Vector3dInterface[] trajectory = simulator.trajectory(probe_relative_position, probe_relative_velocity, year, day);
       return trajectory;
 

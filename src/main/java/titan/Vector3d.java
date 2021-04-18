@@ -13,6 +13,8 @@ public class Vector3d implements Vector3dInterface {
         this.z = z;
     }
 
+    public Vector3d(){}
+
     public double getX() {
         return x;
     }

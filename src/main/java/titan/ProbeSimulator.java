@@ -6,6 +6,7 @@ import titan.interfaces.Vector3dInterface;
 
 import java.util.ArrayList;
 
+
 public class ProbeSimulator implements ProbeSimulatorInterface {
 
     private ArrayList<SpaceObject> spaceObjects;
@@ -18,6 +19,18 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         spaceObjects=space;
     }
 
+    //TODO
+    public ProbeSimulator(){
+        //String url = getClass().getResource("solar_system_data-2020_04_01.txt").getPath();
+        String url = "/Users/lena/IdeaProjects/Project-2-1-Group-5/build/resources/main/solar_system_data-2020_04_01.txt";
+        SpaceObjectBuilder builder = new SpaceObjectBuilder(url);
+        spaceObjects = builder.getSpaceObjects();
+        //generate the position and velocity vector
+        double[] radius = new double[]{700000, 2439.7, 6051.8, 6371, 1737.1, 3389.5, 69911, 58232, 2575.7, 25362, 2462.2, 10};
+        for (int j = 0; j < spaceObjects.size(); j++) {
+            spaceObjects.get(j).setRadius(radius[j]);
+        }
+    }
     /*
      * Simulate the solar system, including a probe fired from Earth at 00:00h on 1 April 2020.
      *
