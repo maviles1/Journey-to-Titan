@@ -4,6 +4,9 @@ import titan.interfaces.ProbeSimulatorInterface;
 import titan.interfaces.StateInterface;
 import titan.interfaces.Vector3dInterface;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -21,9 +24,9 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
 
     //TODO
     public ProbeSimulator(){
-        //String url = getClass().getResource("solar_system_data-2020_04_01.txt").getPath();
-        String url = "/Users/lena/IdeaProjects/Project-2-1-Group-5/build/resources/main/solar_system_data-2020_04_01.txt";
-        SpaceObjectBuilder builder = new SpaceObjectBuilder(url);
+        URL url = getClass().getClassLoader().getResource("solar_system_data-2020_04_01.txt");
+        //String url = "/Users/lena/IdeaProjects/Project-2-1-Group-5/build/resources/main/solar_system_data-2020_04_01.txt";
+        SpaceObjectBuilder builder = new SpaceObjectBuilder(url.getPath());
         spaceObjects = builder.getSpaceObjects();
         //generate the position and velocity vector
         double[] radius = new double[]{700000, 2439.7, 6051.8, 6371, 1737.1, 3389.5, 69911, 58232, 2575.7, 25362, 2462.2, 10};
