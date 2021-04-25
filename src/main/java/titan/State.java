@@ -88,6 +88,8 @@ public class State implements StateInterface {
         for (int i = 0; i < positions.length; i++) {
             positions[i] = positions[i].addMul(step, newPos[i]);
         }
+        //sets the previously calculated velocities
+       // velocities=newPos;
     }
 
 

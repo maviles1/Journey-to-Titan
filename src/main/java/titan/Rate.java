@@ -15,10 +15,12 @@ public class Rate implements RateInterface {
         this.size = positionRates.length;
     }
 
+    // the new velocities
     public Vector3d[] getRatePosition() {
         return positionRates;
     }
 
+    //the acceleration
     public Vector3d[] getRateVelocity() {
         return velocityRates;
     }

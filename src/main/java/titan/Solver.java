@@ -58,12 +58,15 @@ public class Solver implements ODESolverInterface {
             vel[i] = rate.getRatePosition()[i].addMul((double) (h*0.5) ,rate.getRateVelocity()[i]); //change in position == velocity
         }
 
-        // computing the new acceleration : newAcc = function(newPosition)
+        //computing the new acceleration : newAcc = function(newPosition)
         State newY = ((State) y).copy();
+        //the new positions
         newY.setPositions(h,vel);
+        //calculates the new rates to retrieve the acceleration
         RateInterface newR = f.call(t,newY);
         Rate newRate = (Rate) newR;
-        Vector3d[] newAcc = newRate.getRatePosition();
+        //the acceleration at time t+h
+        Vector3d[] newAcc = newRate.getRateVelocity();
 
         for(int i=0;i<size;i++){
             acc[i] = ( newAcc[i].add(rate.getRateVelocity()[i]) ).mul((double) 0.5); //change in velocity == acceleration
