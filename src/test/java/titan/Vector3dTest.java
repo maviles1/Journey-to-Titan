@@ -71,10 +71,13 @@ public class Vector3dTest {
     @Test
     public void testMul() {
         Vector3dInterface a = new Vector3d(-1.1, 0.1, 1.1);
-        Vector3dInterface b = a.mul(0.5);
-        assertEquals(-1.1*0.5, b.getX(),1e-12);
-        assertEquals( 0.1*0.5, b.getY(),1e-12);
-        assertEquals( 1.1*0.5, b.getZ(),1e-12);
+        Vector3dInterface b = a.mul((double)1/8 *2); // 1/8 crashed, converts to int
+        assertEquals(-1.1*0.125*2, b.getX(),1e-12);
+        assertEquals( 0.1*0.125*2, b.getY(),1e-12);
+        assertEquals( 1.1*0.125*2, b.getZ(),1e-12);
+        System.out.println(b.getX());
+        System.out.println(b.getY());
+        System.out.println(b.getZ());
     }
 
     @Test

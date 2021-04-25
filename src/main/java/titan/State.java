@@ -84,6 +84,12 @@ public class State implements StateInterface {
         return velocities;
     }
 
+    public void setPositions(double step, Vector3d[] newPos) {
+        for (int i = 0; i < positions.length; i++) {
+            positions[i] = positions[i].addMul(step, newPos[i]);
+        }
+    }
+
 
     public double getTime() {
         return this.time;

@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ProbeSimulatorTest {
 
-    static final double ACCURACY = 1e12; // 1 meter (might need to tweak that)
+    static final double ACCURACY = 1e8; // 1 meter (might need to tweak that)
 
     @Test
     public void testTrajectoryOneDayX() {

@@ -89,6 +89,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
 
         //creates all the states of the simulation
         Solver solver = new Solver();
+      //  tf=h*2000; //custom 5 step
         StateInterface[] s = solver.solve(new ODEFunction(), universe, tf, h);
         states=s;
 
