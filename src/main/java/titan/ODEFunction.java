@@ -20,16 +20,15 @@ public class ODEFunction implements ODEFunctionInterface {
 
         for (int i = 0; i < size; i++) {
             Vector3d a = new Vector3d(0,0,0);
-            Vector3d v = new Vector3d(0,0,0);
 
             for (int j = 0; j < size; j++) {
                 if (i != j) {
-
                     double p = (G * State.mass[j])/Math.pow(state.getPosition()[j].dist(state.getPosition()[i]),3);
                     a = a.addMul(p, state.getPosition()[j].sub(state.getPosition()[i]));
                 }
             }
-            v=state.getVelocities()[i].addMul(dt,a);
+
+            Vector3d v = state.getVelocities()[i].addMul(dt,a);
 
             aRates[i] = a;
             vRates[i] = v;
