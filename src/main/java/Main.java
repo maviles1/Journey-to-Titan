@@ -47,8 +47,10 @@ public class Main extends Application implements EventHandler<KeyEvent> {
     public static final double PROBE_SPEED = 600000; //initial probe speed(scalar) relative to earth
     public static final double YEAR_IN_SECONDS = 31556926;
     public static final double STEP_SIZE_TRAJECTORY = 1000;
-    public static final int CANVAS_WIDTH = 1600;
-    public static final int CANVAS_HEIGHT = 1000;
+//    public static final int CANVAS_WIDTH = 1600;
+    public static final int CANVAS_WIDTH = 1200;
+//    public static final int CANVAS_HEIGHT = 1000;
+    public static final int CANVAS_HEIGHT = 800;
     public Camera cam;
     public StateInterface[] states;
     int counter = 0;
@@ -364,8 +366,6 @@ public class Main extends Application implements EventHandler<KeyEvent> {
             point.translateZProperty().set(newVec.getZ());
 //            group.getChildren().add(point);
         }
-
-
     }
 }
 
