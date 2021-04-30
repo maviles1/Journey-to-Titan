@@ -12,7 +12,7 @@ mainClassName = 'Main'
 
 javafx {
     version = "15.0.1"
-    modules = [ 'javafx.controls','javafx.fxml']
+    modules = [ 'javafx.controls','javafx.fxml', 'javafx.media']
 }
 
 group 'src.main.java'

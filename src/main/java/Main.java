@@ -33,6 +33,8 @@ import javafx.scene.transform.*;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import titan.*;
+import titan.Vector3d;
+import titan.interfaces.*;
 
 import java.nio.file.Paths;
 import java.util.Random;
@@ -108,7 +110,8 @@ public class Main extends Application implements EventHandler<KeyEvent> {
     public void drawState(Group group){
         shapes = new ArrayList<>();
         names = new ArrayList<>();
-        SpaceObjectBuilder builder = new SpaceObjectBuilder("solar_system_data-2020_04_01.txt");
+        String url = getClass().getResource("solar_system_data-2020_04_01.txt").getPath();
+        SpaceObjectBuilder builder = new SpaceObjectBuilder(url);
         ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
         planets = spaceObjects;
         double[] radius = new double[]{700000, 2439.7, 6051.8, 6371, 1737.1, 3389.5, 69911, 58232, 2575.7, 25362, 2462.2, 10000};
@@ -174,8 +177,9 @@ public class Main extends Application implements EventHandler<KeyEvent> {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        SpaceObjectBuilder builder = new SpaceObjectBuilder("src/solar_system_data-2020_04_01.txt");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("window.fxml"));
+//        String url = getClass().getResource("solar_system_data-2020_04_01.txt").getPath();
+//        SpaceObjectBuilder builder = new SpaceObjectBuilder(url);
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("window.fxml"));
         Group superGroup = new Group();
         this.superGroup = superGroup;
         Group group = new Group();

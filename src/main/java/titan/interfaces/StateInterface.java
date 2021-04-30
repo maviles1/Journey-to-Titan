@@ -7,6 +7,8 @@
 
 package titan.interfaces;
 
+import titan.Vector3d;
+
 /**
  * An interface representing the state of a system described by a differential equation.
  */
@@ -21,6 +23,6 @@ public interface StateInterface {
     public StateInterface addMul(double step, RateInterface rate);
 
     public String toString();
-    public Vector3d [] getPositions();
+    public Vector3d[] getPositions();
     public Vector3d [] getVelocities();
 }

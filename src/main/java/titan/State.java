@@ -26,7 +26,7 @@ public class State implements StateInterface {
 //            bodies[i] = new Planet(names.get(i), mass[i], positions[i], velocities[i], radius[i]);
 //        }
     }
-    public Vector3d [] getPositions(){
+    public Vector3d[] getPositions(){
         return positions;
     }
 
