@@ -1,11 +1,19 @@
 package titan;
 
-import titan.interfaces.ODEFunctionInterface;
-import titan.interfaces.ODESolverInterface;
-import titan.interfaces.RateInterface;
-import titan.interfaces.StateInterface;
+import titan.interfaces.*;
 
 public class Solver implements ODESolverInterface {
+
+    private StepInterface stepFunction;
+
+    public Solver() {
+        stepFunction = new VerletSolver();
+    }
+
+    public Solver(StepInterface stepFunction) {
+        this.stepFunction = stepFunction;
+    }
+
     /*
      * Solve the differential equation by taking multiple steps.
      *
@@ -20,9 +28,11 @@ public class Solver implements ODESolverInterface {
         int stepSize = 1000;
         StateInterface[] s = new StateInterface[ts.length];
         s[0] = step(f, ts[0], y0, ts[0]);
+
         for (int i = 1; i < ts.length; i++) {
             s[i] = step(f, ts[i], s[i - 1], stepSize);
         }
+
         return s;
     }
 
@@ -39,7 +49,6 @@ public class Solver implements ODESolverInterface {
             s[i] = step(f, t, s[i - 1], h);
         }
 
-        //tf or tf/h
         s[size - 1] = step(f, tf, s[size - 2], tf - t);
 
         return s;
@@ -47,8 +56,7 @@ public class Solver implements ODESolverInterface {
 
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
-
-        RateInterface r = f.call(t, y);
-        return y.addMul(h, r); //h*f(t,y)
+        return stepFunction.step(f, t, y, h);
     }
+
 }
