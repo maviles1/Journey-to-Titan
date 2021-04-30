@@ -11,6 +11,7 @@ public class State implements StateInterface {
     static double[] mass;
     static Map<Integer, String> names;
     public Vector3d[] positions;
+    public Vector3d[] prevPos;
     static double[] radius;
 
     double time;
@@ -20,6 +21,23 @@ public class State implements StateInterface {
         this.positions = positions;
         this.velocities = velocities;
         this.time = time;
+    }
+
+    public State(Vector3d[] positions, Vector3d[] velocities, double time, boolean valet) {
+        this.positions = positions;
+        this.velocities = velocities;
+        this.time = time;
+        setPrevPosition(time);
+    }
+
+    //TODO only do this for the Verlet
+    private void setPrevPosition(double h) {
+        ODEFunction f = new ODEFunction();
+        Rate rate = (Rate) f.call(h, (new State(positions, velocities, h)));
+        prevPos = new Vector3d[positions.length];
+        for(int i=0;i<positions.length;i++){
+            prevPos[i] = (positions[i].addMul((double) h, velocities[i])) .addMul((double) (h*h)/2, rate.getRateVelocity()[i]) ;
+        }
     }
 
     @Override
@@ -91,7 +109,13 @@ public class State implements StateInterface {
         //sets the previously calculated velocities
        // velocities=newPos;
     }
+    public void setPrevPosition(Vector3d [] newPrevPos){ prevPos=newPrevPos;}
 
+    public void setPosition(Vector3d [] newPos){ positions=newPos;}
+
+    public void setVelocities(Vector3d [] newVel){ velocities=newVel;}
+
+    public Vector3d[] getPrevPosition(){ return prevPos; }
 
     public double getTime() {
         return this.time;
