@@ -5,6 +5,7 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Sphere;
 import javafx.scene.text.TextAlignment;
 import titan.interfaces.StateInterface;
 import titan.ui.View;
@@ -69,6 +70,7 @@ public class Renderer extends AnimationTimer {
     }
 
     public void drawSpaceObject(GraphicsContext gc, Vector3d vec, int index) {
+        Sphere sphere = new Sphere();
         gc.fillOval(gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 5, 5);
         gc.setFill(Paint.valueOf("#CC52D7"));
         gc.strokeOval(gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 5, 5);
@@ -96,7 +98,7 @@ public class Renderer extends AnimationTimer {
 
 
     public static double toScreenCoordinates(double d) {
-        return ((d / (1e12)) * 200);
+        return ((d / 1e11)) * 280;
     }
 
 }
