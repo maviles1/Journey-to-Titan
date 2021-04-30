@@ -1,11 +1,19 @@
 package titan;
 
-import titan.interfaces.ODEFunctionInterface;
-import titan.interfaces.ODESolverInterface;
-import titan.interfaces.RateInterface;
-import titan.interfaces.StateInterface;
+import titan.interfaces.*;
 
 public class Solver implements ODESolverInterface {
+
+    private StepInterface stepFunction;
+
+    public Solver() {
+        stepFunction = new VerletSolver();
+    }
+
+    public Solver(StepInterface stepFunction) {
+        this.stepFunction = stepFunction;
+    }
+
     /*
      * Solve the differential equation by taking multiple steps.
      *
@@ -20,9 +28,11 @@ public class Solver implements ODESolverInterface {
         int stepSize = 1000;
         StateInterface[] s = new StateInterface[ts.length];
         s[0] = step(f, ts[0], y0, ts[0]);
+
         for (int i = 1; i < ts.length; i++) {
             s[i] = step(f, ts[i], s[i - 1], stepSize);
         }
+
         return s;
     }
 
@@ -44,113 +54,9 @@ public class Solver implements ODESolverInterface {
         return s;
     }
 
-
-
-    //@Override
-    //marie & lou's vivacious verlet
-    public StateInterface ystep(ODEFunctionInterface f, double t, StateInterface y, double h) {
-        RateInterface r = f.call(t, y);
-        System.out.println(((State) y).getVelocities()[3]);
-        Rate rate = (Rate) r;
-        int size = rate.getRatePosition().length;
-        Vector3d[] acc = new Vector3d[size];
-        Vector3d[] vel = new Vector3d[size];
-        for(int i=0;i<size;i++){
-            vel[i] = rate.getRatePosition()[i].addMul((h*0.5) ,rate.getRateVelocity()[i]); //change in position == velocity
-        }
-
-        //computing the new acceleration : newAcc = function(newPosition)
-        State newY = ((State) y).copy();
-        //the new positions
-        newY.setPositions(h,vel);
-        //calculates the new rates to retrieve the acceleration
-        RateInterface newR = f.call(t,newY);
-        Rate newRate = (Rate) newR;
-        //the acceleration at time t+h
-        Vector3d[] newAcc = newRate.getRateVelocity();
-
-        for(int i=0;i<size;i++){
-            acc[i] = newAcc[i].add(rate.getRateVelocity()[i]).mul(0.5); //change in velocity == acceleration
-        }
-
-        RateInterface verletRate = new Rate(vel,acc);
-
-        return y.addMul(h, verletRate);
-    }
-
-    /**
-     * This method implements the half-step(?) velocity verlet algorithm
-     * https://en.wikipedia.org/wiki/Verlet_integration#Velocity_Verlet
-     * implements steps 1-4 of the "standard implementation"
-     * @param f
-     * @param t
-     * @param y
-     * @param h
-     * @return next state
-     */
+    @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
-        Rate rate = (Rate) f.call(t, y);    //to get the acceleration
-        int size = rate.getRatePosition().length;
-        State state  = (State) y;
-
-        Vector3d[] vel = new Vector3d[size];
-        for (int i = 0; i < size; i++){
-            //v(t + 1/2*∆t) = v(t) + 1/2 * a(t) * ∆t
-            vel[i] = state.getVelocities()[i].addMul((h*0.5), rate.getRateVelocity()[i]); //calculate half step velocity
-        }
-
-        Vector3d[] pos = new Vector3d[size];
-        for (int i = 0; i < size; i++) {
-            //x(t + ∆t) = x(t) + v(t + 1/2*∆t) * ∆t
-            pos[i] = state.getPosition()[i].addMul(h, vel[i]);  //calculate new position
-        }
-
-        State nextState = new State(pos, state.getVelocities(), t + h); //to get the new acceleration
-
-        Rate newRate = (Rate) f.call(t + h, nextState); //find new acceleration
-        Vector3d[] accel = newRate.getRateVelocity(); //a(t + ∆t)
-
-        Vector3d[] newV = new Vector3d[size];
-        for (int i = 0; i < size; i++) {
-            //v(t + ∆t) = v(t + 1/2*∆t) + 1/2 * a(t + ∆t) * ∆t
-            newV[i] = vel[i].addMul(0.5 * h, accel[i]); //calculate full-step velocity
-        }
-
-        return new State(pos, newV, t + h);
-    }
-
-    /**
-     * This method is also based on the velocity verlet algorithm and implements
-     * the velocity verlet but in a different way. Not sure what the differences between
-     * this one and the above one are, they could be logically equivalent
-     * @param f
-     * @param t
-     * @param y
-     * @param h
-     * @return
-     */
-    public StateInterface pstep(ODEFunctionInterface f, double t, StateInterface y, double h) {
-        Rate rate = (Rate) f.call(t, y);
-        int size = rate.getRatePosition().length;
-        State state  = (State) y;
-
-        Vector3d[] pos = new Vector3d[size];
-        for(int i = 0 ; i < size; i++){
-            //x(t + ∆t) = x(t) * ∆t + 1/2 * a(t) * ∆t^2
-            pos[i] = state.getPosition()[i].addMul(h, state.getVelocities()[i]).addMul(0.5 * h * h, rate.getRateVelocity()[i]);
-        }
-
-        State nextState = new State(pos, state.getVelocities(), t + h);
-        Rate newRate = (Rate)f.call(t + h, nextState);
-        Vector3d[] accel = newRate.getRateVelocity(); //a(t + ∆t)
-
-        Vector3d[] vel = new Vector3d[size];
-        for (int i = 0; i < size; i++) {
-            //v(t + ∆t) = v(t) + 1/2*(a(t) + a(t + ∆t))*∆t
-            vel[i] = state.getVelocities()[i].addMul(0.5 * h, rate.getRateVelocity()[i].add(accel[i]));
-        }
-
-        return new State(pos, vel, t + h);
+        return stepFunction.step(f, t, y, h);
     }
 
 
@@ -186,35 +92,5 @@ public class Solver implements ODESolverInterface {
 ///        return y.addMul(h, r);
     }
 
-    /**
-     * 4th order Runge-Kutta implementation
-     * @param f
-     * @param t
-     * @param y
-     * @param h
-     * @return
-     */
-    public StateInterface rkstep(ODEFunctionInterface f, double t, StateInterface y, double h) {
-        State state = (State) y;
-        Rate stateRate = new Rate(state.getPosition(), state.getVelocities()); //w
-
-        Rate r1 = ((Rate) f.call(t, y)).mul(h); //k1=h*f(t,w);
-
-        State nexState = new State(r1.mul(0.5).add(stateRate).getRatePosition(), r1.mul(0.5).add(stateRate).getRateVelocity(), t + 0.5*h); //w+k1/2
-        Rate r2 = ((Rate) f.call(t + 0.5 * h, nexState)).mul(h);        //k2=h*f(t+h/2,w+k1/2);
-
-        State nexState2 = new State(r2.mul(0.5).add(stateRate).getRatePosition(), r2.mul(0.5).add(stateRate).getRateVelocity(), t + 0.5*h); //w+k2/2
-        Rate r3 = ((Rate) f.call(t + 0.5 * h, nexState2)).mul(h);         //k3 = h*f(t+h/2,w+k2/2);
-
-        State nexState3 = new State(r3.add(stateRate).getRatePosition(), r3.add(stateRate).getRateVelocity(), t + h); //w+k3
-        Rate r4 = ((Rate) f.call(t + h, nexState3)).mul(h); //k4=h*f(t+h,w+k3);
-
-        Rate rs = r1.add(r2.mul(2)).add(r3.mul(2)).add(r4); //k1+2*k2+2*k3+k4)
-        Rate w = stateRate.add(rs.mul(1/6.0));        //w=w+(k1+2*k2+2*k3+k4)/6,
-
-        return new State(w.getRatePosition(), w.getRateVelocity(), t + h);
-
-
-    }
 
 }
