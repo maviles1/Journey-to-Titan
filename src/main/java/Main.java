@@ -211,6 +211,7 @@ public class Main extends Application implements EventHandler<KeyEvent> {
         primaryStage.getIcons().add(new Image("titan.png"));
         primaryStage.show();
     }
+
     public static void main(String[] args) {
         launch(args);
     }

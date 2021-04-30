@@ -5,11 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import titan.Renderer;
-import titan.ui.View;
 
 /**
  * This class represents the application window which contains the simulation controls as well as the renderer.
- * This class is also the controller for the window.resources.fxml file, which specifies the layout
+ * This class is also the controller for the window.main.java.resources.fxml file, which specifies the layout
  */
 public class Window extends AnchorPane {
 

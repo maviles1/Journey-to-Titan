@@ -4,7 +4,11 @@ import titan.interfaces.ProbeSimulatorInterface;
 import titan.interfaces.StateInterface;
 import titan.interfaces.Vector3dInterface;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
+
 
 public class ProbeSimulator implements ProbeSimulatorInterface {
 
@@ -19,6 +23,18 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         spaceObjects=space;
     }
 
+    //TODO
+    public ProbeSimulator(){
+        URL url = getClass().getClassLoader().getResource("solar_system_data-2020_04_01.txt");
+        //String url = "/Users/lena/IdeaProjects/Project-2-1-Group-5/build/resources/main/solar_system_data-2020_04_01.txt";
+        SpaceObjectBuilder builder = new SpaceObjectBuilder(url.getPath());
+        spaceObjects = builder.getSpaceObjects();
+        //generate the position and velocity vector
+        double[] radius = new double[]{700000, 2439.7, 6051.8, 6371, 1737.1, 3389.5, 69911, 58232, 2575.7, 25362, 2462.2, 10};
+        for (int j = 0; j < spaceObjects.size(); j++) {
+            spaceObjects.get(j).setRadius(radius[j]);
+        }
+    }
     /*
      * Simulate the solar system, including a probe fired from Earth at 00:00h on 1 April 2020.
      *
@@ -76,6 +92,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
 
         //creates all the states of the simulation
         Solver solver = new Solver();
+      //  tf=h*2000; //custom 5 step
         StateInterface[] s = solver.solve(new ODEFunction(), universe, tf, h);
         this.probeMass = solver.getProbeMass();
         states=s;
