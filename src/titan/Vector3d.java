@@ -40,6 +40,10 @@ public class Vector3d implements Vector3dInterface {
         return new Vector3d(getX() + other.getX(), getY() + other.getY(), getZ() + other.getZ());
     }
 
+    public double magnitude(){
+        return Math.sqrt(getX()*getX() + getY()*getY() + getZ()*getZ());
+    }
+
     public Vector3d sub(Vector3dInterface other) {
         return new Vector3d(getX() - other.getX(), getY() - other.getY(), getZ() - other.getZ());
 
