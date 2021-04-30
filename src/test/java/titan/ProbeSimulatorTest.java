@@ -90,6 +90,7 @@ class ProbeSimulatorTest {
 
     public static Vector3dInterface[] simulateOneYear() {
         Vector3dInterface probe_relative_position = new Vector3d(6371e3, 0, 0);
+
         Vector3dInterface probe_relative_velocity = new Vector3d(52500.0, -27000.0, 0);// 12.0 months
         double day = 24 * 60 * 60;
         double year = 365.25 * day;

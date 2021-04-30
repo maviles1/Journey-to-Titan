@@ -105,6 +105,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         return states;
     }
 
+
     public State initUn() {
         //create positions and velocities arrays to represent the state
         Vector3d[] positions = new Vector3d[spaceObjects.size()];
