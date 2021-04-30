@@ -9,14 +9,18 @@ public class State implements StateInterface {
     public static Map<Integer, String> names;
     public Vector3d[] positions;
     static double[] radius;
-
     double time;
     private Vector3d[] velocities;
+    SpaceObject [] bodies;
 
     public State(Vector3d[] positions, Vector3d[] velocities, double time) {
         this.positions = positions;
         this.velocities = velocities;
         this.time = time;
+        bodies = new Planet [positions.length];
+//        for (int i = 0; i < positions.length; i++){
+//            bodies[i] = new Planet(names.get(i), mass[i], positions[i], velocities[i], radius[i]);
+//        }
     }
     public Vector3d [] getPositions(){
         return positions;
@@ -84,7 +88,9 @@ public class State implements StateInterface {
         return velocities;
     }
 
-
+    public SpaceObject [] getBodies(){
+        return bodies;
+    }
     public double getTime() {
         return this.time;
     }

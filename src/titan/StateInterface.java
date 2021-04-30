@@ -22,4 +22,5 @@ public interface StateInterface {
 
     public String toString();
     public Vector3d [] getPositions();
+    public Vector3d [] getVelocities();
 }

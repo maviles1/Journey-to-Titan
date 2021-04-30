@@ -20,7 +20,6 @@ public class ODEFunction implements ODEFunctionInterface{
 
             for (int j = 0; j < size; j++) {
                 if (i != j) {
-
                     double p = (G * State.mass[j])/Math.pow(state.getPosition()[j].dist(state.getPosition()[i]),3);
                     a = a.addMul(p, state.getPosition()[j].sub(state.getPosition()[i]));
                 }

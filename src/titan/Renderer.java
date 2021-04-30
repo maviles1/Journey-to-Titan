@@ -80,7 +80,7 @@ public class Renderer extends AnimationTimer {
 
 
     public static double toScreenCoordinates(double d) {
-        return ((d / 1e12)) * 200;
+        return ((d / 1e11)) * 280;
     }
 
 }

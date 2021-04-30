@@ -6,6 +6,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
 
     private ArrayList<SpaceObject> spaceObjects;
     private StateInterface[] states;
+    private double [] probeMass;
 
     /**
      * @param space contains a List of all planets
@@ -23,6 +24,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
      * @return  an array of size ts.length giving the position of the probe at each time stated,
      *          taken relative to the Solar System barycentre.
      */
+
     public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double[] ts) {
         //conversion of the input relative to the Solar System barycentre
         Vector3d v = (Vector3d) v0.add(spaceObjects.get(3).getVelocity());
@@ -37,6 +39,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
         //creates all the states of the simulation
         Solver solver = new Solver();
         StateInterface[] s = solver.solve(new ODEFunction(), universe, ts);
+        this.probeMass = solver.getProbeMass();
         states=s;
         Vector3d[] vector = new Vector3d[s.length];
         for(int i=0;i<s.length;i++){
@@ -70,6 +73,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
         //creates all the states of the simulation
         Solver solver = new Solver();
         StateInterface[] s = solver.solve(new ODEFunction(), universe, tf, h);
+        this.probeMass = solver.getProbeMass();
         states=s;
 
         Vector3d[] vector = new Vector3d[s.length];
@@ -89,6 +93,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
         Vector3d[] positions = new Vector3d[spaceObjects.size()];
         Vector3d[] velocities = new Vector3d[spaceObjects.size()];
         double[] mass = new double[spaceObjects.size()];
+
         int i = 0;
         for (SpaceObject spaceObject : spaceObjects) {
             positions[i] = spaceObject.getPosition();
@@ -107,4 +112,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface{
         return states;
     }
 
+    public double [] getProbeMass(){
+        return probeMass;
+    }
 }
