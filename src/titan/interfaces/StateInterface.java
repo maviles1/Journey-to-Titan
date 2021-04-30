@@ -21,4 +21,6 @@ public interface StateInterface {
     public StateInterface addMul(double step, RateInterface rate);
 
     public String toString();
+    public Vector3d [] getPositions();
+    public Vector3d [] getVelocities();
 }
