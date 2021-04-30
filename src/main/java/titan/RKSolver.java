@@ -7,8 +7,7 @@ import titan.interfaces.StepInterface;
 
 public class RKSolver implements StepInterface {
     /**
-     * 4th order Runge-Kutta implementation
-     * classical Runge-Kutta
+     * classical 4th order Runge-Kutta implementation
      * Potential RQ: does choice of constants for RK solver affect accuracy?
      * @param f
      * @param t

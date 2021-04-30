@@ -8,6 +8,7 @@ import titan.interfaces.StepInterface;
 public class VerletSolver implements StepInterface {
 
     /**
+     * This one works minimally better than pstep
      * This method implements the half-step(?) velocity verlet algorithm
      * https://en.wikipedia.org/wiki/Verlet_integration#Velocity_Verlet
      * implements steps 1-4 of the "standard implementation"
@@ -49,37 +50,6 @@ public class VerletSolver implements StepInterface {
         return new State(pos, newV, t + h);
     }
 
-    //marie & lou's vivacious verlet
-    public StateInterface ystep(ODEFunctionInterface f, double t, StateInterface y, double h) {
-        RateInterface r = f.call(t, y);
-        System.out.println(((State) y).getVelocities()[3]);
-        Rate rate = (Rate) r;
-        int size = rate.getRatePosition().length;
-        Vector3d[] acc = new Vector3d[size];
-        Vector3d[] vel = new Vector3d[size];
-        for(int i=0;i<size;i++){
-            vel[i] = rate.getRatePosition()[i].addMul((h*0.5) ,rate.getRateVelocity()[i]); //change in position == velocity
-        }
-
-        //computing the new acceleration : newAcc = function(newPosition)
-        State newY = ((State) y).copy();
-        //the new positions
-        newY.setPositions(h,vel);
-        //calculates the new rates to retrieve the acceleration
-        RateInterface newR = f.call(t,newY);
-        Rate newRate = (Rate) newR;
-        //the acceleration at time t+h
-        Vector3d[] newAcc = newRate.getRateVelocity();
-
-        for(int i=0;i<size;i++){
-            acc[i] = newAcc[i].add(rate.getRateVelocity()[i]).mul(0.5); //change in velocity == acceleration
-        }
-
-        RateInterface verletRate = new Rate(vel,acc);
-
-        return y.addMul(h, verletRate);
-    }
-
 
 
     /**
@@ -115,6 +85,5 @@ public class VerletSolver implements StepInterface {
 
         return new State(pos, vel, t + h);
     }
-
 
 }
