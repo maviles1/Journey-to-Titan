@@ -5,15 +5,23 @@ import titan.interfaces.RateInterface;
 import titan.interfaces.StateInterface;
 
 public class ODEFunction implements ODEFunctionInterface {
+
+    final double G = 6.67430E-11; //gravitational constant
+    /**
+     * evaluates f(ti, yi)
+     * @param  y the time at which to evaluate the function
+     * @param  t the state at which to evaluate the function
+     * @return average rate-of-change over the time-step with dimensions of [state]/[time].
+     */
     @Override
     public RateInterface call(double t, StateInterface y) {
 
         State state = (State) y;
 
-        int size=state.getPosition().length;
-        double dt = t - state.getTime();
-
-        double G = 6.67430E-11;
+        int size = state.getPosition().length;
+        double dt = t - state.getTime(); //the time step
+        // TODO
+     //   System.out.println(dt);
 
         Vector3d[] aRates = new Vector3d[size];
         Vector3d[] vRates = new Vector3d[size];
@@ -36,6 +44,4 @@ public class ODEFunction implements ODEFunctionInterface {
 
         return new Rate(vRates, aRates);
     }
-
-
 }

@@ -23,6 +23,7 @@ public class VerletSolver implements StepInterface {
         Rate rate = (Rate) f.call(t, y);    //to get the acceleration
         int size = rate.getRatePosition().length;
         State state  = (State) y;
+        System.out.println(rate.getRateVelocity()[3]);
 
         Vector3d[] vel = new Vector3d[size];
         for (int i = 0; i < size; i++){

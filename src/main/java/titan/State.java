@@ -23,23 +23,11 @@ public class State implements StateInterface {
         this.time = time;
     }
 
-    public State(Vector3d[] positions, Vector3d[] velocities, double time, boolean valet) {
-        this.positions = positions;
-        this.velocities = velocities;
-        this.time = time;
-        setPrevPosition(time);
-    }
-
-    //TODO only do this for the Verlet
-    private void setPrevPosition(double h) {
-        ODEFunction f = new ODEFunction();
-        Rate rate = (Rate) f.call(h, (new State(positions, velocities, h)));
-        prevPos = new Vector3d[positions.length];
-        for(int i=0;i<positions.length;i++){
-            prevPos[i] = (positions[i].addMul((double) h, velocities[i])) .addMul((double) (h*h)/2, rate.getRateVelocity()[i]) ;
-        }
-    }
-
+    /**
+     * @param step The time-step of the update
+     * @param r the change in the current state
+     * @return the new state
+     */
     @Override
     public StateInterface addMul(double step, RateInterface r) {
         Rate rate = (Rate) r;
@@ -48,12 +36,15 @@ public class State implements StateInterface {
         Vector3d[] newVelocities = new Vector3d[velocities.length];
 
         for (int i = 0; i < velocities.length; i++) {
-            newPositions[i] = positions[i].addMul(step, rate.getRatePosition()[i]);
-            newVelocities[i] = velocities[i].addMul(step, rate.getRateVelocity()[i]);
+            newPositions[i] = positions[i].addMul(step, rate.getRatePosition()[i]); // p(t+1)=p(t)+h*vel
+            newVelocities[i] = velocities[i].addMul(step, rate.getRateVelocity()[i]); // vel(t+1)=p(t)+h*acc
         }
 
         return new State(newPositions, newVelocities, time + step);
     }
+
+
+
 
     public String toString() {
         String s = "";
