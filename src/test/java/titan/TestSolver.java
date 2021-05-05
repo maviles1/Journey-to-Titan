@@ -12,6 +12,10 @@ import titan.interfaces.StateInterface;
 
 public class TestSolver {
 
+
+    //EULER passes all tests with ACCURACY of 1e5
+    //VERLET passes all tests with ACCURACY of 1e4
+    //RK_KUTTA passes all tests with ACCURACY of 1e3
     static final double ACCURACY = 1e4; // 1 meter (might need to tweak that)
 
     @Test
@@ -78,7 +82,7 @@ public class TestSolver {
 
         ProbeSimulator p = new ProbeSimulator();
         State universe = p.initUn();
-        Solver solver = new Solver();
+        Solver solver = new Solver(new RKSolver());
         StateInterface[] s = solver.solve(new ODEFunction(), universe, day, day);
 
         Vector3d[] planet = new Vector3d[s.length];
@@ -96,7 +100,7 @@ public class TestSolver {
 
         ProbeSimulator p = new ProbeSimulator();
         State universe = p.initUn();
-        Solver solver = new Solver();
+        Solver solver = new Solver(new EulerSolver());
         StateInterface[] s = solver.solve(new ODEFunction(), universe, year, day);
 
 

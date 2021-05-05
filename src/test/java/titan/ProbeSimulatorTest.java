@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.lang.System;
 
 class ProbeSimulatorTest {
-    static final double ACCURACY = 1e11; // 1 meter (might need to tweak that)
+    static final double ACCURACY = 1e10; // 1 meter (might need to tweak that)
 
     @Test
     void testTrajectoryOneDayX() {
@@ -32,14 +32,12 @@ class ProbeSimulatorTest {
     void testTrajectoryOneDayZ() {
         Vector3dInterface[] trajectory = simulateOneDay();
         double z1 = 8334994.892882561; // reference implementation
-        System.out.println(trajectory[1]);
         assertEquals(z1, trajectory[1].getZ(), ACCURACY); // delta +-ACCURACY
     }
 
     @Test
     void testTrajectoryOneYearX() {
         Vector3dInterface[] trajectory = simulateOneYear();
-        System.out.println(trajectory[366]);
         double x366 = -2.4951517995514418E13; // reference implementation
         assertEquals(x366, trajectory[366].getX(), ACCURACY); // delta +-ACCURACY
     }
@@ -92,7 +90,6 @@ class ProbeSimulatorTest {
 
     public static Vector3dInterface[] simulateOneYear() {
         Vector3dInterface probe_relative_position = new Vector3d(6371e3, 0, 0);
-
         Vector3dInterface probe_relative_velocity = new Vector3d(52500.0, -27000.0, 0);// 12.0 months
         double day = 24 * 60 * 60;
         double year = 365.25 * day;

@@ -38,7 +38,7 @@ public class State implements StateInterface {
 
         for (int i = 0; i < velocities.length; i++) {
             newVelocities[i] = velocities[i].addMul(step, rate.getRateVelocity()[i]); // vel(t+1)=p(t)+h*acc
-            // update the positions with the position with the previous vel instead of the change in velocity
+            // updated the positions with the position with the previous vel instead of the change in velocity
             newPositions[i] = positions[i].addMul(step, velocities[i]); // p(t+1)=p(t)+h*vel
         }
         return new State(newPositions, newVelocities, time + step);
