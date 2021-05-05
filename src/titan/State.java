@@ -1,8 +1,5 @@
 package titan;
 
-import titan.interfaces.RateInterface;
-import titan.interfaces.StateInterface;
-
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,7 +1,7 @@
 package titan.genetic;
 
 import titan.*;
-import titan.interfaces.StateInterface;
+import titan.StateInterface;
 
 import java.util.Collections;
 import java.util.Comparator;
