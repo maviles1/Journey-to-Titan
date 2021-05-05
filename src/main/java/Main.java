@@ -1,3 +1,4 @@
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
@@ -15,11 +16,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.*;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -31,11 +30,7 @@ import javafx.scene.transform.*;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import titan.*;
-import titan.Vector3d;
-import titan.interfaces.*;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.Random;
 
@@ -45,10 +40,10 @@ import java.util.ArrayList;
 public class Main extends Application implements EventHandler<KeyEvent> {
 
     public static final double PROBE_SPEED = 600000; //initial probe speed(scalar) relative to earth
-    public static final double STEP_SIZE_TRAJECTORY = 24*60*60;
-    public static final double YEAR_IN_SECONDS = 365.25*STEP_SIZE_TRAJECTORY;
-    public static final int CANVAS_WIDTH = 1200;
-    public static final int CANVAS_HEIGHT = 800;
+    public static final double YEAR_IN_SECONDS = 31556926;
+    public static final double STEP_SIZE_TRAJECTORY = 1000;
+    public static final int CANVAS_WIDTH = 1600;
+    public static final int CANVAS_HEIGHT = 1000;
     public Camera cam;
     public StateInterface[] states;
     int counter = 0;
@@ -75,6 +70,8 @@ public class Main extends Application implements EventHandler<KeyEvent> {
     Text probeMass;
     Vector3d camLock;
     ProbeSimulator sim;
+    Boolean probeLock;
+    ArrayList<Shape3D> planetPath = new ArrayList<>();
 
 
     private void initMouseControl(Group group, Scene scene){
@@ -110,8 +107,7 @@ public class Main extends Application implements EventHandler<KeyEvent> {
     public void drawState(Group group){
         shapes = new ArrayList<>();
         names = new ArrayList<>();
-        String url = getClass().getResource("solar_system_data-2020_04_01.txt").getPath();
-        SpaceObjectBuilder builder = new SpaceObjectBuilder(url);
+        SpaceObjectBuilder builder = new SpaceObjectBuilder("solar_system_data-2020_04_01.txt");
         ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
         planets = spaceObjects;
         double[] radius = new double[]{700000, 2439.7, 6051.8, 6371, 1737.1, 3389.5, 69911, 58232, 2575.7, 25362, 2462.2, 10000};
@@ -121,17 +117,8 @@ public class Main extends Application implements EventHandler<KeyEvent> {
         Vector3d pos = new Vector3d(6371000.0, 1.0, 1.0);
         sim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
         states = sim.getStates();
-        CSVReader r = new CSVReader("src/trajectory.csv");
-        int counter = 0;
-        Vector3d [] probePositions = r.getProbePositions();
-        for (StateInterface s: states){
-            s.getPositions()[11] = probePositions[counter];
-            System.out.println("PROBE" + " "  + probePositions[counter]);
-            System.out.println("EARTH: "  + s.getPositions()[3]);
-            counter++;
-        }
         initLight(group);
-        probePos = spaceObjects.get(0).getPosition();
+        probePos = spaceObjects.get(spaceObjects.size() - 1).getPosition();
         for (int j = 0; j < spaceObjects.size(); j++) {
             SpaceObject o = spaceObjects.get(j);
             if (State.names.get(j).equals("Probe")){
@@ -143,13 +130,13 @@ public class Main extends Application implements EventHandler<KeyEvent> {
                 shapes.add(b);
                 b.translateXProperty().set(Renderer.toScreenCoordinates(o.getPosition().getX()) - Renderer.toScreenCoordinates(probePos.getX()));
                 b.translateYProperty().set(Renderer.toScreenCoordinates(o.getPosition().getY()) - Renderer.toScreenCoordinates(probePos.getY()));
-                b.translateZProperty().set(Renderer.toScreenCoordinates(o.getPosition().getZ())- Renderer.toScreenCoordinates(probePos.getZ()));
+                b.translateZProperty().set(Renderer.toScreenCoordinates(o.getPosition().getZ()) - Renderer.toScreenCoordinates(probePos.getY()));
                 Text name = new Text(State.names.get(j));
                 name.setStroke(Color.WHITE);
                 name.setFill(Color.WHITE);
-                name.translateXProperty().set(Renderer.toScreenCoordinates(o.getPosition().getX()));
-                name.translateYProperty().set(Renderer.toScreenCoordinates(o.getPosition().getY()));
-                name.translateZProperty().set(Renderer.toScreenCoordinates(o.getPosition().getZ()));
+                name.translateXProperty().set(Renderer.toScreenCoordinates(o.getPosition().getX())- Renderer.toScreenCoordinates(probePos.getX()));
+                name.translateYProperty().set(Renderer.toScreenCoordinates(o.getPosition().getY())- Renderer.toScreenCoordinates(probePos.getY()));
+                name.translateZProperty().set(Renderer.toScreenCoordinates(o.getPosition().getZ())- Renderer.toScreenCoordinates(probePos.getZ()));
                 names.add(name);
                 group.getChildren().add(name);
             }
@@ -186,9 +173,8 @@ public class Main extends Application implements EventHandler<KeyEvent> {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-//        String url = getClass().getResource("solar_system_data-2020_04_01.txt").getPath();
-//        SpaceObjectBuilder builder = new SpaceObjectBuilder(url);
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("window.fxml"));
+        SpaceObjectBuilder builder = new SpaceObjectBuilder("src/solar_system_data-2020_04_01.txt");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("window.fxml"));
         Group superGroup = new Group();
         this.superGroup = superGroup;
         Group group = new Group();
@@ -200,11 +186,6 @@ public class Main extends Application implements EventHandler<KeyEvent> {
         initProbeFuelCounter(superGroup);
         initSlider(superGroup);
         drawState(group);
-        Sphere dot = new Sphere(10);
-        dot.translateXProperty().set(Renderer.toScreenCoordinates(-1.471954341272398E11));
-        dot.translateYProperty().set(Renderer.toScreenCoordinates(-2.8604463103590034E10));
-        dot.translateZProperty().set(Renderer.toScreenCoordinates(8284741.402211096));
-        group.getChildren().add(dot);
         Camera cam = new PerspectiveCamera();
         this.cam = cam;
         cam.setFarClip(1e100);
@@ -226,10 +207,9 @@ public class Main extends Application implements EventHandler<KeyEvent> {
 //        group.getChildren().add(cam);
         primaryStage.setTitle("Mission Titan");
         primaryStage.setScene(scene);
-//        primaryStage.getIcons().add(new Image("titan.png"));
+        primaryStage.getIcons().add(new Image("titan.png"));
         primaryStage.show();
     }
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -237,36 +217,37 @@ public class Main extends Application implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent keyEvent) {
         if (keyEvent.getCode().toString() == "SPACE"){
-            String song = "song.mp3";
-            System.out.println("song: " + Paths.get(song).toUri().toString());
+//            String song = "song.mp3";
+//            System.out.println("song: " + Paths.get(song).toUri().toString());
 //            Media media = new Media(Paths.get(song).toUri().toString());
 //            MediaPlayer player = new MediaPlayer(media);
 //            player.play();
-            Vector3d [] prevPoints = new Vector3d[states[0].getPositions().length];
-//            Media media = null;
-//            try {
-//                media = new Media(getClass().getResource("song.mp3").toURI().toString());
-//            } catch (URISyntaxException e) {
-//                e.printStackTrace();
-//            }
-//            MediaPlayer player = new MediaPlayer(media);
-//            player.play();
-
             speed = 1;
             double [] probeFuel = sim.getProbeMass();
-
+            this.probeLock = false;
             AnimationTimer p = new AnimationTimer() {
                 @Override
                 public void handle(long l) {
                     Vector3d probe = states[counter].getPositions()[states[counter].getPositions().length - 1];
                     probePos = probe;
-                    camLock = sunPos;
+                    sunPos = states[counter].getPositions()[0];
+                    if (probeLock){
+                        camLock = states[counter].getPositions()[states[counter].getPositions().length - 1];
+                    }
+                    else{
+                        camLock = states[counter].getPositions()[0];
+                    }
                     camLockToggle.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent actionEvent) {
-                            camLock = probe;
-                            System.out.println("SSS");
-                            System.out.println(camLock == probe);
+                            probeLock = !probeLock;
+                            for (int i = 0; i < planetPath.size(); i++){
+                                Shape3D path = planetPath.get(i);
+                                Vector3d s = sunPos.sub(probePos);
+                                path.translateXProperty().set(path.getTranslateX() - s.getX());
+                                path.translateYProperty().set((path.getTranslateY()) -s.getY());
+                                path.translateZProperty().set((path.getTranslateZ()) - s.getZ());
+                            }
                         }
                     });
                     probeMass.setText(String.valueOf(probeFuel[counter]));
@@ -276,21 +257,20 @@ public class Main extends Application implements EventHandler<KeyEvent> {
                         double screenZ = Renderer.toScreenCoordinates(states[counter].getPositions()[i].getZ()) - Renderer.toScreenCoordinates(camLock.getZ());
                         shapes.get(i).setRotationAxis(Rotate.X_AXIS);
                         shapes.get(i).rotateProperty().set(shapes.get(i).getRotate() + 0.5);
-                        shapes.get(i).translateXProperty().set(Renderer.toScreenCoordinates(states[counter].getPositions()[i].getX()) - Renderer.toScreenCoordinates(camLock.getX()));
-                        shapes.get(i).translateYProperty().set( Renderer.toScreenCoordinates(states[counter].getPositions()[i].getY()) - Renderer.toScreenCoordinates(camLock.getY()));
-                        shapes.get(i).translateZProperty().set(Renderer.toScreenCoordinates(states[counter].getPositions()[i].getZ()) - Renderer.toScreenCoordinates(camLock.getZ()));
+                        shapes.get(i).translateXProperty().set(screenX);
+                        shapes.get(i).translateYProperty().set(screenY);
+                        shapes.get(i).translateZProperty().set(screenZ);
                         Sphere path = new Sphere(1);
+                        planetPath.add(path);
                         group.getChildren().add(path);
-                        path.translateXProperty().set(Renderer.toScreenCoordinates(states[counter].getPositions()[i].getX()) - Renderer.toScreenCoordinates(camLock.getX()));
-                        path.translateYProperty().set( Renderer.toScreenCoordinates(states[counter].getPositions()[i].getY()) - Renderer.toScreenCoordinates(camLock.getY()));
-                        path.translateZProperty().set(Renderer.toScreenCoordinates(states[counter].getPositions()[i].getZ()) - Renderer.toScreenCoordinates(camLock.getZ()));
-                        names.get(i).translateXProperty().set( Renderer.toScreenCoordinates(states[counter].getPositions()[i].getX()) - Renderer.toScreenCoordinates(camLock.getX()));
-                        names.get(i).translateYProperty().set( Renderer.toScreenCoordinates(states[counter].getPositions()[i].getY()) - Renderer.toScreenCoordinates(camLock.getY()));
-                        names.get(i).translateZProperty().set(Renderer.toScreenCoordinates(states[counter].getPositions()[i].getZ()) - Renderer.toScreenCoordinates(camLock.getZ()));
+                        path.translateXProperty().set(screenX);
+                        path.translateYProperty().set(screenY);
+                        path.translateZProperty().set(screenZ);
+                        names.get(i).translateXProperty().set(screenX);
+                        names.get(i).translateYProperty().set(screenY);
+                        names.get(i).translateZProperty().set(screenZ);
                     }
-//          cam.translateXProperty().set((CANVAS_WIDTH/2) + Renderer.toScreenCoordinates(states[counter].getPositions()[0].getX()));
-//          cam.translateYProperty().set((CANVAS_HEIGHT/2) + Renderer.toScreenCoordinates(states[counter].getPositions()[0].getY()));
-//            cam.translateZProperty().set((CANVAS_HEIGHT/2) + Renderer.toScreenCoordinates(states[counter].getPositions()[0].getZ()));
+
                     counter += speed;
 //                    if (counter == 21886){
 //                        states[counter].getVelocities()[states[counter].getVelocities().length - 1].add(new Vector3d(1000000,1000000,1000000));
@@ -300,8 +280,7 @@ public class Main extends Application implements EventHandler<KeyEvent> {
             p.start();
         }
     }
-
-    public void initMaterials() {
+    public void initMaterials(){
         for (int i = 0; i < planets.size(); i++){
             String imgSrc = "textures/8k_sun.jpeg";
             switch (State.names.get(i)){
@@ -316,9 +295,6 @@ public class Main extends Application implements EventHandler<KeyEvent> {
                     break;
                 case "Earth":
                     imgSrc = "textures/2k_earth_daymap.jpeg";
-                    break;
-                case "Moon":
-//                    imgSrc = "textures/8k_moon.jpeg";
                     break;
                 case "Mars":
                     imgSrc = "textures/2k_mars.jpeg";
@@ -340,6 +316,9 @@ public class Main extends Application implements EventHandler<KeyEvent> {
                     break;
                 case "Titan":
                     imgSrc = "textures/2k_neptune.jpeg";
+                    break;
+                case "Moon":
+                    imgSrc = "textures/2k_moon.jpeg";
                     break;
             }
             PhongMaterial m = new PhongMaterial();
@@ -374,21 +353,21 @@ public class Main extends Application implements EventHandler<KeyEvent> {
     }
 
     public void initTitanPoints(StateInterface [] states){
-//        double toAdd = 2775.7;
-//        StateInterface titanState = states[21886];
-//        Vector3d titanPos = titanState.getPositions()[8];
-//        for (int i = 0; i < 1000; i++){
-//            Random rand = new Random();
-//            Sphere point = new Sphere(10);
-//            Vector3d newVec = new Vector3d(0,0,0);
-//            newVec.setX(Renderer.toScreenCoordinates(rand.nextDouble()*(toAdd + titanPos.getX())));
-//            newVec.setY(Renderer.toScreenCoordinates(rand.nextDouble()*(toAdd + titanPos.getY())));
-//            newVec.setZ(Math.sqrt(toAdd*toAdd - newVec.getX()*newVec.getX() - newVec.getY()*newVec.getY()) + Renderer.toScreenCoordinates(titanPos.getZ()));
-//            point.translateXProperty().set(newVec.getX());
-//            point.translateYProperty().set(newVec.getY());
-//            point.translateZProperty().set(newVec.getZ());
-////            group.getChildren().add(point);
-//        }
+        double toAdd = 2775.7;
+        StateInterface titanState = states[21886];
+        Vector3d titanPos = titanState.getPositions()[8];
+        for (int i = 0; i < 1000; i++){
+            Random rand = new Random();
+            Sphere point = new Sphere(10);
+            Vector3d newVec = new Vector3d(0,0,0);
+            newVec.setX(Renderer.toScreenCoordinates(rand.nextDouble()*(toAdd + titanPos.getX())));
+            newVec.setY(Renderer.toScreenCoordinates(rand.nextDouble()*(toAdd + titanPos.getY())));
+            newVec.setZ(Math.sqrt(toAdd*toAdd - newVec.getX()*newVec.getX() - newVec.getY()*newVec.getY()) + Renderer.toScreenCoordinates(titanPos.getZ()));
+            point.translateXProperty().set(newVec.getX());
+            point.translateYProperty().set(newVec.getY());
+            point.translateZProperty().set(newVec.getZ());
+//            group.getChildren().add(point);
+        }
 
 
     }
