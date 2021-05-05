@@ -160,7 +160,7 @@ public class Main extends Application implements EventHandler<KeyEvent> {
             }
         }
         initTitanPoints(states);
-//        initMaterials();
+        initMaterials();
     }
 
     public void initProbeFuelCounter(Group superGroup){
@@ -182,7 +182,7 @@ public class Main extends Application implements EventHandler<KeyEvent> {
         group.translateXProperty().set(CANVAS_WIDTH/2);
         group.translateYProperty().set(CANVAS_HEIGHT/2);
         this.group = group;
-//        superGroup.getChildren().add(new ImageView(new Image(getClass().getResource("2k_stars.jpeg").getFile())));
+        superGroup.getChildren().add(new ImageView(new Image("2k_stars.jpeg")));
         superGroup.getChildren().add(group);
         initProbeFuelCounter(superGroup);
         initSlider(superGroup);
@@ -319,7 +319,7 @@ public class Main extends Application implements EventHandler<KeyEvent> {
                     imgSrc = "textures/2k_neptune.jpeg";
                     break;
                 case "Moon":
-                    imgSrc = "textures/2k_moon.jpeg";
+                    imgSrc = "textures/8k_moon.jpeg";
                     break;
             }
             PhongMaterial m = new PhongMaterial();

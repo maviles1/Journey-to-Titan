@@ -9,6 +9,7 @@ public class Solver implements ODESolverInterface {
 
     Probe probe;
     double [] probeMass;
+
     public Solver() {
         stepFunction = new VerletSolver();
     }
@@ -47,18 +48,23 @@ public class Solver implements ODESolverInterface {
         StateInterface[] s = new StateInterface[size];
         double [] probeMass = new double[size];
         s[0] = y0;
-        probe = new Probe("S",15000, y0.getPositions()[y0.getVelocities().length - 1],  y0.getVelocities()[y0.getVelocities().length - 1]);
+        probe = new Probe("S",15, y0.getPositions()[y0.getVelocities().length - 1],  y0.getVelocities()[y0.getVelocities().length - 1]);
+        Vector3d launchVelocity = s[0].getVelocities()[11];
+        s[0].getVelocities()[11] = new Vector3d(0,0,0);
         //probe.setFuelMass(1000);
         double t = 0;
+        //initial thrust
+        thrust(probe,s[0], new Vector3d(100,100,100));
+
+
         for (int i = 1; i < size - 1; i++) {
             t += h;
             s[i] = step(f, t, s[i - 1], h);
             probe.setPosition(s[i].getPositions()[11]);
             probe.setVelocity(s[i].getVelocities()[11]);
-            if (randomAdd()){
-                thrust(probe, s[i], randomV());
-                s[i].getVelocities()[11] = probe.getVelocity();
-            }
+//            if (randomAdd()){
+//                thrust(probe, s[i], randomV());
+//            }
             probeMass[i] = probe.getFuelMass();
             this.probeMass = probeMass;
         }
