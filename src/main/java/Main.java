@@ -47,8 +47,8 @@ public class Main extends Application implements EventHandler<KeyEvent> {
     public static final double PROBE_SPEED = 600000; //initial probe speed(scalar) relative to earth
     public static final double STEP_SIZE_TRAJECTORY = 24*60*60;
     public static final double YEAR_IN_SECONDS = 365.25*STEP_SIZE_TRAJECTORY;
-    public static final int CANVAS_WIDTH = 1600;
-    public static final int CANVAS_HEIGHT = 1000;
+    public static final int CANVAS_WIDTH = 1200;
+    public static final int CANVAS_HEIGHT = 800;
     public Camera cam;
     public StateInterface[] states;
     int counter = 0;
