@@ -1,9 +1,5 @@
 package titan;
 
-import titan.interfaces.ProbeSimulatorInterface;
-import titan.interfaces.StateInterface;
-import titan.interfaces.Vector3dInterface;
-
 import java.util.ArrayList;
 
 public class ProbeSimulator implements ProbeSimulatorInterface {

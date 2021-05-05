@@ -1,7 +1,5 @@
 package titan;
 
-import titan.interfaces.Vector3dInterface;
-
 public class Vector3d implements Vector3dInterface {
     private double x;
     private double y;
