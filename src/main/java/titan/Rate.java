@@ -2,6 +2,8 @@ package titan;
 
 import titan.interfaces.RateInterface;
 
+import java.util.Arrays;
+
 public class Rate implements RateInterface {
 
     private Vector3d[] positionRates;
@@ -59,5 +61,32 @@ public class Rate implements RateInterface {
                         + " }\n";
         //}
         return s; //this is unused
+    }
+
+    public String coolerToString() {
+        String s = "";
+        for (int i = 0; i < size; i++) {
+            s += " Values: { x=" + positionRates[i].toString()
+                + ", y=" + positionRates[i].toString()
+                + ", z=" + positionRates[i].toString()
+                + " vx=" + velocityRates[i].toString()
+                + ", vy=" + velocityRates[i].toString()
+                + ", vz=" + velocityRates[i].toString()
+                + " }\n";
+        }
+        return s;
+    }
+
+    public boolean equals(Object other) {
+        if (other instanceof Rate) {
+            Rate otherRate = (Rate) other;
+            boolean equals = true;
+            for (int i = 0; i < positionRates.length; i++) {
+                if (!positionRates[i].equals(otherRate.getRatePosition()[i]) || !velocityRates[i].equals(otherRate.getRateVelocity()[i]))
+                    equals = false;
+            }
+            return equals;
+            //return Arrays.equals(this.positionRates, otherRate.positionRates) && Arrays.equals(this.velocityRates, otherRate.velocityRates);
+        } else return false;
     }
 }

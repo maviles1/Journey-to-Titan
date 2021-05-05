@@ -1,5 +1,6 @@
 package titan;
 
+import titan.interfaces.RateInterface;
 import titan.interfaces.Vector3dInterface;
 
 public class Vector3d implements Vector3dInterface {
@@ -87,6 +88,13 @@ public class Vector3d implements Vector3dInterface {
     public boolean equals(Vector3dInterface other) {
         Vector3d v = (Vector3d) other;
         return this.x == v.getX() && this.y == v.getY() && this.z == v.getZ();
+    }
+
+    public boolean equals(Object o) {
+        if (o instanceof RateInterface)
+            return equals((Vector3dInterface) o);
+        else
+            return false;
     }
 
 }

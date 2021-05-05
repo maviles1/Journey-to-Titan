@@ -50,8 +50,6 @@ public class VerletSolver implements StepInterface {
         return new State(pos, newV, t + h);
     }
 
-
-
     /**
      * This method is also based on the velocity verlet algorithm and implements
      * the velocity verlet but in a different way. Not sure what the differences between
