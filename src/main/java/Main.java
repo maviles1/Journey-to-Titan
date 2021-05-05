@@ -30,6 +30,7 @@ import javafx.scene.transform.*;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import titan.*;
+import titan.interfaces.StateInterface;
 
 import java.nio.file.Paths;
 import java.util.Random;
@@ -107,7 +108,7 @@ public class Main extends Application implements EventHandler<KeyEvent> {
     public void drawState(Group group){
         shapes = new ArrayList<>();
         names = new ArrayList<>();
-        SpaceObjectBuilder builder = new SpaceObjectBuilder("solar_system_data-2020_04_01.txt");
+        SpaceObjectBuilder builder = new SpaceObjectBuilder(getClass().getResource("solar_system_data-2020_04_01.txt").getFile());
         ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
         planets = spaceObjects;
         double[] radius = new double[]{700000, 2439.7, 6051.8, 6371, 1737.1, 3389.5, 69911, 58232, 2575.7, 25362, 2462.2, 10000};
@@ -159,7 +160,7 @@ public class Main extends Application implements EventHandler<KeyEvent> {
             }
         }
         initTitanPoints(states);
-        initMaterials();
+//        initMaterials();
     }
 
     public void initProbeFuelCounter(Group superGroup){
@@ -173,15 +174,15 @@ public class Main extends Application implements EventHandler<KeyEvent> {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        SpaceObjectBuilder builder = new SpaceObjectBuilder("src/solar_system_data-2020_04_01.txt");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("window.fxml"));
+        SpaceObjectBuilder builder = new SpaceObjectBuilder(getClass().getResource("solar_system_data-2020_04_01.txt").getFile());
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("window.fxml"));
         Group superGroup = new Group();
         this.superGroup = superGroup;
         Group group = new Group();
         group.translateXProperty().set(CANVAS_WIDTH/2);
         group.translateYProperty().set(CANVAS_HEIGHT/2);
         this.group = group;
-        superGroup.getChildren().add(new ImageView(new Image("textures/2k_stars_milky_way.jpeg")));
+//        superGroup.getChildren().add(new ImageView(new Image(getClass().getResource("2k_stars.jpeg").getFile())));
         superGroup.getChildren().add(group);
         initProbeFuelCounter(superGroup);
         initSlider(superGroup);
@@ -190,8 +191,8 @@ public class Main extends Application implements EventHandler<KeyEvent> {
         this.cam = cam;
         cam.setFarClip(1e100);
         Scene scene = new Scene(superGroup,CANVAS_WIDTH,CANVAS_HEIGHT);
-        Image background = new Image("textures/2k_stars_milky_way.jpeg");
-        BackgroundImage back = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+//        Image background = new Image(getClass().getResource("textures/2k_stars_milky_way.jpeg").toString());
+//        BackgroundImage back = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
         initMouseControl(group, scene);
         scene.setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
