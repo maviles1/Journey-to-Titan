@@ -1,7 +1,5 @@
 package titan;
 
-import titan.interfaces.Vector3dInterface;
-
 public class Vector3d implements Vector3dInterface {
     private double x;
     private double y;
@@ -40,6 +38,10 @@ public class Vector3d implements Vector3dInterface {
     public Vector3d add(Vector3dInterface other) {
 
         return new Vector3d(getX() + other.getX(), getY() + other.getY(), getZ() + other.getZ());
+    }
+
+    public double magnitude(){
+        return Math.sqrt(getX()*getX() + getY()*getY() + getZ()*getZ());
     }
 
     public Vector3d sub(Vector3dInterface other) {

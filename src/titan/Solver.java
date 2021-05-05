@@ -1,11 +1,6 @@
 package titan;
 import java.util.Random;
 
-import titan.interfaces.ODEFunctionInterface;
-import titan.interfaces.ODESolverInterface;
-import titan.interfaces.RateInterface;
-import titan.interfaces.StateInterface;
-
 public class Solver implements ODESolverInterface {
     /*
      * Solve the differential equation by taking multiple steps.
@@ -37,7 +32,6 @@ public class Solver implements ODESolverInterface {
         double [] probeMass = new double[size];
         s[0] = y0;
         probe = new Probe("S",15000, y0.getPositions()[y0.getVelocities().length - 1],  y0.getVelocities()[y0.getVelocities().length - 1]);
-        probe.setFuelMass(1000);
         double t = 0;
         for (int i = 1; i < size - 1; i++) {
             t += h;

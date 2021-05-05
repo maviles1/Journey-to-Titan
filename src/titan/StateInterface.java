@@ -5,7 +5,7 @@
  * This interface serves as the API for students in phase 1.
  */
 
-package titan.interfaces;
+package titan;
 
 /**
  * An interface representing the state of a system described by a differential equation.

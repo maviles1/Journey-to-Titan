@@ -5,7 +5,7 @@
  * This interface serves as the API for students in phase 1.
  */
 
-package titan.interfaces;
+package titan;
 
 /*
  * A class for solving a general differential equation dy/dt = f(t,y)

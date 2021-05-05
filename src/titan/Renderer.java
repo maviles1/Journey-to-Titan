@@ -7,7 +7,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.TextAlignment;
-import titan.interfaces.StateInterface;
 import titan.ui.View;
 
 import java.util.ArrayList;

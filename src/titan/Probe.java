@@ -3,7 +3,7 @@ package titan;
 public class Probe extends SpaceObject {
 
     double fuelMass;
-    double massToMeters = 2;
+    double mass;
     public Probe(String n, double m, Vector3d pos, Vector3d vel) {
         super(n, m, pos, vel);
         fuelMass = m;
@@ -18,6 +18,17 @@ public class Probe extends SpaceObject {
     public void update() {
 
     }
+    public Boolean checkTitanOrbit(Probe probe, Vector3d titan)
+    {
+        Vector3d probeVec = probe.getPosition();
+        double dist =  probeVec.dist(titan);
+        double titanRadius = 2575500; //currently static and in M
+        if(dist >= titanRadius + 100000 && dist <= titanRadius + 300000)
+            return true;
+        else
+            return false;
+
+    }
 
     public void setFuelMass(double mass){
         this.fuelMass = mass;
@@ -25,25 +36,10 @@ public class Probe extends SpaceObject {
 
     public void thrust(Vector3d thrustVector) {
         this.setVelocity(getVelocity().add(thrustVector));
-//        System.out.println(fuelMass);
-//        double dist = this.getPosition().dist(getPosition().add(getVelocity().add(thrustVector)));
-//        if (fuelMass == 0){
-//            return;
-//        }
-//        if (fuelMass - calcFuelBurn(dist) < 0) {
-//            double distForMass = fuelMass * massToMeters;
-//            this.setVelocity(getVelocity().add(thrustVector.mul(distForMass/dist)));
-//            fuelMass -= calcFuelBurn(distForMass);
-//        }
-//        else {
-//            fuelMass -= calcFuelBurn(dist);
-//            this.setVelocity(getVelocity().add(thrustVector));
-//        }
+        double momentum = thrustVector.magnitude() * fuelMass;
+        this.fuelMass--;
     }
 
-    public double calcFuelBurn(double distance){
-        return distance/massToMeters;
-    }
 
     public double getFuelMass(){
         return fuelMass;
