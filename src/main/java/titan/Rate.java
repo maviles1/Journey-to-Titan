@@ -8,7 +8,6 @@ public class Rate implements RateInterface {
     private Vector3d[] velocityRates;
     private final int size;
 
-
     public Rate(Vector3d[] rateP, Vector3d[] rateV) {
         this.positionRates = rateP;
         this.velocityRates = rateV;
@@ -32,7 +31,7 @@ public class Rate implements RateInterface {
             newPositions[i] = positionRates[i].mul(scalar);
             newVelocities[i] = velocityRates[i].mul(scalar);
         }
-        return new Rate(newPositions,newVelocities);
+        return new Rate(newPositions, newVelocities);
     }
 
     public Rate add(RateInterface rate){

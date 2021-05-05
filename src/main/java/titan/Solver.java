@@ -85,16 +85,12 @@ public class Solver implements ODESolverInterface {
 
     public Vector3d randomV(){
         Random rand = new Random();
-        Vector3d v = new Vector3d(rand.nextDouble()*10000 - 5000, rand.nextDouble()*10000 - 5000, rand.nextDouble()*10000 - 5000);
-        return v;
+        return new Vector3d(rand.nextDouble()*10000 - 5000, rand.nextDouble()*10000 - 5000, rand.nextDouble()*10000 - 5000);
     }
 
     public boolean randomAdd(){
         Random rand = new Random();
         int r = rand.nextInt()*100;
-        if (r < 10){
-            return true;
-        }
-        return false;
+        return r < 10;
     }
 }

@@ -36,6 +36,8 @@ import titan.*;
 import titan.Vector3d;
 import titan.interfaces.*;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.Random;
 
@@ -225,11 +227,17 @@ public class Main extends Application implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent keyEvent) {
         if (keyEvent.getCode().toString() == "SPACE"){
-//            String song = "song.mp3";
-//            System.out.println("song: " + Paths.get(song).toUri().toString());
+            String song = "song.mp3";
+            System.out.println("song: " + Paths.get(song).toUri().toString());
 //            Media media = new Media(Paths.get(song).toUri().toString());
-//            MediaPlayer player = new MediaPlayer(media);
-//            player.play();
+            Media media = null;
+            try {
+                media = new Media(getClass().getResource("song.mp3").toURI().toString());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            MediaPlayer player = new MediaPlayer(media);
+            player.play();
 
             speed = 1;
             double [] probeFuel = sim.getProbeMass();
@@ -266,8 +274,8 @@ public class Main extends Application implements EventHandler<KeyEvent> {
                         names.get(i).translateYProperty().set( Renderer.toScreenCoordinates(states[counter].getPositions()[i].getY()) - Renderer.toScreenCoordinates(camLock.getY()));
                         names.get(i).translateZProperty().set(Renderer.toScreenCoordinates(states[counter].getPositions()[i].getZ()) - Renderer.toScreenCoordinates(camLock.getZ()));
                     }
-//            cam.translateXProperty().set((CANVAS_WIDTH/2) + Renderer.toScreenCoordinates(states[counter].getPositions()[0].getX()));
-//            cam.translateYProperty().set((CANVAS_HEIGHT/2) + Renderer.toScreenCoordinates(states[counter].getPositions()[0].getY()));
+//          cam.translateXProperty().set((CANVAS_WIDTH/2) + Renderer.toScreenCoordinates(states[counter].getPositions()[0].getX()));
+//          cam.translateYProperty().set((CANVAS_HEIGHT/2) + Renderer.toScreenCoordinates(states[counter].getPositions()[0].getY()));
 //            cam.translateZProperty().set((CANVAS_HEIGHT/2) + Renderer.toScreenCoordinates(states[counter].getPositions()[0].getZ()));
                     counter += speed;
 //                    if (counter == 21886){
@@ -278,7 +286,8 @@ public class Main extends Application implements EventHandler<KeyEvent> {
             p.start();
         }
     }
-    public void initMaterials(){
+
+    public void initMaterials() {
         for (int i = 0; i < planets.size(); i++){
             String imgSrc = "textures/8k_sun.jpeg";
             switch (State.names.get(i)){

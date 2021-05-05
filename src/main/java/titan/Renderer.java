@@ -70,7 +70,6 @@ public class Renderer extends AnimationTimer {
     }
 
     public void drawSpaceObject(GraphicsContext gc, Vector3d vec, int index) {
-        Sphere sphere = new Sphere();
         gc.fillOval(gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 5, 5);
         gc.setFill(Paint.valueOf("#CC52D7"));
         gc.strokeOval(gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 5, 5);
