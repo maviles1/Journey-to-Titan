@@ -32,6 +32,8 @@ import javafx.stage.Stage;
 import titan.*;
 import titan.interfaces.StateInterface;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.Random;
 
@@ -43,8 +45,8 @@ public class Main extends Application implements EventHandler<KeyEvent> {
     public static final double PROBE_SPEED = 600000; //initial probe speed(scalar) relative to earth
     public static final double YEAR_IN_SECONDS = 31556926;
     public static final double STEP_SIZE_TRAJECTORY = 1000;
-    public static final int CANVAS_WIDTH = 1600;
-    public static final int CANVAS_HEIGHT = 1000;
+    public static final int CANVAS_WIDTH = 1200;
+    public static final int CANVAS_HEIGHT = 800;
     public Camera cam;
     public StateInterface[] states;
     int counter = 0;
@@ -160,7 +162,11 @@ public class Main extends Application implements EventHandler<KeyEvent> {
             }
         }
         initTitanPoints(states);
-        initMaterials();
+        try {
+            initMaterials();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     public void initProbeFuelCounter(Group superGroup){
@@ -191,8 +197,8 @@ public class Main extends Application implements EventHandler<KeyEvent> {
         this.cam = cam;
         cam.setFarClip(1e100);
         Scene scene = new Scene(superGroup,CANVAS_WIDTH,CANVAS_HEIGHT);
-//        Image background = new Image(getClass().getResource("textures/2k_stars_milky_way.jpeg").toString());
-//        BackgroundImage back = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+        Image background = new Image("textures/2k_stars_milky_way.jpeg");
+        BackgroundImage back = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
         initMouseControl(group, scene);
         scene.setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
@@ -281,7 +287,7 @@ public class Main extends Application implements EventHandler<KeyEvent> {
             p.start();
         }
     }
-    public void initMaterials(){
+    public void initMaterials() throws URISyntaxException {
         for (int i = 0; i < planets.size(); i++){
             String imgSrc = "textures/8k_sun.jpeg";
             switch (State.names.get(i)){
