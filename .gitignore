@@ -2,3 +2,10 @@
 *.iml
 *.class
 out/
+build
+.gradle
+!gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.jar
+gradlew
+gradlew.bat
+trajectory.csv
