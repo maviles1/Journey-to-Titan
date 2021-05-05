@@ -108,5 +108,39 @@ public class RateTest {
         Assertions.assertTrue(rate.add(addRate).equals(solutionRate));
     }
 
+    @Test
+    public void addTestNegative() {
+        Vector3d[] positions = {new Vector3d(1, 1, 1), new Vector3d(2, 2, 2), new Vector3d(3, 3, 3)};
+        Vector3d[] velocities = {new Vector3d(2, 2, 2), new Vector3d(3, 3, 3), new Vector3d(4, 4, 4)};
+        Rate rate = new Rate(positions, velocities);
+
+        Vector3d[] addPos = {new Vector3d(-1, -1, -1), new Vector3d(-2, -2, -2), new Vector3d(-3, -3, -3)};
+        Vector3d[] addVel = {new Vector3d(-2, -2, -2), new Vector3d(-3, -3, -3), new Vector3d(-4, -4, -4)};
+        Rate addRate = new Rate(addPos, addVel);
+
+        Vector3d[] solPos = {new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 0)};
+        Vector3d[] solVel = {new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 0)};
+        Rate solutionRate = new Rate(solPos, solVel);
+
+        Assertions.assertTrue(rate.add(addRate).equals(solutionRate));
+    }
+
+    @Test
+    public void addTestZero() {
+        Vector3d[] positions = {new Vector3d(1, 1, 1), new Vector3d(2, 2, 2), new Vector3d(3, 3, 3)};
+        Vector3d[] velocities = {new Vector3d(2, 2, 2), new Vector3d(3, 3, 3), new Vector3d(4, 4, 4)};
+        Rate rate = new Rate(positions, velocities);
+
+        Vector3d[] addPos = {new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 0)};
+        Vector3d[] addVel = {new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 0)};
+        Rate addRate = new Rate(addPos, addVel);
+
+        Vector3d[] solPos = {new Vector3d(1, 1, 1), new Vector3d(2, 2, 2), new Vector3d(3, 3, 3)};
+        Vector3d[] solVel = {new Vector3d(2, 2, 2), new Vector3d(3, 3, 3), new Vector3d(4, 4, 4)};
+        Rate solutionRate = new Rate(solPos, solVel);
+
+        Assertions.assertTrue(rate.add(addRate).equals(solutionRate));
+    }
+
 
 }

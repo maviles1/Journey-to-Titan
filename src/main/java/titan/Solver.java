@@ -8,6 +8,8 @@ public class Solver implements ODESolverInterface {
 
     public Solver() {
         stepFunction = new VerletSolver();
+       // stepFunction = new EulerSolver();
+//        stepFunction = new RKSolver();
     }
 
     public Solver(StepInterface stepFunction) {
