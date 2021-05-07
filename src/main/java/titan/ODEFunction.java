@@ -19,7 +19,7 @@ public class ODEFunction implements ODEFunctionInterface {
         State state = (State) y;
 
         int size = state.getPosition().length;
-        double dt = t - state.getTime(); //the time step
+        double step = t - state.getTime(); //the time step
         // TODO
         // System.out.println(dt);
 
@@ -32,12 +32,14 @@ public class ODEFunction implements ODEFunctionInterface {
             for (int j = 0; j < size; j++) {
                 if (i != j) {
                     //change in velocity for each element
-                    double p = (G * State.mass[j])/Math.pow(state.getPosition()[j].dist(state.getPosition()[i]),3);
-                    a = a.addMul(p, state.getPosition()[j].sub(state.getPosition()[i]));
+                    double force = (G * State.mass[j])/Math.pow(state.getPosition()[j].dist(state.getPosition()[i]),3);
+                    if(i==3){System.out.println(force);}
+                    a = a.addMul(force, state.getPosition()[j].sub(state.getPosition()[i]));
                 }
             }
 
-            Vector3d v = state.getVelocities()[i].addMul(dt,a);
+
+                Vector3d v = state.getVelocities()[i].addMul(step,a);
 
             aRates[i] = a;
             vRates[i] = v;

@@ -46,6 +46,17 @@ public class Rate implements RateInterface {
         return new Rate(newPositions,newVelocities);
     }
 
+    public Rate addMul(double scalar, RateInterface rate){
+        Rate r = (Rate) rate;
+        Vector3d[] newPositions = new Vector3d[size];
+        Vector3d[] newVelocities = new Vector3d[size];
+        for (int i = 0; i < size; i++){
+            newPositions[i] = positionRates[i].add((r.getRatePosition()[i]).mul(scalar));
+            newVelocities[i] = velocityRates[i].add((r.getRateVelocity()[i]).mul(scalar));
+        }
+        return new Rate(newPositions,newVelocities);
+    }
+
     public String toString(){
         String s = "";
         //for (int i = 0; i < size; i++)

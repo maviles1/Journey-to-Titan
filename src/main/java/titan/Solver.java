@@ -39,17 +39,16 @@ public class Solver implements ODESolverInterface {
     @Override
     public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
         //check if t should be the total time
-        int size = (int) Math.round((tf / h) + 1.5);
-        StateInterface[] s = new StateInterface[size];
+        StateInterface[] s = new StateInterface[(int) (tf / h) + 2];
         s[0] = y0;
 
         double t = 0;
-        for (int i = 1; i < size - 1; i++) {
+        for (int i = 1; i < s.length-1; i++) {
             t += h;
             s[i] = step(f, t, s[i - 1], h);
         }
 
-        s[size - 1] = step(f, tf, s[size - 2], tf - t);
+        s[s.length - 1] = step(f, tf, s[s.length - 2], tf - t);
 
         return s;
     }

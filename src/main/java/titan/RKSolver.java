@@ -17,6 +17,17 @@ public class RKSolver implements StepInterface {
      */
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
+        Rate ki1 = (Rate) f.call(t,y);
+        Rate ki2 = (Rate) f.call((double) t + 0.5*h,y.addMul((double) h*0.5, ki1));
+        Rate ki3 = (Rate) f.call((double) t + 0.5*h,y.addMul((double) h*0.5, ki2));
+        Rate ki4 = (Rate) f.call(t+h,y.addMul(h, ki3));
+
+        RateInterface tot = (ki1.addMul((double) 2, ki2).addMul((double) 2, ki3).addMul((double) 1, ki4)).mul((double) (1.0/6.0));
+        return y.addMul(h,tot);
+    }
+
+
+    public StateInterface rstep(ODEFunctionInterface f, double t, StateInterface y, double h) {
         State state = (State) y; //w
         Rate stateRate = new Rate(state.getPosition(), state.getVelocities()); //also w
 
@@ -33,6 +44,7 @@ public class RKSolver implements StepInterface {
 
         Rate rs = r1.add(r2.mul(2)).add(r3.mul(2)).add(r4); //k1+2*k2+2*k3+k4)
         Rate w = stateRate.add(rs.mul(1/6.0));        //w=w+(k1+2*k2+2*k3+k4)/6,
+
 
         return new State(w.getRatePosition(), w.getRateVelocity(), t + h);
     }
