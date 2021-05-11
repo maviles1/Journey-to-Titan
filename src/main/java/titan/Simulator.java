@@ -12,13 +12,15 @@ import java.util.Scanner;
 
 public class Simulator {
 
-    private final int WIDTH = 1200*4;
-    private final int HEIGHT = 800*4;
+    private final int WIDTH = 1200;
+    private final int HEIGHT = 800;
 
     private StateInterface[] states;
     private State currentState;
     private List<Integer[]> paths = new ArrayList<>();
     private JPanel panel;
+
+    double auConversion = 1.496E+11;
 
     public Simulator(StateInterface[] states) {
         this.states = states;
@@ -37,7 +39,6 @@ public class Simulator {
         frame.setSize(WIDTH, HEIGHT);
         frame.setVisible(true);
 
-
         try {
             parseTitanTrajectory();
         } catch (FileNotFoundException e) {
@@ -48,9 +49,11 @@ public class Simulator {
     }
 
     public void start() {
+        System.out.println(pos.size() + " " + states.length);
         for (int i = 1; i < states.length; i++) {
             panel.repaint();
             currentState = (State) states[i];
+            count++;
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
@@ -59,20 +62,31 @@ public class Simulator {
         }
     }
 
+    ArrayList<Integer[]> titanPathNasa = new ArrayList<>();
+    int count = 0;
     public void draw(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, WIDTH, HEIGHT);
         g2.setColor(Color.WHITE);
         for (int i = 0; i < currentState.getPosition().length; i++) {
-//            g2.setColor(Color.gray);
-//            for (Integer[] pos : paths) {
-//                g2.fillOval(pos[0], pos[1], 2, 2);
-//            }
+            g2.setColor(Color.gray);
+            for (Integer[] pos : paths) {
+                g2.fillOval(pos[0], pos[1], 2, 2);
+            }
 
-            g2.setColor(Color.BLUE);
-            g2.fillOval((WIDTH / 2) + (int) pos.get(i).getX(), (HEIGHT / 2) + (int) pos.get(i).getY(), 3, 3);
+            g2.setColor(Color.yellow);
+            for (Integer[] pos : titanPathNasa) {
+                g2.fillOval(pos[0], pos[1], 2, 2);
+            }
 
+            System.out.println(pos.get(i));
+            int xNasa = (WIDTH / 2) + (int) toScreenCoordinates(pos.get(count).getX());
+            int yNasa = (HEIGHT / 2) + (int) toScreenCoordinates(pos.get(count).getY());
+//            g2.fillOval(xNasa, yNasa, 3, 3);
+
+//            System.out.println(toScreenCoordinates(pos.get(i).getX()));
+            //System.out.println(pos.get(i).getX());
             g2.setColor(Color.white);
 
             int x = (WIDTH / 2) + (int) toScreenCoordinates(currentState.getPosition()[i].getX());
@@ -85,6 +99,7 @@ public class Simulator {
                 g2.drawString(State.names.get(i), x + 10, y + 20);
 
             paths.add(new Integer[]{x, y});
+            titanPathNasa.add(new Integer[]{xNasa, yNasa});
         }
     }
 
@@ -110,7 +125,7 @@ public class Simulator {
                 next = next.replaceFirst("\\s+[XYZ]+\\s+=+[\\s]*", "");
                 String[] parts = next.split("\\s+[XYZ]+\\s+=+[\\s]*");
                 Vector3d posV = new Vector3d(Double.parseDouble(parts[0]), Double.parseDouble(parts[1]), Double.parseDouble(parts[2].trim()));
-                pos.add(posV);
+                pos.add(posV.mul(auConversion));
                 j += 4;
             }
         }

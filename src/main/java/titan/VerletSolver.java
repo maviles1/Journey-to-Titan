@@ -18,8 +18,8 @@ public class VerletSolver implements StepInterface {
      * @param h
      * @return next state
      */
-    @Override
-    public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
+    //@Override
+    public StateInterface pstep(ODEFunctionInterface f, double t, StateInterface y, double h) {
         Rate rate = (Rate) f.call(t, y);    //to get the acceleration
         int size = rate.getRatePosition().length;
         State state  = (State) y;
@@ -60,7 +60,7 @@ public class VerletSolver implements StepInterface {
      * @param h
      * @return
      */
-    public StateInterface pstep(ODEFunctionInterface f, double t, StateInterface y, double h) {
+    public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         Rate rate = (Rate) f.call(t, y);
         int size = rate.getRatePosition().length;
         State state  = (State) y;
