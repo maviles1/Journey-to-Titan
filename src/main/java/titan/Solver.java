@@ -7,9 +7,9 @@ public class Solver implements ODESolverInterface {
     private StepInterface stepFunction;
 
     public Solver() {
-        stepFunction = new VerletSolver();
-       // stepFunction = new EulerSolver();
-//        stepFunction = new RKSolver();
+        //stepFunction = new VerletSolver();
+        stepFunction = new EulerSolver();
+        //stepFunction = new RKSolver();
     }
 
     public Solver(StepInterface stepFunction) {
@@ -47,8 +47,9 @@ public class Solver implements ODESolverInterface {
 
         double t = 0;
         for (int i = 1; i < size - 1; i++) {
-            t += h;
+            //t += h;
             s[i] = step(f, t, s[i - 1], h);
+            t += h;
         }
 
         s[size - 1] = step(f, tf, s[size - 2], tf - t);

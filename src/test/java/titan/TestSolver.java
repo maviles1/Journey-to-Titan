@@ -12,7 +12,7 @@ import titan.interfaces.StateInterface;
 
 public class TestSolver {
 
-    static final double ACCURACY = 1e4; // 1 meter (might need to tweak that)
+    static final double ACCURACY = 1; // 1 meter (might need to tweak that)
 
     @Test
     public void testSolverOneDayX() {

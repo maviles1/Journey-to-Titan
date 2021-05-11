@@ -15,7 +15,7 @@ public class Main extends Application {
 
     public static final double PROBE_SPEED = 600000; //initial probe speed(scalar) relative to earth
     public static final double YEAR_IN_SECONDS = 31556926;
-    public static final double STEP_SIZE_TRAJECTORY = 1000;
+    public static final double STEP_SIZE_TRAJECTORY = 3600;
     public static final int CANVAS_WIDTH = 1600;
     public static final int CANVAS_HEIGHT = 1200;
     public static final double[] LAUNCH_VELOCITY = {40289.2995, -41570.9400, -587.3099};
@@ -25,7 +25,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         String url = getClass().getResource("solar_system_data-2020_04_01.txt").getPath();
         SpaceObjectBuilder builder = new SpaceObjectBuilder(url);
-        System.out.println(url);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/window.fxml"));
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("../main/fxml/window.fxml"));
@@ -63,7 +62,9 @@ public class Main extends Application {
         Renderer renderer = new Renderer(view, sim.getStates());
         window.attachRenderer(renderer);
 
-        renderer.start();
+        //renderer.start();
+
+        Simulator simulator = new Simulator(sim.getStates());
 
     }
 

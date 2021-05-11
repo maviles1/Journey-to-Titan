@@ -29,9 +29,10 @@ public class ODEFunction implements ODEFunctionInterface {
             }
 
             //Vector3d v = state.getVelocities()[i].addMul(dt,a);
+            Vector3d v = state.getVelocities()[i];
 
             aRates[i] = a;
-            vRates[i] = state.getVelocities()[i];
+            vRates[i] = v;
         }
 
         return new Rate(vRates, aRates);
