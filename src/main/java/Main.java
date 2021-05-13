@@ -26,9 +26,11 @@ public class Main extends Application {
     public static final int CANVAS_HEIGHT = 1200;
     public static final double[] LAUNCH_VELOCITY = {40289.2995, -41570.9400, -587.3099};
     public static final double[] LAUNCH_POSITION = {6371000.0, 1.0, 1.0};
+    Stage stage;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        stage = primaryStage;
         String url = getClass().getResource("solar_system_data-2020_04_01.txt").getPath();
         SpaceObjectBuilder builder = new SpaceObjectBuilder(url);
 
@@ -70,8 +72,23 @@ public class Main extends Application {
 
         //renderer.start();
 
+        runPolySim(pos, vel);
+    }
+
+    @Override
+    public void stop() {
+        System.exit(0);
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    public void runPolySim(Vector3d pos, Vector3d vel) {
         ScrollPane pane = new ScrollPane();
         pane.setPannable(true);
+//        pane.setHvalue(1/3.0);
+//        pane.setVvalue(1/1.2);
         pane.setHvalue(0.5);
         pane.setVvalue(0.5);
 
@@ -84,16 +101,27 @@ public class Main extends Application {
         ProbeSim verletSim = new ProbeSim(new Solver(new VerletSolver()));
         verletSim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
 
+        ProbeSim v2Sim = new ProbeSim(new Solver(VerletSolver.getV2()));
+        v2Sim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
+
         ProbeSim rkSim = new ProbeSim(new Solver(new RKSolver()));
         rkSim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
+
+        ProbeSim rk2 = new ProbeSim(new Solver(RKSolver.getRK2()));
+        rk2.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
 
         ArrayList<StateInterface[]> simStates = new ArrayList<>();
         //simStates.add(ogSim.getStates());
         simStates.add(eulerSim.getStates());
         simStates.add(verletSim.getStates());
+        simStates.add(v2Sim.getStates());
         simStates.add((rkSim.getStates()));
+        simStates.add((rk2.getStates()));
 
         PolySim polySim = new PolySim(simStates);
+//        polySim.setProbeNames(new String[]{"Euler", "Verlet", "RK"});
+        polySim.setProbeNames(new String[]{"Euler", "Verlet", "V2", "RK", "RK2"});
+
         pane.setContent(polySim.getCanvas());
         pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -110,21 +138,8 @@ public class Main extends Application {
             }
         });
 
-        primaryStage.setScene(new Scene(pane, 1200, 800));
+        stage.setScene(new Scene(pane, 1200, 800));
 
         polySim.start();
-        //poly.start();
-
-        //Simulator simulator = new Simulator(sim.getStates());
-
-    }
-
-    @Override
-    public void stop() {
-        System.exit(0);
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

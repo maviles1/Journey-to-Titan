@@ -9,11 +9,11 @@ import java.util.Scanner;
 
 public class ProbeSim implements ProbeSimulatorInterface {
 
-    State initialState;
-    Solver solver;
-    StateInterface[] states;
+    private Solver solver;
+    private StateInterface[] states;
     static final int EARTH_INDEX = 3;
     static final int PROBE_INDEX = 11;
+    static final int AMOUNT_OF_BODIES = 12;
 
     public ProbeSim() {
        this(new Solver(new EulerSolver()));
@@ -21,7 +21,6 @@ public class ProbeSim implements ProbeSimulatorInterface {
 
     public ProbeSim(Solver solver) {
         this.solver = solver;
-        initialState = readData();
     }
 
     @Override
@@ -31,17 +30,19 @@ public class ProbeSim implements ProbeSimulatorInterface {
 
     @Override
     public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double tf, double h) {
+        //fresh copy of data from file
+        State initialState = readData();
         //conversion of the input relative to the Solar System barycentre
         Vector3d p = (Vector3d) p0.add(initialState.getPosition()[EARTH_INDEX]); //earth = 3
         Vector3d v = (Vector3d) v0.add(initialState.getVelocities()[EARTH_INDEX]);
 
-        initialState.getPosition()[PROBE_INDEX] = p; //probe = 11
+        initialState.getPosition()[PROBE_INDEX] = p;
         initialState.getVelocities()[PROBE_INDEX] = v;
 
         states = solver.solve(new ODEFunction(), initialState, tf, h);
         Vector3d[] trajectory = new Vector3d[states.length];
 
-        for(int i = 0; i < states.length; i++){
+        for (int i = 0; i < states.length; i++) {
             State ph = (State) states[i];
             trajectory[i] = ph.getPosition()[PROBE_INDEX];
         }
@@ -54,11 +55,11 @@ public class ProbeSim implements ProbeSimulatorInterface {
             String url = getClass().getResource("/solar_system_data-2020_04_01.txt").getPath();
             File file = new File(url);
             Scanner scanner = new Scanner(file);
-            Vector3d[] positions = new Vector3d[12];
-            Vector3d[] velocities = new Vector3d[12];
+            Vector3d[] positions = new Vector3d[AMOUNT_OF_BODIES];
+            Vector3d[] velocities = new Vector3d[AMOUNT_OF_BODIES];
             double earthRadius = 0;
             double titanRadius = 0;
-            double[] masses = new double[12];
+            double[] masses = new double[AMOUNT_OF_BODIES];
             for (int i = 0; scanner.hasNextLine(); i++) {
                 String line = scanner.nextLine().replaceFirst("(\\w+):\\s\\{\\s", "").replaceAll("\\s", "");
                 String[] data = line.split(",");
@@ -83,12 +84,12 @@ public class ProbeSim implements ProbeSimulatorInterface {
                 positions[i] = pos;
                 velocities[i] = vel;
                 masses[i] = mass;
-
             }
+
+            masses[PROBE_INDEX] = 15000;
             State.setMass(masses);
             State.setNames();
             State.setRadius(new double[]{700000, 2439.7, 6051.8, earthRadius, 1737.1, 3389.5, 69911, 58232, titanRadius, 25362, 2462.2, 10, 1});
-
             return new State(positions, velocities, 0);
         } catch (Exception e) {
             e.printStackTrace();

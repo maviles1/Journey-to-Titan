@@ -18,8 +18,7 @@ public class PolySim extends AnimationTimer {
     private final int HEIGHT = 1000 * 5;
     private final int AMOUNT_BODIES = 12;
 
-//    private static double res = 7e8;
-    private double res = 5e9;
+    private double res = 7e8;
     private int speedOffset = 5; //default render speed, 1 state/frame
 
     private Canvas canvas;
@@ -33,6 +32,9 @@ public class PolySim extends AnimationTimer {
     ArrayList<StateInterface[]> polyStates;
     List<List<Double[]>> polyPaths = new ArrayList<>();
 
+    String[] probeNames = {"Probe"};
+    String[] names = new String[]{"Sun", "Mercury", "Venus", "Earth", "Moon", "Mars", "Jupiter", "Saturn", "Titan", "Uranus", "Neptune", "Probe"};
+
     public PolySim(StateInterface[] states) {
         this(new ArrayList<>(Collections.singletonList(states)));
     }
@@ -44,7 +46,6 @@ public class PolySim extends AnimationTimer {
         for (int i = 0; i < polyStates.size()+1; i++) {
             polyPaths.add(new ArrayList<>());   //add arraylists to contain the previous position
         }
-
     }
 
     @Override
@@ -54,46 +55,59 @@ public class PolySim extends AnimationTimer {
         gc.setFill(Paint.valueOf("#000000"));
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         //green, yellow, blue
-        Color[] simColors = {Color.valueOf("#2ecc71"), Color.valueOf("#f1c40f"), Color.valueOf("#3498db")};
+        Color[] simColors = {Color.valueOf("#2ecc71"), Color.valueOf("#f1c40f"), Color.valueOf("#3498db"), Color.valueOf("#f8a5c2"), Color.valueOf("#F79F1F")};
 
+        //First add the current pos in the paths with the actual nasa position data
         for (int i = 0; i < 9; i++) {
             nasaPaths.add(new Double[]{calcX(nasaPos[i].get(count).getX()), calcY(nasaPos[i].get(count).getY())});
         }
 
+        //Draw all the nasa position history paths
         gc.setFill(Color.valueOf("#ecf0f1"));
         for (Double[] pos : nasaPaths) {
             gc.fillOval(calcX(pos[0])-0.5, calcY(pos[1])-0.5, 1, 1);
         }
 
+        //Now begin drawing the different simulations
         for (int i = 0; i < polyStates.size(); i++) {
-            gc.setFill(simColors[i]);
-            for (int j = 0; j < AMOUNT_BODIES; j++) {
-                polyPaths.get(i).add(polyPaint((State) polyStates.get(i)[count], gc, j));
+            gc.setFill(simColors[i].darker().desaturate());
+            for (Double[] pos : polyPaths.get(i)) {         //begin drawing the path history
+                gc.fillOval(calcX(pos[0])-1, calcY(pos[1])-1, 2, 2);
             }
 
-            gc.setFill(((Color)gc.getFill()).darker().desaturate());
-            for (Double[] pos : polyPaths.get(i)) {
-                gc.fillOval(calcX(pos[0])-1, calcY(pos[1])-1, 2, 2);
+            gc.setFill(simColors[i]);           //select color for simulation from colors array
+            for (int j = 0; j < AMOUNT_BODIES; j++) {
+                polyPaths.get(i).add(polyPaint(i, gc, j));  //draw celestial body and add position to path history
             }
         }
 
         count += speedOffset;
-        if (count > 8767) {
-            this.stop();
+        if (count > 8761) {
+            //this.stop();
+            count -= speedOffset;
         }
     }
 
-    public Double[] polyPaint(State state, GraphicsContext gc, int body) {
+    public Double[] polyPaint(int i, GraphicsContext gc, int body) {
+        State state = (State) polyStates.get(i)[count];
+        //scale and position x and y coordinate
         double x = (WIDTH / 2.0) + toCoord(state.getPosition()[body].getX());
         double y = (HEIGHT / 2.0) + toCoord(state.getPosition()[body].getY());
-        gc.fillOval(x-2.5, y-2.5, 5, 5);
+        gc.fillOval(x - 2.5, y - 2.5, 5, 5);
 
-        if (State.names.get(body).equals("Saturn") || State.names.get(body).equals("Earth"))
-            gc.fillText(State.names.get(body), x - 20, y - 10);
+        if (names[body].equals("Saturn") || names[body].equals("Earth"))    //make sure their moons don't cover the planet names
+            gc.fillText(names[body], x - 20, y - 10);
+        else if (probeNames.length >= i && names[body].equals("Probe")) //select name for simulation run for probe if applicable
+            gc.fillText(probeNames[i], x - 20, y - 10);
         else
-            gc.fillText(State.names.get(body), x + 10, y + 10);
+            gc.fillText(names[body], x + 10, y + 10);
 
+        //return to be added to path history
         return new Double[]{state.getPosition()[body].getX(), state.getPosition()[body].getY()};
+    }
+
+    public void setProbeNames(String[] probeNames) {
+        this.probeNames = probeNames;
     }
 
     public double calcX(double val) {
@@ -113,6 +127,10 @@ public class PolySim extends AnimationTimer {
 
     public void simSpeed(double factor) {
         speedOffset += factor;
+    }
+
+    public double toCoord(double d) {
+        return d / res;
     }
 
     public ArrayList<Vector3d> parseHorizons(String filename) {
@@ -153,8 +171,4 @@ public class PolySim extends AnimationTimer {
         }
     }
 
-
-    public double toCoord(double d) {
-        return d / res;
-    }
 }

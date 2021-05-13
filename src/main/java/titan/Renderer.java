@@ -76,7 +76,7 @@ public class Renderer extends AnimationTimer {
             gc.fillOval(path[0], path[1], path[2], path[3]);
         }
         paths.add(new Double[]{gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX()), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY()), 1.0, 1.0});        gc.setFill(Paint.valueOf("#DBF188"));
-        gc.fillText(State.names.get(index), gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX() + 6), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY() + 30));
+        //gc.fillText(State.names.get(index), gc.getCanvas().getLayoutBounds().getCenterX() + toScreenCoordinates(vec.getX() + 6), gc.getCanvas().getLayoutBounds().getCenterY() + toScreenCoordinates(vec.getY() + 30));
         gc.setFill(Paint.valueOf("#ffffff"));
     }
 
