@@ -1,10 +1,13 @@
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import titan.*;
@@ -70,7 +73,7 @@ public class Main extends Application {
         ScrollPane pane = new ScrollPane();
         pane.setPannable(true);
         pane.setHvalue(0.5);
-        pane.setVvalue(0.4);
+        pane.setVvalue(0.5);
 
         ProbeSim ogSim = new ProbeSim();
         ogSim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
@@ -92,6 +95,20 @@ public class Main extends Application {
 
         PolySim polySim = new PolySim(simStates);
         pane.setContent(polySim.getCanvas());
+        pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.Z) {
+                    polySim.scale(1.05);
+                } else if (event.getCode() == KeyCode.X){
+                    polySim.scale(0.95);
+                } else if (event.getCode() == KeyCode.EQUALS) {
+                    polySim.simSpeed(1);
+                } else if (event.getCode() == KeyCode.MINUS) {
+                    polySim.simSpeed(-1);
+                }
+            }
+        });
 
         primaryStage.setScene(new Scene(pane, 1200, 800));
 
