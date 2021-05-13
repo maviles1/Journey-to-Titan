@@ -3,9 +3,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import titan.*;
+import titan.interfaces.StateInterface;
 import titan.ui.View;
 import titan.ui.Window;
 
@@ -64,7 +67,38 @@ public class Main extends Application {
 
         //renderer.start();
 
-        Simulator simulator = new Simulator(sim.getStates());
+        ScrollPane pane = new ScrollPane();
+        pane.setPannable(true);
+        pane.setHvalue(0.5);
+        pane.setVvalue(0.4);
+
+        ProbeSim ogSim = new ProbeSim();
+        ogSim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
+
+        ProbeSim eulerSim = new ProbeSim(new Solver(new EulerSolver()));
+        eulerSim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
+
+        ProbeSim verletSim = new ProbeSim(new Solver(new VerletSolver()));
+        verletSim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
+
+        ProbeSim rkSim = new ProbeSim(new Solver(new RKSolver()));
+        rkSim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
+
+        ArrayList<StateInterface[]> simStates = new ArrayList<>();
+        //simStates.add(ogSim.getStates());
+        simStates.add(eulerSim.getStates());
+        simStates.add(verletSim.getStates());
+        simStates.add((rkSim.getStates()));
+
+        PolySim polySim = new PolySim(simStates);
+        pane.setContent(polySim.getCanvas());
+
+        primaryStage.setScene(new Scene(pane, 1200, 800));
+
+        polySim.start();
+        //poly.start();
+
+        //Simulator simulator = new Simulator(sim.getStates());
 
     }
 
