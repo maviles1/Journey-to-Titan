@@ -19,13 +19,11 @@ public class PolySim extends AnimationTimer {
     private final int AMOUNT_BODIES = 12;
 
     private double res = 7e8;
-    private int speedOffset = 5; //default render speed, 1 state/frame
+    private int speedOffset = 1; //default render speed, 1 state/frame
 
     private Canvas canvas;
     private ArrayList<Double[]> nasaPaths = new ArrayList<>();
-
-    ArrayList<Vector3d> titanPos = new ArrayList<>();
-    ArrayList<Vector3d>[] nasaPos = new ArrayList[11];
+    private ArrayList<Vector3d>[] nasaPos = new ArrayList[11];
 
     private int count = 0;
 
@@ -82,7 +80,7 @@ public class PolySim extends AnimationTimer {
         }
 
         count += speedOffset;
-        if (count > 8761) {
+        if (count > polyStates.get(0).length) {
             //this.stop();
             count -= speedOffset;
         }
@@ -156,7 +154,6 @@ public class PolySim extends AnimationTimer {
 
     public void initHorizons() {
         try {
-            titanPos = parseHorizons("titan2.txt");
             nasaPos[0] = parseHorizons("sunTraj.txt");
             nasaPos[1] = parseHorizons("mercuryTraj.txt");
             nasaPos[2] = parseHorizons("venusTraj.txt");
@@ -165,7 +162,7 @@ public class PolySim extends AnimationTimer {
             nasaPos[5] = parseHorizons("marsTraj.txt");
             nasaPos[6] = parseHorizons("jupiterTraj.txt");
             nasaPos[7] = parseHorizons("saturnTraj.txt");
-            nasaPos[8] = titanPos;
+            nasaPos[8] = parseHorizons("titan2.txt");;
         } catch (Exception e) {
             e.printStackTrace();
         }

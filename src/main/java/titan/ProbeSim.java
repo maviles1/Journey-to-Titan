@@ -50,6 +50,10 @@ public class ProbeSim implements ProbeSimulatorInterface {
         return trajectory;
     }
 
+    public StateInterface[] getStates() {
+        return this.states;
+    }
+
     public State readData() {
         try {
             String url = getClass().getResource("/solar_system_data-2020_04_01.txt").getPath();
@@ -61,17 +65,21 @@ public class ProbeSim implements ProbeSimulatorInterface {
             double titanRadius = 0;
             double[] masses = new double[AMOUNT_OF_BODIES];
             for (int i = 0; scanner.hasNextLine(); i++) {
+                //strip the leading name and curly bracket as well as all the whitespace
                 String line = scanner.nextLine().replaceFirst("(\\w+):\\s\\{\\s", "").replaceAll("\\s", "");
-                String[] data = line.split(",");
+                String[] data = line.split(",");    //split line into array on commas to extract data
 
+                //remove the substring "mass=" to extract just the number
                 double mass = Double.parseDouble(data[0].replaceFirst("\\w+=", ""));
-                int offset = 0;
+
+                int offset = 0; //earth and titan have radius, so one extra element in data string
                 if (i == 3 || i == 8) { //earth or titan
                     earthRadius = i==3?Double.parseDouble(data[1].replaceFirst("\\w+=", "")):0;
                     titanRadius = i==8?Double.parseDouble(data[1].replaceFirst("\\w+=", "")):0;
                     offset++;
                 }
 
+                //maybe this could have been done in a loop but i'm lazy
                 double x = Double.parseDouble(data[1 + offset].replaceFirst("\\w+=", ""));
                 double y = Double.parseDouble(data[2 + offset].replaceFirst("\\w+=", ""));
                 double z = Double.parseDouble(data[3 + offset].replaceFirst("\\w+=", ""));
@@ -95,9 +103,5 @@ public class ProbeSim implements ProbeSimulatorInterface {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public StateInterface[] getStates() {
-        return this.states;
     }
 }
