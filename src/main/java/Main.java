@@ -123,18 +123,15 @@ public class Main extends Application {
         polySim.setProbeNames(new String[]{"Euler", "Verlet", "V2", "RK", "RK2"});
 
         pane.setContent(polySim.getCanvas());
-        pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.Z) {
-                    polySim.scale(1.05);
-                } else if (event.getCode() == KeyCode.X){
-                    polySim.scale(0.95);
-                } else if (event.getCode() == KeyCode.EQUALS) {
-                    polySim.simSpeed(1);
-                } else if (event.getCode() == KeyCode.MINUS) {
-                    polySim.simSpeed(-1);
-                }
+        pane.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.Z) {
+                polySim.scale(1.05);
+            } else if (event.getCode() == KeyCode.X) {
+                polySim.scale(0.95);
+            } else if (event.getCode() == KeyCode.EQUALS) {
+                polySim.simSpeed(1);
+            } else if (event.getCode() == KeyCode.MINUS) {
+                polySim.simSpeed(-1);
             }
         });
 

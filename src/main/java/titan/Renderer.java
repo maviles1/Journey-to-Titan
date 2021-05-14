@@ -54,8 +54,8 @@ public class Renderer extends AnimationTimer {
             startNanoTime = now;
 
         gc.setFill(Paint.valueOf("#469FCB"));
-        for (int i = 0; i < state.positions.length; i++) {
-            drawSpaceObject(gc, state.positions[i], i);
+        for (int i = 0; i < state.getPosition().length; i++) {
+            drawSpaceObject(gc, state.getPosition()[i], i);
         }
 
         gc.setTextAlign(TextAlignment.CENTER);

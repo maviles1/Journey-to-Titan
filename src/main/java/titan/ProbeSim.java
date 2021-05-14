@@ -74,8 +74,8 @@ public class ProbeSim implements ProbeSimulatorInterface {
 
                 int offset = 0; //earth and titan have radius, so one extra element in data string
                 if (i == 3 || i == 8) { //earth or titan
-                    earthRadius = i==3?Double.parseDouble(data[1].replaceFirst("\\w+=", "")):0;
-                    titanRadius = i==8?Double.parseDouble(data[1].replaceFirst("\\w+=", "")):0;
+                    earthRadius = (i==3)?Double.parseDouble(data[1].replaceFirst("\\w+=", "")):0;
+                    titanRadius = (i==8)?Double.parseDouble(data[1].replaceFirst("\\w+=", "")):0;
                     offset++;
                 }
 

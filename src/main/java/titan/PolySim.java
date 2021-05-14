@@ -19,7 +19,7 @@ public class PolySim extends AnimationTimer {
     private final int AMOUNT_BODIES = 12;
 
     private double res = 7e8;
-    private int speedOffset = 1; //default render speed, 1 state/frame
+    private int speedOffset = 3; //default render speed, 1 state/frame
 
     private Canvas canvas;
     private ArrayList<Double[]> nasaPaths = new ArrayList<>();
@@ -142,7 +142,7 @@ public class PolySim extends AnimationTimer {
             while (scanner.hasNextLine()) {
                 String[] data = scanner.nextLine().split(",");
                 Vector3d posV = new Vector3d(Double.parseDouble(data[2].trim()), Double.parseDouble(data[3].trim()), Double.parseDouble(data[4].trim()));
-                pos.add(posV.mul(1000));
+                pos.add(posV.mul(1000)); //nasa horizons data comes in km, so we need to convert to meters
             }
             return pos;
 

@@ -1,7 +1,6 @@
 package titan;
 
 import titan.interfaces.ODEFunctionInterface;
-import titan.interfaces.RateInterface;
 import titan.interfaces.StateInterface;
 import titan.interfaces.StepInterface;
 
@@ -50,7 +49,6 @@ public class VerletSolver implements StepInterface {
 class V2 implements StepInterface {
 
     /**
-     * This one works minimally better than pstep
      * This method implements the half-step(?) velocity verlet algorithm
      * https://en.wikipedia.org/wiki/Verlet_integration#Velocity_Verlet
      * implements steps 1-4 of the "standard implementation"
