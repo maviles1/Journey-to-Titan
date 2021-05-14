@@ -21,7 +21,7 @@ public class Main extends Application {
 
     public static final double PROBE_SPEED = 600000; //initial probe speed(scalar) relative to earth
     public static final double YEAR_IN_SECONDS = 31556926;
-    public static final double STEP_SIZE_TRAJECTORY = 3600;
+    public static final double STEP_SIZE_TRAJECTORY = 8600;
     public static final int CANVAS_WIDTH = 1600;
     public static final int CANVAS_HEIGHT = 1200;
     public static final double[] LAUNCH_VELOCITY = {40289.2995, -41570.9400, -587.3099};

@@ -94,7 +94,7 @@ public class ProbeSim implements ProbeSimulatorInterface {
                 masses[i] = mass;
             }
 
-            masses[PROBE_INDEX] = 15000;
+            masses[PROBE_INDEX] =  7.8e4;
             State.setMass(masses);
             State.setNames();
             State.setRadius(new double[]{700000, 2439.7, 6051.8, earthRadius, 1737.1, 3389.5, 69911, 58232, titanRadius, 25362, 2462.2, 10, 1});

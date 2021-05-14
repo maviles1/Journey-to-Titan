@@ -56,15 +56,15 @@ public class PolySim extends AnimationTimer {
         Color[] simColors = {Color.valueOf("#2ecc71"), Color.valueOf("#f1c40f"), Color.valueOf("#3498db"), Color.valueOf("#f8a5c2"), Color.valueOf("#F79F1F")};
 
         //First add the current pos in the paths with the actual nasa position data
-        for (int i = 0; i < 9; i++) {
-            nasaPaths.add(new Double[]{calcX(nasaPos[i].get(count).getX()), calcY(nasaPos[i].get(count).getY())});
-        }
-
-        //Draw all the nasa position history paths
-        gc.setFill(Color.valueOf("#ecf0f1"));
-        for (Double[] pos : nasaPaths) {
-            gc.fillOval(calcX(pos[0])-0.5, calcY(pos[1])-0.5, 1, 1);
-        }
+//        for (int i = 0; i < 9; i++) {
+//            nasaPaths.add(new Double[]{calcX(nasaPos[i].get(count).getX()), calcY(nasaPos[i].get(count).getY())});
+//        }
+//
+//        //Draw all the nasa position history paths
+//        gc.setFill(Color.valueOf("#ecf0f1"));
+//        for (Double[] pos : nasaPaths) {
+//            gc.fillOval(calcX(pos[0])-0.5, calcY(pos[1])-0.5, 1, 1);
+//        }
 
         //Now begin drawing the different simulations
         for (int i = 0; i < polyStates.size(); i++) {
