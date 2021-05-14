@@ -45,6 +45,9 @@ public class Solver implements ODESolverInterface {
         StateInterface[] s = new StateInterface[size];
         s[0] = y0;
 
+        //initial thrust
+        thrust(new Vector3d(100,100,100), (State)y0);
+
         double t = 0;
         for (int i = 1; i < size - 1; i++) {
             //t += h;
@@ -60,6 +63,31 @@ public class Solver implements ODESolverInterface {
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         return stepFunction.step(f, t, y, h);
+    }
+
+    public double fuelMass;
+
+    public void thrust(Vector3d thrustVector, State state) {
+        //Total mass
+        double totalmass = State.mass[11] + fuelMass;
+        Vector3d oldvel = state.getVelocities()[11];
+        Vector3d newvel = state.getVelocities()[11].add(thrustVector);
+
+        double finalForce = totalmass * Math.abs(newvel.norm() - oldvel.norm());
+
+//        System.out.println("TotalMass: " + totalmass);
+//        System.out.println("Fuelmass: " + this.getFuelMass());
+//        System.out.println("probemass: " + this.getMass());
+        //        System.out.println("newvel: " + newvel.magnitude());
+        //        System.out.println("oldvel: " + oldvel.magnitude());
+        //        System.out.println("vectormag: " + thrustVector.magnitude());
+        //        System.out.println("before-> F: " + FinalForce);
+        double usedmass = finalForce / newvel.norm();
+        //        System.out.println("after-> m: " + usedmass);
+
+        fuelMass -= usedmass;
+
+        state.getVelocities()[11] = state.getVelocities()[11].add(thrustVector);
     }
 
 }
