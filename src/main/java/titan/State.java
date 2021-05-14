@@ -15,12 +15,22 @@ public class State implements StateInterface {
     static double[] radius;
     double time;
 
+    double probeFuelMass;
+
     public State(Vector3d[] positions, Vector3d[] velocities, double time) {
         this.positions = positions;
         this.velocities = velocities;
         this.time = time;
+        this.probeFuelMass = 15;
     }
 
+
+    public State(Vector3d[] positions, Vector3d[] velocities, double time, double probeFuelMass) {
+        this.positions = positions;
+        this.velocities = velocities;
+        this.time = time;
+        this.probeFuelMass = probeFuelMass;
+    }
     @Override
     public StateInterface addMul(double step, RateInterface r) {
         Rate rate = (Rate) r;
@@ -33,7 +43,8 @@ public class State implements StateInterface {
             newVelocities[i] = velocities[i].addMul(step, rate.getRateVelocity()[i]);
         }
 
-        return new State(newPositions, newVelocities, time + step);
+//        return new State(newPositions, newVelocities, time + step);
+        return new State(newPositions, newVelocities, time + step, probeFuelMass);
     }
 
     public String toString() {
@@ -52,6 +63,7 @@ public class State implements StateInterface {
 
     public static void setMass(double[] mass) {
         State.mass = mass;
+        System.out.println("MASS " + mass[11]);
     }
 
     public static void setNames() {

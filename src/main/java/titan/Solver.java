@@ -45,13 +45,13 @@ public class Solver implements ODESolverInterface {
         StateInterface[] s = new StateInterface[size];
         s[0] = y0;
 
+        ((State) y0).getVelocities()[11] = new Vector3d(5.427193405797901e+03, -2.931056622265021e+04, 6.575428158157592e-01);
         //initial thrust
-        fuelMass = 15;
-        thrust(new Vector3d(100,100,100), (State)y0);
+        thrust(new Vector3d(4028.92995 *2, -4157.09400 * 4, -58.73099*3), (State)y0);
+//        thrust(new Vector3d(100,100,100), (State)y0);
 
         double t = 0;
         for (int i = 1; i < size - 1; i++) {
-            //t += h;
             s[i] = step(f, t, s[i - 1], h);
             t += h;
         }
@@ -66,27 +66,26 @@ public class Solver implements ODESolverInterface {
         return stepFunction.step(f, t, y, h);
     }
 
-    public double fuelMass;
-
     public void thrust(Vector3d thrustVector, State state) {
         //Total mass
-        double totalmass = State.mass[11] + fuelMass;
+        double totalmass = State.mass[11] + state.probeFuelMass;
         Vector3d oldvel = state.getVelocities()[11];
         Vector3d newvel = oldvel.add(thrustVector);
 
         double finalForce = totalmass * Math.abs(newvel.norm() - oldvel.norm());
 
-        System.out.println("TotalMass: " + totalmass);
-        System.out.println("Fuelmass: " + fuelMass);
-        System.out.println("probemass: " + State.mass[11]);
+//        System.out.println("TotalMass: " + totalmass);
+//        System.out.println("Fuelmass: " + state.probeFuelMass);
+//        System.out.println("probemass: " + State.mass[11]);
         //        System.out.println("newvel: " + newvel.magnitude());
         //        System.out.println("oldvel: " + oldvel.magnitude());
         //        System.out.println("vectormag: " + thrustVector.magnitude());
         //        System.out.println("before-> F: " + FinalForce);
         double usedmass = finalForce / newvel.norm();
-                System.out.println("after-> m: " + usedmass);
+                //System.out.println("after-> m: " + usedmass);
 
-        fuelMass -= usedmass;
+        state.probeFuelMass -= usedmass;
+        //System.out.println("PROBEFUELMASS " + state.probeFuelMass);
 
         state.getVelocities()[11] = state.getVelocities()[11].add(thrustVector);
     }

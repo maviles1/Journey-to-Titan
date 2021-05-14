@@ -14,18 +14,19 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class PolySim extends AnimationTimer {
 
-    private final int WIDTH = 1000 * 5;
-    private final int HEIGHT = 1000 * 5;
+    private final double WIDTH = 1000 * 5.5;
+    private final double HEIGHT = 1000 * 5.5;
     private final int AMOUNT_BODIES = 12;
 
     private double res = 7e8;
-    private int speedOffset = 3; //default render speed, 1 state/frame
+    private int speedOffset = 1; //default render speed, 1 state/frame
 
     private Canvas canvas;
     private ArrayList<Double[]> nasaPaths = new ArrayList<>();
     private ArrayList<Vector3d>[] nasaPos = new ArrayList[11];
 
     private int count = 0;
+    private int minSim;
 
     ArrayList<StateInterface[]> polyStates;
     List<List<Double[]>> polyPaths = new ArrayList<>();
@@ -44,7 +45,13 @@ public class PolySim extends AnimationTimer {
         for (int i = 0; i < polyStates.size()+1; i++) {
             polyPaths.add(new ArrayList<>());   //add arraylists to contain the previous position
         }
+        minSim = polyStates.get(0).length;
+        for (int i = 1; i < polyStates.size(); i++) {
+            minSim = Math.min(minSim, polyStates.get(i).length);
+        }
     }
+
+
 
     @Override
     public void handle(long now) {
@@ -53,18 +60,10 @@ public class PolySim extends AnimationTimer {
         gc.setFill(Paint.valueOf("#000000"));
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         //green, yellow, blue
-        Color[] simColors = {Color.valueOf("#2ecc71"), Color.valueOf("#f1c40f"), Color.valueOf("#3498db"), Color.valueOf("#f8a5c2"), Color.valueOf("#F79F1F")};
+        Color[] simColors = {Color.valueOf("#2ecc71"), Color.valueOf("#f1c40f"), Color.valueOf("#3498db"), Color.valueOf("#f8a5c2"), Color.valueOf("#F79F1F"), Color.valueOf("#ff5252")};
 
         //First add the current pos in the paths with the actual nasa position data
-//        for (int i = 0; i < 9; i++) {
-//            nasaPaths.add(new Double[]{calcX(nasaPos[i].get(count).getX()), calcY(nasaPos[i].get(count).getY())});
-//        }
-//
-//        //Draw all the nasa position history paths
-//        gc.setFill(Color.valueOf("#ecf0f1"));
-//        for (Double[] pos : nasaPaths) {
-//            gc.fillOval(calcX(pos[0])-0.5, calcY(pos[1])-0.5, 1, 1);
-//        }
+        //drawNasaPaths(gc);
 
         //Now begin drawing the different simulations
         for (int i = 0; i < polyStates.size(); i++) {
@@ -79,8 +78,13 @@ public class PolySim extends AnimationTimer {
             }
         }
 
+        gc.setFill(Color.valueOf("#ecf0f1"));
+        Vector3d testPoint = new Vector3d(-2.4951517995514418E13, -1.794349344879982E12,2.901591968932223E7); //test point given by probesimulatortest
+        gc.fillOval(calcX(testPoint.getX())-1, calcY(testPoint.getX())-1, 2, 2);
+        gc.fillText("Test Point", calcX(testPoint.getX()) + 10, calcY(testPoint.getY()) + 10);
+
         count += speedOffset;
-        if (count > polyStates.get(0).length) {
+        if (count > polyStates.get(0).length || count >= minSim) {
             //this.stop();
             count -= speedOffset;
         }
@@ -102,6 +106,16 @@ public class PolySim extends AnimationTimer {
 
         //return to be added to path history
         return new Double[]{state.getPosition()[body].getX(), state.getPosition()[body].getY()};
+    }
+
+    public void drawNasaPaths(GraphicsContext gc) {
+        for (int i = 0; i < 9; i++)
+            nasaPaths.add(new Double[]{calcX(nasaPos[i].get(count).getX()), calcY(nasaPos[i].get(count).getY())});
+
+        //Draw all the nasa position history paths
+        gc.setFill(Color.valueOf("#ecf0f1"));
+        for (Double[] pos : nasaPaths)
+            gc.fillOval(calcX(pos[0])-0.5, calcY(pos[1])-0.5, 1, 1);
     }
 
     public void setProbeNames(String[] probeNames) {
