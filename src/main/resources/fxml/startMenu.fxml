@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="titan.ui.StartMenu">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="titan.ui.StartMenu">
    <children>
       <VBox layoutX="200.0" layoutY="190.0" prefHeight="200.0" prefWidth="100.0" spacing="15.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
          <children>
@@ -81,7 +81,7 @@
                   </HBox>
                </children>
             </VBox>
-            <HBox alignment="CENTER" spacing="10.0">
+            <HBox alignment="CENTER" spacing="15.0">
                <children>
                   <VBox spacing="8.0">
                      <children>
@@ -95,6 +95,21 @@
                            <children>
                               <Label text="Duration" />
                               <TextField fx:id="durationField" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <Label text="Perspective">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" spacing="15.0">
+                           <children>
+                              <RadioButton fx:id="twoD" mnemonicParsing="false" text="2D" />
+                              <RadioButton fx:id="threeD" mnemonicParsing="false" text="3D" />
                            </children>
                         </HBox>
                      </children>
@@ -118,21 +133,6 @@
                      <children>
                         <CheckBox fx:id="rkClassicOption" mnemonicParsing="false" text="Runge-Kutta (Classic)" />
                         <CheckBox fx:id="rkOriginalOption" mnemonicParsing="false" text="Runge-Kutta (Original)" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-            <VBox alignment="CENTER" spacing="3.0">
-               <children>
-                  <Label text="Perspective">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <HBox alignment="CENTER" spacing="15.0">
-                     <children>
-                        <RadioButton fx:id="twoD" mnemonicParsing="false" text="2D" />
-                        <RadioButton fx:id="threeD" mnemonicParsing="false" text="3D" />
                      </children>
                   </HBox>
                </children>

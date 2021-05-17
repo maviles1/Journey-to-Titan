@@ -48,7 +48,7 @@ public class Main extends Application {
 //        Parent root = loader.load();
 //        window.init();
 
-        Parent startMenu = FXMLLoader.load(getClass().getResource("fxml/startMenu.fxml"));
+        Parent startMenu = FXMLLoader.load(getClass().getResource("fxml/start2.fxml"));
 
         primaryStage.setTitle("Mission Titan");
         primaryStage.setScene(new Scene(startMenu));
