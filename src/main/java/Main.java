@@ -30,11 +30,9 @@ public class Main extends Application {
     public static final double[] LAUNCH_VELOCITY = {40289.2995, -41570.9400, -587.3099};
 //    public static final double[] LAUNCH_POSITION = {63710000.0, 1.0, 1.0};
     public static final double[] LAUNCH_POSITION = {6371000.0, 1.0, 1.0};
-    Stage stage;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        stage = primaryStage;
 //        String url = getClass().getResource("solar_system_data-2020_04_01.txt").getPath();
 //        SpaceObjectBuilder builder = new SpaceObjectBuilder(url);
 //
@@ -82,7 +80,6 @@ public class Main extends Application {
 
         //renderer.start();
 
-        //runPolySim(pos, vel);
     }
 
     @Override
@@ -94,70 +91,4 @@ public class Main extends Application {
         launch(args);
     }
 
-    public void runPolySim(Vector3d pos, Vector3d vel) {
-        ScrollPane pane = new ScrollPane();
-        pane.setPannable(true);
-        pane.setHvalue(0.5);
-        pane.setVvalue(0.5);
-
-        Vector3dInterface probe_relative_position = new Vector3d(6371e3, 0, 0);
-        Vector3dInterface probe_relative_velocity = new Vector3d(52500.0, -27000.0, 0);// 12.0 months
-
-        ProbeSim eulerSim = new ProbeSim(new Solver(new EulerSolver()));
-        //eulerSim.trajectory(probe_relative_position, probe_relative_velocity, YEAR, DAY);
-        eulerSim.trajectory(pos, vel, YEAR, STEP_SIZE_TRAJECTORY);
-        //eulerSim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
-
-        ProbeSim verletSim = new ProbeSim(new Solver(new VerletSolver()));
-        //verletSim.trajectory(probe_relative_position, probe_relative_velocity, YEAR, DAY);
-        verletSim.trajectory(pos, vel, YEAR, STEP_SIZE_TRAJECTORY);
-        //verletSim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
-
-        ProbeSim v2Sim = new ProbeSim(new Solver(VerletSolver.getV2()));
-        //v2Sim.trajectory(probe_relative_position, probe_relative_velocity, YEAR, DAY);
-        v2Sim.trajectory(pos, vel, YEAR, STEP_SIZE_TRAJECTORY);
-        //v2Sim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
-
-        ProbeSim rkSim = new ProbeSim(new Solver(new RKSolver()));
-        //rkSim.trajectory(probe_relative_position, probe_relative_velocity, YEAR, DAY);
-        rkSim.trajectory(pos, vel, YEAR, STEP_SIZE_TRAJECTORY);
-        //rkSim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
-
-        ProbeSim rk2 = new ProbeSim(new Solver(RKSolver.getRK2()));
-        //rk2.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
-        //rk2.trajectory(probe_relative_position, probe_relative_velocity, YEAR, DAY);
-        rk2.trajectory(pos, vel, YEAR, STEP_SIZE_TRAJECTORY);
-
-        ProbeSim probeSimTest = new ProbeSim(new Solver(new EulerSolver()));
-        //probeSimTest.trajectory(probe_relative_position, probe_relative_velocity, YEAR, DAY);
-
-        ArrayList<StateInterface[]> simStates = new ArrayList<>();
-        simStates.add(eulerSim.getStates());
-        simStates.add(verletSim.getStates());
-        simStates.add(v2Sim.getStates());
-        simStates.add((rkSim.getStates()));
-        simStates.add((rk2.getStates()));
-        //simStates.add(probeSimTest.getStates());
-
-        PolySim polySim = new PolySim(simStates);
-//        polySim.setProbeNames(new String[]{"Euler", "Verlet", "RK"});
-        polySim.setProbeNames(new String[]{"Euler", "Verlet", "V2", "RK", "RK2", "Test"});
-
-        pane.setContent(polySim.getCanvas());
-        pane.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.Z) {
-                polySim.scale(1.05);
-            } else if (event.getCode() == KeyCode.X) {
-                polySim.scale(0.95);
-            } else if (event.getCode() == KeyCode.EQUALS) {
-                polySim.simSpeed(1);
-            } else if (event.getCode() == KeyCode.MINUS) {
-                polySim.simSpeed(-1);
-            }
-        });
-
-        stage.setScene(new Scene(pane, 1200, 800));
-
-        polySim.start();
-    }
 }

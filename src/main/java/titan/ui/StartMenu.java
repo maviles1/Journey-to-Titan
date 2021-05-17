@@ -69,8 +69,6 @@ public class StartMenu {
     @FXML
     private Button launchButton;
 
-    private ToggleGroup perspective;
-
     @FXML
     void initialize() {
         xField.setText(DEFAULT_LAUNCH_POSITION[0] + "");
@@ -84,7 +82,7 @@ public class StartMenu {
         stepSizeField.setText(DEFAULT_STEP_SIZE + "");
         durationField.setText(YEAR + "");
 
-        perspective = new ToggleGroup();
+        ToggleGroup perspective = new ToggleGroup();
         twoD.setToggleGroup(perspective);
         threeD.setToggleGroup(perspective);
     }
