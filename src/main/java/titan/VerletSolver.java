@@ -37,8 +37,8 @@ public class VerletSolver implements StepInterface {
             vel[i] = state.getVelocities()[i].addMul(0.5 * h, rate.getRateVelocity()[i].add(accel[i]));
         }
 
-//        return new State(pos, vel, t + h);
-        return new State(pos, vel, t + h, state.probeFuelMass);
+        return new State(pos, vel, t + h);
+        //return new State(pos, vel, t + h, state.probeFuelMass);
     }
 
     public static StepInterface getV2() {
@@ -88,7 +88,7 @@ class V2 implements StepInterface {
             newV[i] = vel[i].addMul(0.5 * h, accel[i]); //calculate full-step velocity
         }
 
-//        return new State(pos, newV, t + h);
-        return new State(pos, newV, t + h, state.probeFuelMass);
+        return new State(pos, newV, t + h);
+//        return new State(pos, newV, t + h, state.probeFuelMass);
     }
 }

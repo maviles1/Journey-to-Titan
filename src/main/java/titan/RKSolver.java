@@ -33,8 +33,8 @@ public class RKSolver implements StepInterface {
         Rate rs = r1.add(r2.mul(2)).add(r3.mul(2)).add(r4); //k1+2*k2+2*k3+k4)
         Rate w = stateRate.add(rs.mul(1/6.0));        //w=w+(k1+2*k2+2*k3+k4)/6,
 
-//        return new State(w.getRatePosition(), w.getRateVelocity(), t + h);
-        return new State(w.getRatePosition(), w.getRateVelocity(), t + h, state.probeFuelMass);
+        return new State(w.getRatePosition(), w.getRateVelocity(), t + h);
+        //return new State(w.getRatePosition(), w.getRateVelocity(), t + h, state.probeFuelMass);
     }
 
     public static StepInterface getRK2() {
@@ -63,7 +63,7 @@ class RK2 implements StepInterface{
         Rate rs = r1.add(r2.mul(3)).add(r3.mul(3)).add(r4); //k1+3k2+3k3+k4)
         Rate w = stateRate.add(rs.mul(0.125));        //w=w+(k1+2k2+2*k3+k4)/6,
 
-//        return new State(w.getRatePosition(), w.getRateVelocity(), t + h);
-        return new State(w.getRatePosition(), w.getRateVelocity(), t + h, state.probeFuelMass);
+        return new State(w.getRatePosition(), w.getRateVelocity(), t + h);
+        //return new State(w.getRatePosition(), w.getRateVelocity(), t + h, state.probeFuelMass);
     }
 }

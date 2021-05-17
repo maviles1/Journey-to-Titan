@@ -50,9 +50,7 @@ public class PolySim extends AnimationTimer {
             minSim = Math.min(minSim, polyStates.get(i).length);
         }
     }
-
-
-
+    
     @Override
     public void handle(long now) {
         GraphicsContext gc = canvas.getGraphicsContext2D();

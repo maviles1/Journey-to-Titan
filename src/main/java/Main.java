@@ -50,8 +50,10 @@ public class Main extends Application {
 //        Parent root = loader.load();
 //        window.init();
 
+        Parent startMenu = FXMLLoader.load(getClass().getResource("fxml/startMenu.fxml"));
+
         primaryStage.setTitle("Mission Titan");
-        //primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(new Scene(startMenu));
         primaryStage.getIcons().add(new Image("titan.png"));
         primaryStage.show();
 
@@ -67,16 +69,20 @@ public class Main extends Application {
 
         //ProbeSimulator sim = new ProbeSimulator(spaceObjects);
 
+        /*
+
         Vector3d vel = new Vector3d(LAUNCH_VELOCITY[0], LAUNCH_VELOCITY[1], LAUNCH_VELOCITY[2]);
         Vector3d pos = new Vector3d(LAUNCH_POSITION[0], LAUNCH_POSITION[1], LAUNCH_POSITION[2]);
 //        sim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
+
+         */
 //
 //        Renderer renderer = new Renderer(view, sim.getStates());
 //        window.attachRenderer(renderer);
 
         //renderer.start();
 
-        runPolySim(pos, vel);
+        //runPolySim(pos, vel);
     }
 
     @Override
