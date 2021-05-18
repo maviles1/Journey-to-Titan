@@ -11,7 +11,7 @@ import titan.interfaces.StateInterface;
 
 import java.util.ArrayList;
 
-public class StartMenu {
+public class Launcher {
 
     public static final double DAY = 24 * 60 * 60;
     public static final double YEAR = 365.25 * DAY;
