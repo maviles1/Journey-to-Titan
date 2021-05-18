@@ -2,14 +2,11 @@ package titan;
 
 import titan.interfaces.RateInterface;
 
-import java.util.Arrays;
-
 public class Rate implements RateInterface {
 
     private Vector3d[] positionRates;
     private Vector3d[] velocityRates;
     private final int size;
-
 
     public Rate(Vector3d[] rateP, Vector3d[] rateV) {
         this.positionRates = rateP;
@@ -18,12 +15,12 @@ public class Rate implements RateInterface {
     }
 
     // the new velocities
-    public Vector3d[] getRatePosition() {
+    public Vector3d[] getPosRates() {
         return positionRates;
     }
 
     //the acceleration
-    public Vector3d[] getRateVelocity() {
+    public Vector3d[] getVelRates() {
         return velocityRates;
     }
 
@@ -42,8 +39,8 @@ public class Rate implements RateInterface {
         Vector3d[] newPositions = new Vector3d[size];
         Vector3d[] newVelocities = new Vector3d[size];
         for (int i = 0; i < size; i++){
-            newPositions[i] = positionRates[i].add(r.getRatePosition()[i]);
-            newVelocities[i] = velocityRates[i].add(r.getRateVelocity()[i]);
+            newPositions[i] = positionRates[i].add(r.getPosRates()[i]);
+            newVelocities[i] = velocityRates[i].add(r.getVelRates()[i]);
         }
         return new Rate(newPositions,newVelocities);
     }
@@ -82,7 +79,7 @@ public class Rate implements RateInterface {
             Rate otherRate = (Rate) other;
             boolean equals = true;
             for (int i = 0; i < positionRates.length; i++) {
-                if (!positionRates[i].equals(otherRate.getRatePosition()[i]) || !velocityRates[i].equals(otherRate.getRateVelocity()[i]))
+                if (!positionRates[i].equals(otherRate.getPosRates()[i]) || !velocityRates[i].equals(otherRate.getVelRates()[i]))
                     equals = false;
             }
             return equals;

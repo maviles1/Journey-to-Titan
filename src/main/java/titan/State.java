@@ -29,8 +29,8 @@ public class State implements StateInterface {
         Vector3d[] newVelocities = new Vector3d[velocities.length];
 
         for (int i = 0; i < velocities.length; i++) {
-            newPositions[i] = positions[i].addMul(step, rate.getRatePosition()[i]);
-            newVelocities[i] = velocities[i].addMul(step, rate.getRateVelocity()[i]);
+            newPositions[i] = positions[i].addMul(step, rate.getPosRates()[i]);
+            newVelocities[i] = velocities[i].addMul(step, rate.getVelRates()[i]);
         }
 
         return new State(newPositions, newVelocities, time + step);

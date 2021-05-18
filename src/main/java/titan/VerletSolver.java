@@ -18,23 +18,23 @@ public class VerletSolver implements StepInterface {
      */
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         Rate rate = (Rate) f.call(t, y);
-        int size = rate.getRatePosition().length;
+        int size = rate.getPosRates().length;
         State state  = (State) y;
 
         Vector3d[] pos = new Vector3d[size];
         for(int i = 0 ; i < size; i++){
             //x(t + ∆t) = x(t) * ∆t + 1/2 * a(t) * ∆t^2
-            pos[i] = state.getPosition()[i].addMul(h, state.getVelocities()[i]).addMul(0.5 * h * h, rate.getRateVelocity()[i]);
+            pos[i] = state.getPosition()[i].addMul(h, state.getVelocities()[i]).addMul(0.5 * h * h, rate.getVelRates()[i]);
         }
 
         State nextState = new State(pos, state.getVelocities(), t + h);
         Rate newRate = (Rate)f.call(t + h, nextState);
-        Vector3d[] accel = newRate.getRateVelocity(); //a(t + ∆t)
+        Vector3d[] accel = newRate.getVelRates(); //a(t + ∆t)
 
         Vector3d[] vel = new Vector3d[size];
         for (int i = 0; i < size; i++) {
             //v(t + ∆t) = v(t) + 1/2*(a(t) + a(t + ∆t))*∆t
-            vel[i] = state.getVelocities()[i].addMul(0.5 * h, rate.getRateVelocity()[i].add(accel[i]));
+            vel[i] = state.getVelocities()[i].addMul(0.5 * h, rate.getVelRates()[i].add(accel[i]));
         }
 
         return new State(pos, vel, t + h);
@@ -62,13 +62,13 @@ class V2 implements StepInterface {
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         Rate rate = (Rate) f.call(t, y);    //to get the acceleration
-        int size = rate.getRatePosition().length;
+        int size = rate.getPosRates().length;
         State state  = (State) y;
 
         Vector3d[] vel = new Vector3d[size];
         for (int i = 0; i < size; i++){
             //v(t + 1/2*∆t) = v(t) + 1/2 * a(t) * ∆t
-            vel[i] = state.getVelocities()[i].addMul((h*0.5), rate.getRateVelocity()[i]); //calculate half step velocity
+            vel[i] = state.getVelocities()[i].addMul((h*0.5), rate.getVelRates()[i]); //calculate half step velocity
         }
 
         Vector3d[] pos = new Vector3d[size];
@@ -80,7 +80,7 @@ class V2 implements StepInterface {
         State nextState = new State(pos, state.getVelocities(), t + h); //to get the new acceleration
 
         Rate newRate = (Rate) f.call(t + h, nextState); //find new acceleration
-        Vector3d[] accel = newRate.getRateVelocity(); //a(t + ∆t)
+        Vector3d[] accel = newRate.getVelRates(); //a(t + ∆t)
 
         Vector3d[] newV = new Vector3d[size];
         for (int i = 0; i < size; i++) {
