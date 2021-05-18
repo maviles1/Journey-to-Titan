@@ -33,7 +33,7 @@ public class ProbeSim implements ProbeSimulatorInterface {
         //fresh copy of data from file
         State initialState = readData();
         //conversion of the input relative to the Solar System barycentre
-        Vector3d p = (Vector3d) p0.add(initialState.getPosition()[EARTH_INDEX]); //earth = 3
+        Vector3d p = (Vector3d) p0.add(initialState.getPosition()[EARTH_INDEX]);  //earth = 3
         Vector3d v = (Vector3d) v0.add(initialState.getVelocities()[EARTH_INDEX]);
 
         initialState.getPosition()[PROBE_INDEX] = p;
