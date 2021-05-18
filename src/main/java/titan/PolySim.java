@@ -45,7 +45,7 @@ public class PolySim extends AnimationTimer {
         for (int i = 0; i < polyStates.size()+1; i++) {
             polyPaths.add(new ArrayList<>());   //add arraylists to contain the previous position
         }
-        minSim = polyStates.get(0).length;
+        minSim = polyStates.get(0).length;      //min amount of states to prevent array overflow in animation timer loop
         for (int i = 1; i < polyStates.size(); i++) {
             minSim = Math.min(minSim, polyStates.get(i).length);
         }
@@ -78,7 +78,7 @@ public class PolySim extends AnimationTimer {
 
         gc.setFill(Color.valueOf("#ecf0f1"));
         Vector3d testPoint = new Vector3d(-2.4951517995514418E13, -1.794349344879982E12,2.901591968932223E7); //test point given by probesimulatortest
-        gc.fillOval(calcX(testPoint.getX())-1, calcY(testPoint.getX())-1, 2, 2);
+        gc.fillOval(calcX(testPoint.getX())-2.5, calcY(testPoint.getX())-2.5, 5, 5);    //not really sure why test point is rendering weirdly
         gc.fillText("Test Point", calcX(testPoint.getX()) + 10, calcY(testPoint.getY()) + 10);
 
         count += speedOffset;
@@ -91,8 +91,8 @@ public class PolySim extends AnimationTimer {
     public Double[] polyPaint(int i, GraphicsContext gc, int body) {
         State state = (State) polyStates.get(i)[count];
         //scale and position x and y coordinate
-        double x = (WIDTH / 2.0) + toCoord(state.getPosition()[body].getX());
-        double y = (HEIGHT / 2.0) + toCoord(state.getPosition()[body].getY());
+        double x = calcX(state.getPosition()[body].getX());
+        double y = calcY(state.getPosition()[body].getY());
         gc.fillOval(x - 2.5, y - 2.5, 5, 5);
 
         if (names[body].equals("Saturn") || names[body].equals("Earth"))    //make sure their moons don't cover the planet names
@@ -121,10 +121,12 @@ public class PolySim extends AnimationTimer {
     }
 
     public double calcX(double val) {
-        return (WIDTH / 2.0) + toCoord(val);
+//        return (WIDTH / 2.0) + toCoord(val);
+        return (WIDTH / 2.0) + toCoordX(val);
     }
     public double calcY(double val) {
-        return (HEIGHT / 2.0) + toCoord(val);
+//        return (HEIGHT / 2.0) + toCoord(val);
+        return (HEIGHT / 2.0) + toCoordY(val);
     }
 
     public Canvas getCanvas() {
@@ -140,7 +142,17 @@ public class PolySim extends AnimationTimer {
     }
 
     public double toCoord(double d) {
-        return d / res;
+        return (d / res);
+    }
+
+    public double toCoordX(double d) {
+//        return (d / res) - 3e11/res; //trying to increase resolution when around titan
+        return toCoord(d);              //not really working that well so thats why its commented
+    }
+
+    public double toCoordY(double d) {
+//        return (d / res) + 3e11/res;
+        return toCoord(d);
     }
 
     public ArrayList<Vector3d> parseHorizons(String filename) {
