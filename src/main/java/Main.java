@@ -75,6 +75,8 @@ public class Main extends Application implements EventHandler<KeyEvent> {
     ProbeSimulator sim;
     Boolean probeLock;
     ArrayList<Shape3D> planetPath = new ArrayList<>();
+    MediaPlayer player;
+    Group paths = new Group();
 
 
     private void initMouseControl(Group group, Scene scene){
@@ -135,8 +137,8 @@ public class Main extends Application implements EventHandler<KeyEvent> {
                 b.translateYProperty().set(Renderer.toScreenCoordinates(o.getPosition().getY()) - Renderer.toScreenCoordinates(probePos.getY()));
                 b.translateZProperty().set(Renderer.toScreenCoordinates(o.getPosition().getZ()) - Renderer.toScreenCoordinates(probePos.getY()));
                 Text name = new Text(State.names.get(j));
-                name.setStroke(Color.WHITE);
-                name.setFill(Color.WHITE);
+                name.setStroke(Color.LIMEGREEN);
+                name.setFill(Color.LIMEGREEN);
                 name.translateXProperty().set(Renderer.toScreenCoordinates(o.getPosition().getX())- Renderer.toScreenCoordinates(probePos.getX()));
                 name.translateYProperty().set(Renderer.toScreenCoordinates(o.getPosition().getY())- Renderer.toScreenCoordinates(probePos.getY()));
                 name.translateZProperty().set(Renderer.toScreenCoordinates(o.getPosition().getZ())- Renderer.toScreenCoordinates(probePos.getZ()));
@@ -151,8 +153,8 @@ public class Main extends Application implements EventHandler<KeyEvent> {
                 sphere.translateZProperty().set(Renderer.toScreenCoordinates(o.getPosition().getZ()) -  Renderer.toScreenCoordinates(probePos.getZ()));
                 group.getChildren().add(sphere);
                 Text name = new Text(State.names.get(j));
-                name.setStroke(Color.WHITE);
-                name.setFill(Color.WHITE);
+                name.setStroke(Color.LIMEGREEN);
+                name.setFill(Color.LIMEGREEN);
                 name.translateXProperty().set(Renderer.toScreenCoordinates(o.getPosition().getX()) - Renderer.toScreenCoordinates(probePos.getX()));
                 name.translateYProperty().set(Renderer.toScreenCoordinates(o.getPosition().getY()) - Renderer.toScreenCoordinates(probePos.getY()));
                 name.translateZProperty().set(Renderer.toScreenCoordinates(o.getPosition().getZ())   - Renderer.toScreenCoordinates(probePos.getZ()));
@@ -161,7 +163,6 @@ public class Main extends Application implements EventHandler<KeyEvent> {
                 shapes.add(sphere);
             }
         }
-        initTitanPoints(states);
         try {
             initMaterials();
         } catch (URISyntaxException e) {
@@ -190,6 +191,7 @@ public class Main extends Application implements EventHandler<KeyEvent> {
         this.group = group;
         superGroup.getChildren().add(new ImageView(new Image("2k_stars.jpeg")));
         superGroup.getChildren().add(group);
+        this.group.getChildren().add(paths);
         initProbeFuelCounter(superGroup);
         initSlider(superGroup);
         drawState(group);
@@ -224,11 +226,10 @@ public class Main extends Application implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent keyEvent) {
         if (keyEvent.getCode().toString() == "SPACE"){
-//            String song = "song.mp3";
-//            System.out.println("song: " + Paths.get(song).toUri().toString());
-//            Media media = new Media(Paths.get(song).toUri().toString());
-//            MediaPlayer player = new MediaPlayer(media);
-//            player.play();
+            String song = "song2.mp3";
+            Media media = new Media(Paths.get(song).toUri().toString());
+            this.player = new MediaPlayer(media);
+            player.play();
             speed = 1;
             double [] probeFuel = sim.getProbeMass();
             this.probeLock = false;
@@ -240,21 +241,26 @@ public class Main extends Application implements EventHandler<KeyEvent> {
                     sunPos = states[counter].getPositions()[0];
                     if (probeLock){
                         camLock = states[counter].getPositions()[states[counter].getPositions().length - 1];
+                        double screenX = Renderer.toScreenCoordinates(states[counter].getPositions()[0].getX()) - Renderer.toScreenCoordinates(probePos.getX());
+                        double screenY = Renderer.toScreenCoordinates(states[counter].getPositions()[0].getY()) - Renderer.toScreenCoordinates(probePos.getY());
+                        double screenZ = Renderer.toScreenCoordinates(states[counter].getPositions()[0].getZ()) - Renderer.toScreenCoordinates(probePos.getZ());
+                        paths.translateXProperty().set(screenX);
+                        paths.translateYProperty().set(screenY);
+                        paths.translateZProperty().set(screenZ);
                     }
                     else{
                         camLock = states[counter].getPositions()[0];
+                        double screenX = Renderer.toScreenCoordinates(states[counter].getPositions()[0].getX()) - Renderer.toScreenCoordinates(sunPos.getX());
+                        double screenY = Renderer.toScreenCoordinates(states[counter].getPositions()[0].getY()) - Renderer.toScreenCoordinates(sunPos.getY());
+                        double screenZ = Renderer.toScreenCoordinates(states[counter].getPositions()[0].getZ()) - Renderer.toScreenCoordinates(sunPos.getZ());
+                        paths.translateXProperty().set(screenX);
+                        paths.translateYProperty().set(screenY);
+                        paths.translateZProperty().set(screenZ);
                     }
                     camLockToggle.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent actionEvent) {
                             probeLock = !probeLock;
-                            for (int i = 0; i < planetPath.size(); i++){
-                                Shape3D path = planetPath.get(i);
-                                Vector3d s = sunPos.sub(probePos);
-                                path.translateXProperty().set(path.getTranslateX() - s.getX());
-                                path.translateYProperty().set((path.getTranslateY()) -s.getY());
-                                path.translateZProperty().set((path.getTranslateZ()) - s.getZ());
-                            }
                         }
                     });
                     probeMass.setText(String.valueOf(probeFuel[counter]));
@@ -268,11 +274,14 @@ public class Main extends Application implements EventHandler<KeyEvent> {
                         shapes.get(i).translateYProperty().set(screenY);
                         shapes.get(i).translateZProperty().set(screenZ);
                         Sphere path = new Sphere(1);
-                        planetPath.add(path);
-                        group.getChildren().add(path);
-                        path.translateXProperty().set(screenX);
-                        path.translateYProperty().set(screenY);
-                        path.translateZProperty().set(screenZ);
+                        PhongMaterial redMaterial = new PhongMaterial();
+                        redMaterial.setSpecularColor(Color.ORANGE);
+                        redMaterial.setDiffuseColor(Color.RED);
+                        path.setMaterial(redMaterial);
+                        paths.getChildren().add(path);
+                        path.translateXProperty().set(Renderer.toScreenCoordinates(states[counter].getPositions()[i].getX()) - Renderer.toScreenCoordinates(sunPos.getX()));
+                        path.translateYProperty().set(Renderer.toScreenCoordinates(states[counter].getPositions()[i].getY()) - Renderer.toScreenCoordinates(sunPos.getY()));
+                        path.translateZProperty().set(Renderer.toScreenCoordinates(states[counter].getPositions()[i].getZ()) - Renderer.toScreenCoordinates(sunPos.getZ()));
                         names.get(i).translateXProperty().set(screenX);
                         names.get(i).translateYProperty().set(screenY);
                         names.get(i).translateZProperty().set(screenZ);
@@ -357,26 +366,6 @@ public class Main extends Application implements EventHandler<KeyEvent> {
         slider.setLayoutX(CANVAS_WIDTH/2);
         slider.setLayoutY(CANVAS_HEIGHT - 30);
         group.getChildren().add(slider);
-    }
-
-    public void initTitanPoints(StateInterface [] states){
-        double toAdd = 2775.7;
-        StateInterface titanState = states[21886];
-        Vector3d titanPos = titanState.getPositions()[8];
-        for (int i = 0; i < 1000; i++){
-            Random rand = new Random();
-            Sphere point = new Sphere(10);
-            Vector3d newVec = new Vector3d(0,0,0);
-            newVec.setX(Renderer.toScreenCoordinates(rand.nextDouble()*(toAdd + titanPos.getX())));
-            newVec.setY(Renderer.toScreenCoordinates(rand.nextDouble()*(toAdd + titanPos.getY())));
-            newVec.setZ(Math.sqrt(toAdd*toAdd - newVec.getX()*newVec.getX() - newVec.getY()*newVec.getY()) + Renderer.toScreenCoordinates(titanPos.getZ()));
-            point.translateXProperty().set(newVec.getX());
-            point.translateYProperty().set(newVec.getY());
-            point.translateZProperty().set(newVec.getZ());
-//            group.getChildren().add(point);
-        }
-
-
     }
 }
 
