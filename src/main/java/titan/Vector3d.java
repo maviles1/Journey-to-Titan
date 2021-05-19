@@ -39,6 +39,14 @@ public class Vector3d implements Vector3dInterface {
         this.z = z;
     }
 
+    public double dot(Vector3d other){
+        double x = getX()*other.getX();
+        double y = getY()*other.getY();
+        double z = getZ()*other.getZ();
+        return x + y + z;
+    }
+
+
     public Vector3d add(Vector3dInterface other) {
 
         return new Vector3d(getX() + other.getX(), getY() + other.getY(), getZ() + other.getZ());
@@ -67,7 +75,11 @@ public class Vector3d implements Vector3dInterface {
         return new Vector3d(x, y, z);
     }
 
-    public double norm() {
+    public Vector3d multiply(Vector3d other){
+        return new Vector3d(getX()*other.getX(), getY()*other.getY(), getZ()*other.getZ());
+    }
+
+    public double norm(){
         return Math.sqrt(getX() * getX() + getY() * getY() + getZ() * getZ());
     }
 
@@ -76,13 +88,17 @@ public class Vector3d implements Vector3dInterface {
 //    }
 
     public double dist(Vector3dInterface other){
-        return Math.sqrt( (getX()-other.getX())*(getX()-other.getX()) + (getY()-other.getY())*(getY()-other.getY()) + (getZ()-other.getZ())*(getZ()-other.getZ()) );
+        return Math.sqrt((getX()-other.getX())*(getX()-other.getX()) + (getY()-other.getY())*(getY()-other.getY()) + (getZ()-other.getZ())*(getZ()-other.getZ()));
     }
 
     public String toString() {
         return ("(" + getX() + "," + getY() + "," + getZ() + ")");
     }
 
+    public Vector3d scale(double mag){
+        Vector3d norm = normalize();
+         return new Vector3d(norm.getX()*mag, norm.getY()*mag, norm.getZ()*mag);
+    }
 
     public Vector3d copy() {
         return new Vector3d(x, y, z);
@@ -91,6 +107,15 @@ public class Vector3d implements Vector3dInterface {
     public boolean equals(Vector3dInterface other) {
         Vector3d v = (Vector3d) other;
         return this.x == v.getX() && this.y == v.getY() && this.z == v.getZ();
+    }
+
+    public Vector3d normalize(){
+        double scalar = norm();
+        return new Vector3d(getX()/scalar, getY()/scalar, getZ()/scalar);
+    }
+
+    public Vector3d mult(double multiple){
+        return new Vector3d(multiple*getX(), multiple*getY(), multiple*getZ());
     }
 
 }
