@@ -3,6 +3,12 @@ package titan;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import titan.interfaces.StateInterface;
@@ -10,9 +16,10 @@ import titan.interfaces.StateInterface;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.List;
 
 @SuppressWarnings("unchecked")
-public class PolySim extends AnimationTimer {
+public class PolySim extends ScrollPane {
 
     private final double WIDTH = 1000 * 5.5;
     private final double HEIGHT = 1000 * 5.5;
@@ -21,12 +28,16 @@ public class PolySim extends AnimationTimer {
     private double res = 7e8;
     private int speedOffset = 1; //default render speed, 1 state/frame
 
-    private Canvas canvas;
+    private final Canvas canvas;
     private ArrayList<Double[]> nasaPaths = new ArrayList<>();
-    private ArrayList<Vector3d>[] nasaPos = new ArrayList[11];
+    private ArrayList<Vector3d>[] nasaPos = new ArrayList[AMOUNT_BODIES - 1]; //no probe in nasa data
 
     private int count = 0;
     private int minSim;
+
+    private final AnimationTimer renderer;
+    private final AnchorPane pane;
+    private VBox console;
 
     ArrayList<StateInterface[]> polyStates;
     List<List<Double[]>> polyPaths = new ArrayList<>();
@@ -40,20 +51,35 @@ public class PolySim extends AnimationTimer {
 
     public PolySim(ArrayList<StateInterface[]> polyStates) {
         this.canvas = new Canvas(WIDTH, HEIGHT);
+        pane = new AnchorPane();
+        this.renderer = setUpRenderer();
         this.polyStates = polyStates;   //list containing the different simulations to display
+        setUpScrollPane();
         initHorizons();                 //gets the planet positions data from nasa
+
         for (int i = 0; i < polyStates.size()+1; i++) {
             polyPaths.add(new ArrayList<>());   //add arraylists to contain the previous position
         }
+
         minSim = polyStates.get(0).length;      //min amount of states to prevent array overflow in animation timer loop
         for (int i = 1; i < polyStates.size(); i++) {
             minSim = Math.min(minSim, polyStates.get(i).length);
         }
     }
-    
-    @Override
-    public void handle(long now) {
+
+    public void start() {
+        renderer.start();
+    }
+
+    public void stop() {
+        renderer.stop();
+    }
+
+    public void render() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        console.getChildren().clear();
+        console.getChildren().add(new Label("Distance to Titan"));
+        ((Label)console.getChildren().get(0)).setTextFill(Color.WHITE);
 
         gc.setFill(Paint.valueOf("#000000"));
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -74,6 +100,10 @@ public class PolySim extends AnimationTimer {
             for (int j = 0; j < AMOUNT_BODIES; j++) {
                 polyPaths.get(i).add(polyPaint(i, gc, j));  //draw celestial body and add position to path history
             }
+
+            Label distance = new Label(((State)polyStates.get(i)[count]).getPosition()[11].dist(((State)polyStates.get(i)[count]).getPosition()[8]) / 1000.0 + " - " + probeNames[i]);
+            distance.setTextFill(gc.getFill());
+            console.getChildren().add(distance);
         }
 
         gc.setFill(Color.valueOf("#ecf0f1"));
@@ -176,6 +206,52 @@ public class PolySim extends AnimationTimer {
         return null;
     }
 
+    private AnimationTimer setUpRenderer() {
+        return new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                render();
+            }
+        };
+    }
+
+    private void setUpScrollPane() {
+        pane.getChildren().add(this);
+
+        setPannable(true);
+        setHvalue(0.5);
+        setVvalue(0.5);
+
+        this.setPrefSize(1200, 800);
+        this.setHbarPolicy(ScrollBarPolicy.NEVER);
+        this.setVbarPolicy(ScrollBarPolicy.NEVER);
+        AnchorPane.setBottomAnchor(this, 0.0);
+        AnchorPane.setRightAnchor(this, 0.0);
+        AnchorPane.setLeftAnchor(this, 0.0);
+        AnchorPane.setTopAnchor(this, 0.0);
+
+        console = new VBox();
+        AnchorPane.setLeftAnchor(console, 20.0);
+        AnchorPane.setTopAnchor(console, 20.0);
+
+        pane.getChildren().add(console);
+        setContent(canvas);
+
+        setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.Z) {
+                scale(1.05);
+            } else if (event.getCode() == KeyCode.X) {
+                scale(0.95);
+            } else if (event.getCode() == KeyCode.EQUALS) {
+                simSpeed(1);
+            } else if (event.getCode() == KeyCode.MINUS) {
+                simSpeed(-1);
+            } else if (event.getCode() == KeyCode.C) {
+                console.setVisible(!console.isVisible());
+            }
+        });
+    }
+
     public void initHorizons() {
         try {
             nasaPos[0] = parseHorizons("sunTraj.txt");
@@ -193,3 +269,4 @@ public class PolySim extends AnimationTimer {
     }
 
 }
+

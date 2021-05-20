@@ -121,10 +121,6 @@ public class Launcher {
     }
 
     public void runPolySim(Vector3d pos, Vector3d vel, double stepSize, double duration) {
-        ScrollPane pane = new ScrollPane();
-        pane.setPannable(true);
-        pane.setHvalue(0.5);
-        pane.setVvalue(0.5);
 
         //Vector3dInterface probe_relative_position = new Vector3d(6371e3, 0, 0);
         //Vector3dInterface probe_relative_velocity = new Vector3d(52500.0, -27000.0, 0);// 12.0 months
@@ -177,21 +173,8 @@ public class Launcher {
         PolySim polySim = new PolySim(simStates);
         polySim.setProbeNames(probeNames.toArray(new String[0]));
 
-        pane.setContent(polySim.getCanvas());
-        pane.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.Z) {
-                polySim.scale(1.05);
-            } else if (event.getCode() == KeyCode.X) {
-                polySim.scale(0.95);
-            } else if (event.getCode() == KeyCode.EQUALS) {
-                polySim.simSpeed(1);
-            } else if (event.getCode() == KeyCode.MINUS) {
-                polySim.simSpeed(-1);
-            }
-        });
-
         Stage stage = new Stage();
-        stage.setScene(new Scene(pane, 1200, 800));
+        stage.setScene(new Scene(polySim.getParent(), 1200, 800));
         stage.show();
         polySim.start();
 
