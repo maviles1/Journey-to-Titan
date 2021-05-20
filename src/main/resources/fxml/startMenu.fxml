@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="titan.ui.Launcher">
+   <children>
+      <VBox layoutX="200.0" layoutY="190.0" prefHeight="200.0" prefWidth="100.0" spacing="15.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <HBox alignment="CENTER">
+               <children>
+                  <Label text="Mission to Titan!">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <VBox alignment="TOP_CENTER" spacing="10.0">
+               <children>
+                  <Label text="Launch Parameters">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <VBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <HBox alignment="CENTER" spacing="3.0">
+                                 <children>
+                                    <Label text="x" />
+                                    <TextField fx:id="xField" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" spacing="3.0">
+                                 <children>
+                                    <Label text="y" />
+                                    <TextField fx:id="yField" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" spacing="3.0">
+                                 <children>
+                                    <Label text="z" />
+                                    <TextField fx:id="zField" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <HBox alignment="CENTER" spacing="3.0">
+                                 <children>
+                                    <Label text="vx" />
+                                    <TextField fx:id="vxField" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" spacing="3.0">
+                                 <children>
+                                    <Label text="vy" />
+                                    <TextField fx:id="vyField" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" spacing="3.0">
+                                 <children>
+                                    <Label text="vz" />
+                                    <TextField fx:id="vzField" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <HBox alignment="CENTER" spacing="15.0">
+               <children>
+                  <VBox spacing="8.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <children>
+                              <Label text="Step Size" />
+                              <TextField fx:id="stepSizeField" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="12.0">
+                           <children>
+                              <Label text="Duration" />
+                              <TextField fx:id="durationField" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <Label text="Perspective">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" spacing="15.0">
+                           <children>
+                              <RadioButton fx:id="twoD" mnemonicParsing="false" text="2D" />
+                              <RadioButton fx:id="threeD" mnemonicParsing="false" text="3D" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <VBox alignment="CENTER" spacing="5.0">
+               <children>
+                  <Label text="Choose Solver">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <CheckBox fx:id="eulerOption" mnemonicParsing="false" text="Euler" />
+                        <CheckBox fx:id="verletOption" mnemonicParsing="false" text="Velocity Verlet" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <CheckBox fx:id="rkClassicOption" mnemonicParsing="false" text="Runge-Kutta (Classic)" />
+                        <CheckBox fx:id="rkOriginalOption" mnemonicParsing="false" text="Runge-Kutta (Original)" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" spacing="5.0">
+               <children>
+                  <Button fx:id="launchButton" mnemonicParsing="false" onAction="#launchSimulation" text="Launch" />
+                  <Label fx:id="errorMsg" textFill="#d50000">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
