@@ -1,11 +1,13 @@
 package titan.ui;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import titan.*;
 import titan.interfaces.StateInterface;
@@ -86,6 +88,8 @@ public class Launcher {
         ToggleGroup perspective = new ToggleGroup();
         twoD.setToggleGroup(perspective);
         threeD.setToggleGroup(perspective);
+
+        threeD.setOnMouseClicked(event -> errorMsg.setText("Currently 3D GUI has hardcoded parameters"));
     }
 
     @FXML
@@ -126,6 +130,7 @@ public class Launcher {
             stage.show();
             stage.setOnCloseRequest(event1 -> {
                 //TODO: somehow call the stop() method on the AnimationTimers used in order to prevent memory leak
+                errorMsg.setText("");
             });
         }
     }
