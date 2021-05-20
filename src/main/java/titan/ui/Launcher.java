@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import titan.*;
@@ -115,8 +116,17 @@ public class Launcher {
             errorMsg.setText("");
             runPolySim(pos, vel, stepSize, duration);
         } else {
-            //3d sim
-            errorMsg.setText("Sorry! nothing to see here yet :)");
+            //3d simulation
+            //TODO: Be able to allow users to select the solver to use instead of hardcoding
+            GUI3D gui3D = new GUI3D();
+            Stage stage = new Stage();
+            stage.setTitle("Mission Titan");
+            stage.setScene(gui3D.start());
+            stage.getIcons().add(new Image("titan.png"));
+            stage.show();
+            stage.setOnCloseRequest(event1 -> {
+                //TODO: somehow call the stop() method on the AnimationTimers used in order to prevent memory leak
+            });
         }
     }
 

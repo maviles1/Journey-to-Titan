@@ -9,16 +9,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Scene scene = new GUI3D().start(primaryStage);
+//        Scene scene = new titan.ui.GUI3D().start(primaryStage);
 
         Parent startMenu = FXMLLoader.load(getClass().getResource("fxml/launcher.fxml"));
-
         primaryStage.setTitle("Mission Titan");
-        primaryStage.setScene(scene);
-        //primaryStage.setScene(new Scene(startMenu));
+//        primaryStage.setScene(scene);
+        primaryStage.setScene(new Scene(startMenu));
         primaryStage.getIcons().add(new Image("titan.png"));
         primaryStage.show();
-
     }
 
     @Override

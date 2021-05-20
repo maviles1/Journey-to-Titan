@@ -88,7 +88,7 @@ public class PolySim extends ScrollPane {
         Color[] simColors = {Color.valueOf("#2ecc71"), Color.valueOf("#f1c40f"), Color.valueOf("#3498db"), Color.valueOf("#f8a5c2"), Color.valueOf("#F79F1F"), Color.valueOf("#ff5252")};
 
         //First add the current pos in the paths with the actual nasa position data
-        //drawNasaPaths(gc);
+        drawNasaPaths(gc);
 
         //Now begin drawing the different simulations
         for (int i = 0; i < polyStates.size(); i++) {
@@ -138,13 +138,18 @@ public class PolySim extends ScrollPane {
     }
 
     public void drawNasaPaths(GraphicsContext gc) {
-        for (int i = 0; i < 9; i++)
-            nasaPaths.add(new Double[]{calcX(nasaPos[i].get(count).getX()), calcY(nasaPos[i].get(count).getY())});
+        for (int i = 0; i < 9; i++) {
+            nasaPaths.add(new Double[]{nasaPos[i].get(count).getX(), nasaPos[i].get(count).getY()});
+            if (names[i].equals("Saturn") || names[i].equals("Earth"))    //make sure their moons don't cover the planet names
+                gc.fillText(names[i], calcX(nasaPos[i].get(count).getX()) - 20, calcY(nasaPos[i].get(count).getY()) - 10);
+            else
+                gc.fillText(names[i], calcX(nasaPos[i].get(count).getX()) + 10, calcY(nasaPos[i].get(count).getY()) + 10);
+        }
 
         //Draw all the nasa position history paths
         gc.setFill(Color.valueOf("#ecf0f1"));
         for (Double[] pos : nasaPaths)
-            gc.fillOval(calcX(pos[0])-0.5, calcY(pos[1])-0.5, 1, 1);
+            gc.fillOval(calcX(pos[0])-1.5, calcY(pos[1])-1.5, 3, 3);
     }
 
     public void setProbeNames(String[] probeNames) {
@@ -272,6 +277,7 @@ public class PolySim extends ScrollPane {
                         solverFocus++;
                 }
             }
+
         });
     }
 

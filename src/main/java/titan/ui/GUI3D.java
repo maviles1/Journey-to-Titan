@@ -1,3 +1,5 @@
+package titan.ui;
+
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -111,7 +113,7 @@ public class GUI3D implements EventHandler<KeyEvent> {
     public void drawState(Group group){
         shapes = new ArrayList<>();
         names = new ArrayList<>();
-        SpaceObjectBuilder builder = new SpaceObjectBuilder(getClass().getResource("solar_system_data-2020_04_01.txt").getFile());
+        SpaceObjectBuilder builder = new SpaceObjectBuilder(getClass().getResource("/solar_system_data-2020_04_01.txt").getFile());
         ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
         planets = spaceObjects;
         double[] radius = new double[]{700000, 2439.7, 6051.8, 6371, 1737.1, 3389.5, 69911, 58232, 2575.7, 25362, 2462.2, 10000};
@@ -178,8 +180,8 @@ public class GUI3D implements EventHandler<KeyEvent> {
         this.probeMass = probeFuel;
     }
 
-    public Scene start(Stage primaryStage) throws Exception {
-        SpaceObjectBuilder builder = new SpaceObjectBuilder(getClass().getResource("solar_system_data-2020_04_01.txt").getFile());
+    public Scene start() {
+        SpaceObjectBuilder builder = new SpaceObjectBuilder(getClass().getResource("/solar_system_data-2020_04_01.txt").getFile());
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("window.fxml"));
         Group superGroup = new Group();
         this.superGroup = superGroup;
@@ -287,12 +289,9 @@ public class GUI3D implements EventHandler<KeyEvent> {
             }
         });
 //        group.getChildren().add(cam);
-        primaryStage.setTitle("Mission Titan");
-        primaryStage.setScene(scene);
-        primaryStage.getIcons().add(new Image("titan.png"));
-        primaryStage.show();
         return scene;
     }
+
 
     @Override
     public void handle(KeyEvent keyEvent) {

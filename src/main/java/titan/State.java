@@ -9,7 +9,7 @@ import java.util.Map;
 public class State implements StateInterface {
 
     static double[] mass;
-    static Map<Integer, String> names;
+    public static Map<Integer, String> names;
     public Vector3d[] positions;
     public Vector3d[] velocities;
     static double[] radius;
@@ -37,8 +37,8 @@ public class State implements StateInterface {
         Vector3d[] newVelocities = new Vector3d[velocities.length];
 
         for (int i = 0; i < velocities.length; i++) {
-            newPositions[i] = positions[i].addMul(step, rate.getRatePosition()[i]);
-            newVelocities[i] = velocities[i].addMul(step, rate.getRateVelocity()[i]);
+            newPositions[i] = positions[i].addMul(step, rate.getPosRates()[i]);
+            newVelocities[i] = velocities[i].addMul(step, rate.getVelRates()[i]);
         }
 
         return new State(newPositions, newVelocities, time + step);
