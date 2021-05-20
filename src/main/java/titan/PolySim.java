@@ -34,6 +34,7 @@ public class PolySim extends ScrollPane {
 
     private int count = 0;
     private int minSim;
+    boolean probeFocus = false;
 
     private final AnimationTimer renderer;
     private final AnchorPane pane;
@@ -150,19 +151,6 @@ public class PolySim extends ScrollPane {
         this.probeNames = probeNames;
     }
 
-    public double calcX(double val) {
-//        return (WIDTH / 2.0) + toCoord(val);
-        return (WIDTH / 2.0) + toCoordX(val);
-    }
-    public double calcY(double val) {
-//        return (HEIGHT / 2.0) + toCoord(val);
-        return (HEIGHT / 2.0) + toCoordY(val);
-    }
-
-    public Canvas getCanvas() {
-        return this.canvas;
-    }
-
     public void scale(double factor) {
         res *= factor;
     }
@@ -175,14 +163,31 @@ public class PolySim extends ScrollPane {
         return (d / res);
     }
 
-    public double toCoordX(double d) {
-//        return (d / res) - 3e11/res; //trying to increase resolution when around titan
-        return toCoord(d);              //not really working that well so thats why its commented
+    public double calcX(double d) {
+
+        if (solverFocus != 0) {
+            if (probeFocus) {
+                double y = WIDTH / 2 - toCoord(((State) polyStates.get(solverFocus - 1)[count]).getPosition()[11].getX()); //if probe
+                return y + toCoord(d);
+            }
+            double x = WIDTH / 2 - toCoord(((State) polyStates.get(solverFocus - 1)[count]).getPosition()[8].getX()); //if titan
+            return x + toCoord(d);
+        }
+
+        return WIDTH / 2 + toCoord(d);
     }
 
-    public double toCoordY(double d) {
-//        return (d / res) + 3e11/res;
-        return toCoord(d);
+    public double calcY(double d) {
+        if (solverFocus != 0) {
+            if (probeFocus) {
+                double y = HEIGHT / 2 - toCoord(((State) polyStates.get(solverFocus - 1)[count]).getPosition()[11].getY()); //if probe
+                return y + toCoord(d);
+            }
+            double y = HEIGHT / 2 - toCoord(((State) polyStates.get(solverFocus - 1)[count]).getPosition()[8].getY()); //if titan
+            return y + toCoord(d);
+        }
+
+        return (HEIGHT / 2.0) + toCoord(d);
     }
 
     public ArrayList<Vector3d> parseHorizons(String filename) {
@@ -248,9 +253,29 @@ public class PolySim extends ScrollPane {
                 simSpeed(-1);
             } else if (event.getCode() == KeyCode.C) {
                 console.setVisible(!console.isVisible());
+            } else if (event.getCode() == KeyCode.P) {
+                if (solverFocus == polyStates.size()) {
+                    solverFocus = 0;
+                } else {
+                    if (!probeFocus)
+                        probeFocus = true;
+                    else
+                        solverFocus++;
+                }
+            } else if (event.getCode() == KeyCode.T) {
+                if (solverFocus == polyStates.size())
+                    solverFocus = 0;
+                else {
+                    if (probeFocus)
+                        probeFocus = false;
+                    else
+                        solverFocus++;
+                }
             }
         });
     }
+
+    int solverFocus = 0;
 
     public void initHorizons() {
         try {
