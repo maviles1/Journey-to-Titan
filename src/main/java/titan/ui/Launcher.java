@@ -90,7 +90,7 @@ public class Launcher {
     }
 
     @FXML
-    void launchSimulation(ActionEvent event) {
+    void launchSimulation(ActionEvent event) throws Exception {
         double posX = Double.parseDouble(xField.getText());
         double posY = Double.parseDouble(yField.getText());
         double posZ = Double.parseDouble(zField.getText());
@@ -122,8 +122,9 @@ public class Launcher {
             GUI3D gui3D = new GUI3D();
             Stage stage = new Stage();
             stage.setTitle("Mission Titan");
-            stage.setScene(gui3D.start());
             stage.getIcons().add(new Image("titan.png"));
+            Scene s = gui3D.start(stage);
+            stage.setScene(s);
             stage.show();
             stage.setOnCloseRequest(event1 -> {
                 //TODO: somehow call the stop() method on the AnimationTimers used in order to prevent memory leak

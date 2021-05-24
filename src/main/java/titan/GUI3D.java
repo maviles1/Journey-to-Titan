@@ -1,4 +1,4 @@
-package titan.ui;
+package titan;
 
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
@@ -204,7 +204,7 @@ public class GUI3D {
     }
 
     public Scene start(Stage primaryStage) throws Exception {
-        SpaceObjectBuilder builder = new SpaceObjectBuilder(getClass().getResource("solar_system_data-2020_04_01.txt").getFile());
+        SpaceObjectBuilder builder = new SpaceObjectBuilder(getClass().getResource("/solar_system_data-2020_04_01.txt").getFile());
         Group group = new Group();
         group.translateXProperty().set(CANVAS_WIDTH / 2);
         group.translateYProperty().set(CANVAS_HEIGHT / 2);
@@ -218,7 +218,7 @@ public class GUI3D {
         Camera cam = new PerspectiveCamera();
         this.cam = cam;
         cam.setFarClip(1e100);
-        Parent root = FXMLLoader.load(getClass().getResource("Panel.fxml"));
+//        Parent root = FXMLLoader.load(getClass().getResource("Panel.fxml"));
         Scene scene = new Scene(superGroup, CANVAS_WIDTH, CANVAS_HEIGHT);
         Image background = new Image("textures/2k_stars_milky_way.jpeg");
         BackgroundImage back = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Box?>
 
-<AnchorPane prefHeight="1000" prefWidth="1400" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="GUI3D">
+<AnchorPane prefHeight="1000" prefWidth="1400" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="titan.GUI3D">
    <children>
       <Group fx:id="simulation" layoutX="280.0" layoutY="115.0">
          <children>
