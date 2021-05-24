@@ -111,7 +111,7 @@ public class PolySim extends ScrollPane {
                 polyPaths.get(i).add(paint(i, gc, j));  //draw celestial body and add position to path history
             }
 
-            Label distance = new Label(polyStates.get(i)[count].getPosition()[11].dist(polyStates.get(i)[count].getPosition()[8]) / 1000.0 + " - " + probeNames[i]);
+            Label distance = new Label(polyStates.get(i)[count].getPosition()[11].dist(polyStates.get(i)[count].getPosition()[8]) / 1000.0 + "km - " + probeNames[i]);
             distance.setTextFill(gc.getFill());
             console.getChildren().add(distance);
         }

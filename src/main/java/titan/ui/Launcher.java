@@ -134,7 +134,6 @@ public class Launcher {
     }
 
     public void runPolySim(Vector3d pos, Vector3d vel, double stepSize, double duration) {
-
         //Vector3dInterface probe_relative_position = new Vector3d(6371e3, 0, 0);
         //Vector3dInterface probe_relative_velocity = new Vector3d(52500.0, -27000.0, 0);// 12.0 months
 

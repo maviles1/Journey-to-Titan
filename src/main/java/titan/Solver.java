@@ -87,6 +87,7 @@ public class Solver implements ODESolverInterface {
             t += h; //TODO: i think we should be incrementing t at the end of the loop
         }
 
+        System.out.println(tf-t);
         s[size - 1] = step(f, tf, s[size - 2], tf - t);
 
         return s;

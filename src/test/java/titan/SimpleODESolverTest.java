@@ -12,21 +12,21 @@ import java.util.Arrays;
 
 public class SimpleODESolverTest {
 
-//    double startHeight = 1103.2;
-//    double initialVel = 10;
-//    double solutionX = 150;
-//    double solutionY = 0;
-//    double duration = 15;
-
-    double startHeight = 100;
+    double startHeight = 1103.2;
     double initialVel = 10;
-    double solutionX = 45.1601;
+    double solutionX = 150;
     double solutionY = 0;
-    double duration = 4.52;
+    double duration = 15;
+
+//    double startHeight = 100;
+//    double initialVel = 10;
+//    double solutionX = 45.1601;
+//    double solutionY = 0;
+//    double duration = 4.52;
 
     double delta = 0.05; //accuracy
 
-    double stepSize = 1;
+    double stepSize = 0.25;
 
     @Test
     void simpleODETestEulerX() {
