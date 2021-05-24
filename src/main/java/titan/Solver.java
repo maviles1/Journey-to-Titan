@@ -79,8 +79,8 @@ public class Solver implements ODESolverInterface {
         s[0] = y0;
         double t = 0;
         for (int i = 1; i < size - 1; i++) {
-            t += h; //TODO: i think we should be incrementing t at the end of the loop
             s[i] = step(f, t, s[i - 1], h);
+            t += h; //TODO: i think we should be incrementing t at the end of the loop
         }
 
         s[size - 1] = step(f, tf, s[size - 2], tf - t);
