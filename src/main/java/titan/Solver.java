@@ -56,7 +56,7 @@ public class Solver implements ODESolverInterface {
         //initial thrust
         thrust(probe,s[0], initialThrust);
         for (int i = 1; i < size - 1; i++) {
-            t += h;
+            t += h; //TODO: i think we should be incrementing t at the end of the loop
             s[i] = step(f, t, s[i - 1], h);
             probe.setPosition(s[i].getPositions()[11]);
             probe.setVelocity(s[i].getVelocities()[11]);
@@ -72,20 +72,14 @@ public class Solver implements ODESolverInterface {
         return s;
     }
 
-    public StateInterface [] noThrustSim(ODEFunctionInterface f, StateInterface y0, double tf, double h, Vector3d initialV){
+    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h, boolean test) {
         //check if t should be the total time
         int size = (int) Math.round((tf / h) + 1.5);
         StateInterface[] s = new StateInterface[size];
-        double [] probeMass = new double[size];
         s[0] = y0;
-        probe = new Probe("S",15, y0.getPositions()[y0.getVelocities().length - 1],  y0.getVelocities()[y0.getVelocities().length - 1]);
-        Vector3d launchVelocity = s[0].getVelocities()[11];
-        s[0].getVelocities()[11] = new Vector3d(0,0,0);
-        //probe.setFuelMass(1000);
         double t = 0;
-        thrust(probe,s[0], initialV);
         for (int i = 1; i < size - 1; i++) {
-            t += h;
+            t += h; //TODO: i think we should be incrementing t at the end of the loop
             s[i] = step(f, t, s[i - 1], h);
         }
 

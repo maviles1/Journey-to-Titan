@@ -22,5 +22,6 @@ public class SimpleODE implements ODEFunctionInterface {
         Vector3d a = new Vector3d(horizontalAccel, verticalAccel, 0);
 
         return new Rate(new Vector3d[]{v}, new Vector3d[]{a});
+        //return new Rate(vel, acc);
     }
 }

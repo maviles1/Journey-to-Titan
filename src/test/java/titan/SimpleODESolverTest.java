@@ -22,7 +22,7 @@ public class SimpleODESolverTest {
         Vector3d[] pos = new Vector3d[]{new Vector3d(0, startHeight, 0)};
         Vector3d[] vel = new Vector3d[]{new Vector3d(initialVel, 0, 0)};
 
-        StateInterface[] states = eulerSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize);
+        StateInterface[] states = eulerSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
 
         Assertions.assertEquals(solutionX, ((State)states[states.length - 1]).getPosition()[0].getX(), delta);
     }
@@ -33,7 +33,7 @@ public class SimpleODESolverTest {
         Vector3d[] pos = new Vector3d[]{new Vector3d(0, startHeight, 0)};
         Vector3d[] vel = new Vector3d[]{new Vector3d(initialVel, 0, 0)};
 
-        StateInterface[] states = eulerSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize);
+        StateInterface[] states = eulerSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
 
         Assertions.assertEquals(solutionY, ((State)states[states.length - 1]).getPosition()[0].getY(), delta);
     }
@@ -44,17 +44,16 @@ public class SimpleODESolverTest {
         Vector3d[] pos = new Vector3d[]{new Vector3d(0, startHeight, 0)};
         Vector3d[] vel = new Vector3d[]{new Vector3d(initialVel, 0, 0)};
 
-        StateInterface[] states = verletSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize);
+        StateInterface[] states = verletSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
         Assertions.assertEquals(solutionX, ((State)states[states.length - 1]).getPosition()[0].getX(), delta);
     }
 
     @Test
     void simpleODETestVerletY() {
         Solver verletSolver = new Solver(new VerletSolver());
-        Vector3d[] pos = new Vector3d[]{new Vector3d(0, startHeight, 0)};
-        Vector3d[] vel = new Vector3d[]{new Vector3d(initialVel, 0, 0)};
-
-        StateInterface[] states = verletSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize);
+        Vector3d[] pos = new Vector3d[12];
+        Vector3d[] vel = new Vector3d[12];
+        StateInterface[] states = verletSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
         Assertions.assertEquals(solutionY, ((State)states[states.length - 1]).getPosition()[0].getY(), delta);
     }
 
@@ -64,7 +63,7 @@ public class SimpleODESolverTest {
         Vector3d[] pos = new Vector3d[]{new Vector3d(0, startHeight, 0)};
         Vector3d[] vel = new Vector3d[]{new Vector3d(initialVel, 0, 0)};
 
-        StateInterface[] states = rkSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize);
+        StateInterface[] states = rkSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
         Assertions.assertEquals(solutionX, ((State)states[states.length - 1]).getPosition()[0].getX(), delta);
     }
 
@@ -74,7 +73,7 @@ public class SimpleODESolverTest {
         Vector3d[] pos = new Vector3d[]{new Vector3d(0, startHeight, 0)};
         Vector3d[] vel = new Vector3d[]{new Vector3d(initialVel, 0, 0)};
 
-        StateInterface[] states = rkSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize);
+        StateInterface[] states = rkSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
         Assertions.assertEquals(solutionY, ((State)states[states.length - 1]).getPosition()[0].getY(), delta);
     }
 
@@ -84,7 +83,7 @@ public class SimpleODESolverTest {
         Vector3d[] pos = new Vector3d[]{new Vector3d(0, startHeight, 0)};
         Vector3d[] vel = new Vector3d[]{new Vector3d(initialVel, 0, 0)};
 
-        StateInterface[] states = rk2Solver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize);
+        StateInterface[] states = rk2Solver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
         Assertions.assertEquals(solutionX, ((State)states[states.length - 1]).getPosition()[0].getX(), delta);
     }
 
@@ -94,7 +93,7 @@ public class SimpleODESolverTest {
         Vector3d[] pos = new Vector3d[]{new Vector3d(0, startHeight, 0)};
         Vector3d[] vel = new Vector3d[]{new Vector3d(initialVel, 0, 0)};
 
-        StateInterface[] states = rk2Solver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize);
+        StateInterface[] states = rk2Solver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
         Assertions.assertEquals(solutionY, ((State)states[states.length - 1]).getPosition()[0].getY(), delta);
     }
 }
