@@ -22,6 +22,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
      */
     public ProbeSimulator(ArrayList<SpaceObject> space){
         spaceObjects=space;
+        solver = new Solver();
     }
 
     //TODO

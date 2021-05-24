@@ -209,7 +209,7 @@ public class GUI3D {
         group.translateXProperty().set(CANVAS_WIDTH / 2);
         group.translateYProperty().set(CANVAS_HEIGHT / 2);
         this.group = group;
-        superGroup.getChildren().add(new ImageView(new Image("2k_stars.jpeg")));
+        superGroup.getChildren().add(new ImageView(new Image("/2k_stars.jpeg")));
         superGroup.getChildren().add(group);
         this.group.getChildren().add(paths);
         initProbeFuelCounter(superGroup);
@@ -220,7 +220,7 @@ public class GUI3D {
         cam.setFarClip(1e100);
 //        Parent root = FXMLLoader.load(getClass().getResource("Panel.fxml"));
         Scene scene = new Scene(superGroup, CANVAS_WIDTH, CANVAS_HEIGHT);
-        Image background = new Image("textures/2k_stars_milky_way.jpeg");
+        Image background = new Image("/textures/2k_stars_milky_way.jpeg");
         BackgroundImage back = new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
         initMouseControl(group, scene);
         scene.setOnScroll(new EventHandler<ScrollEvent>() {
@@ -316,62 +316,62 @@ public class GUI3D {
 
     public void initMaterials() throws URISyntaxException {
         for (int i = 0; i < planets.size(); i++){
-            String imgSrc = "textures/8k_sun.jpeg";
+            String imgSrc = "/textures/8k_sun.jpeg";
             PhongMaterial m = new PhongMaterial();
             switch (State.names.get(i)){
                 case "Sun":
-                    imgSrc = "textures/8k_sun.jpeg";
+                    imgSrc = "/textures/8k_sun.jpeg";
                     m.setDiffuseColor(Color.ORANGE);
                     break;
                 case "Mercury":
-                    imgSrc = "textures/2k_mercury.jpeg";
+                    imgSrc = "/textures/2k_mercury.jpeg";
                     m.setDiffuseColor(Color.ORANGERED);
                     break;
                 case "Venus":
-                    imgSrc = "textures/2k_venus_atmosphere.jpeg";
+                    imgSrc = "/textures/2k_venus_atmosphere.jpeg";
                     m.setDiffuseColor(Color.LAVENDER);
                     break;
                 case "Earth":
-                    imgSrc = "textures/2k_earth_daymap.jpeg";
+                    imgSrc = "/textures/2k_earth_daymap.jpeg";
                     m.setDiffuseColor(Color.BLUE);
                     break;
                 case "Mars":
-                    imgSrc = "textures/2k_mars.jpeg";
+                    imgSrc = "/textures/2k_mars.jpeg";
                     m.setDiffuseColor(Color.INDIANRED);
                     break;
                 case "Jupiter":
-                    imgSrc = "textures/2k_jupiter.jpeg";
+                    imgSrc = "/textures/2k_jupiter.jpeg";
                     m.setDiffuseColor(Color.CORAL);
                     break;
                 case "Saturn":
-                    imgSrc = "textures/2k_saturn.jpeg";
+                    imgSrc = "/textures/2k_saturn.jpeg";
                     m.setDiffuseColor(Color.SANDYBROWN);
                     break;
                 case "Uranus":
-                    imgSrc = "textures/2k_uranus.jpeg";
+                    imgSrc = "/textures/2k_uranus.jpeg";
                     m.setDiffuseColor(Color.TURQUOISE);
                     break;
                 case "Neptune":
-                    imgSrc = "textures/2k_neptune.jpeg";
+                    imgSrc = "/textures/2k_neptune.jpeg";
                     m.setDiffuseColor(Color.DARKBLUE);
                     break;
                 case "Probe":
-                    imgSrc = "textures/2k_uranus.jpeg";
+                    imgSrc = "/textures/2k_uranus.jpeg";
                     m.setDiffuseColor(Color.LIMEGREEN);
                     break;
                 case "Titan":
-                    imgSrc = "textures/2k_neptune.jpeg";
+                    imgSrc = "/textures/2k_neptune.jpeg";
                     m.setDiffuseColor(Color.ROSYBROWN);
                     break;
                 case "Moon":
-                    imgSrc = "textures/8k_moon.jpeg";
+                    imgSrc = "/textures/8k_moon.jpeg";
                     m.setDiffuseColor(Color.GRAY);
                     break;
             }
 
             shapes.get(i).setMaterial(m);
             PhongMaterial buzz = new PhongMaterial();
-            buzz.setDiffuseMap(new Image("textures/550x755.png"));
+            buzz.setDiffuseMap(new Image("/textures/550x755.jpeg"));
             shapes.get(shapes.size() - 1).setMaterial(buzz);
         }
     }
