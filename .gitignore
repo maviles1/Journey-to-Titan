@@ -2,6 +2,7 @@
 *.iml
 *.class
 out/
+.DS_Store
 build
 .gradle
 !gradle-wrapper.jar
@@ -9,3 +10,4 @@ build
 gradlew
 gradlew.bat
 trajectory.csv
+
