@@ -141,7 +141,10 @@ public class Launcher {
         ArrayList<String> probeNames = new ArrayList<>();
 
         if (eulerOption.isSelected()) {
-            ProbeSim eulerSim = new ProbeSim(new Solver(new EulerSolver()));
+//            ProbeSim eulerSim = new ProbeSim(new Solver(new EulerSolver()));
+            ProbeSimulator eulerSim = new ProbeSimulator();
+            eulerSim.setSolver(new Solver(new EulerSolver()));
+
             //eulerSim.trajectory(probe_relative_position, probe_relative_velocity, YEAR, DAY);
             eulerSim.trajectory(pos, vel, duration, stepSize);
             simStates.add(eulerSim.getStates());
@@ -149,21 +152,27 @@ public class Launcher {
         }
 
         if (verletOption.isSelected()) {
-            ProbeSim verletSim = new ProbeSim(new Solver(new VerletSolver()));
+            //ProbeSim verletSim = new ProbeSim(new Solver(new VerletSolver()));
+            ProbeSimulator verletSim = new ProbeSimulator();
+            verletSim.setSolver(new Solver(new VerletSolver()));
+
             //verletSim.trajectory(probe_relative_position, probe_relative_velocity, YEAR, DAY);
             verletSim.trajectory(pos, vel, duration, stepSize);
             simStates.add(verletSim.getStates());
             probeNames.add("Verlet");
 
-            ProbeSim v2Sim = new ProbeSim(new Solver(VerletSolver.getV2()));
-            //v2Sim.trajectory(probe_relative_position, probe_relative_velocity, YEAR, DAY);
-            v2Sim.trajectory(pos, vel, duration, stepSize);
-            simStates.add(v2Sim.getStates());
-            probeNames.add("V2");
+//            ProbeSim v2Sim = new ProbeSim(new Solver(VerletSolver.getV2()));
+//            //v2Sim.trajectory(probe_relative_position, probe_relative_velocity, YEAR, DAY);
+//            v2Sim.trajectory(pos, vel, duration, stepSize);
+//            simStates.add(v2Sim.getStates());
+//            probeNames.add("V2");
         }
 
         if (rkClassicOption.isSelected()) {
-            ProbeSim rkSim = new ProbeSim(new Solver(new RKSolver()));
+//            ProbeSim rkSim = new ProbeSim(new Solver(new RKSolver()));
+            ProbeSimulator rkSim = new ProbeSimulator();
+            rkSim.setSolver(new Solver(new RKSolver()));
+
             //rkSim.trajectory(probe_relative_position, probe_relative_velocity, YEAR, DAY);
             rkSim.trajectory(pos, vel, duration, stepSize);
             simStates.add((rkSim.getStates()));
@@ -171,7 +180,10 @@ public class Launcher {
         }
 
         if (rkOriginalOption.isSelected()) {
-            ProbeSim rk2 = new ProbeSim(new Solver(RKSolver.getRK2()));
+//            ProbeSim rk2 = new ProbeSim(new Solver(RKSolver.getRK2()));
+            ProbeSimulator rk2 = new ProbeSimulator();
+            rk2.setSolver(new Solver(RKSolver.getRK2()));
+
             //rk2.trajectory(probe_relative_position, probe_relative_velocity, YEAR, DAY);
             rk2.trajectory(pos, vel, duration, stepSize);
             simStates.add((rk2.getStates()));

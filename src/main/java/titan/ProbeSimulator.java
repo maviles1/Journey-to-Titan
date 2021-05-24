@@ -15,6 +15,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
     private ArrayList<SpaceObject> spaceObjects;
     private StateInterface[] states;
     private double [] probeMass;
+    private Solver solver;
 
     /**
      * @param space contains a List of all planets
@@ -26,7 +27,6 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
     //TODO
     public ProbeSimulator(){
         URL url = getClass().getClassLoader().getResource("solar_system_data-2020_04_01.txt");
-        //String url = "/Users/lena/IdeaProjects/Project-2-1-Group-5/build/resources/main/solar_system_data-2020_04_01.txt";
         SpaceObjectBuilder builder = new SpaceObjectBuilder(url.getPath());
         spaceObjects = builder.getSpaceObjects();
         //generate the position and velocity vector
@@ -34,6 +34,8 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         for (int j = 0; j < spaceObjects.size(); j++) {
             spaceObjects.get(j).setRadius(radius[j]);
         }
+
+        solver = new Solver();
     }
     /*
      * Simulate the solar system, including a probe fired from Earth at 00:00h on 1 April 2020.
@@ -57,7 +59,6 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         State universe = initUn();
 
         //creates all the states of the simulation
-        Solver solver = new Solver();
         StateInterface[] s = solver.solve(new ODEFunction(), universe, ts);
         this.probeMass = solver.getProbeMass();
         states=s;
@@ -90,10 +91,11 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         //create State with planets and probe
         State universe = initUn();
 
-        //creates all the states of the simulation
-        Solver solver = new Solver();
-        VerletSolver solver1 = new VerletSolver();
+//        Solver solver = new Solver();
+//        VerletSolver solver1 = new VerletSolver();
       //  tf=h*2000; //custom 5 step
+
+        //creates all the states of the simulation
         StateInterface[] s = solver.solve(new ODEFunction(), universe, tf, h);
 //        StateInterface[] s = solver1.pstep(new ODEFunction(), tf, universe, h);
         this.probeMass = solver.getProbeMass();
@@ -109,6 +111,10 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
     }
     public StateInterface[] getStates() {
         return states;
+    }
+
+    public void setSolver(Solver solver) {
+        this.solver = solver;
     }
 
     public State initUn() {
@@ -127,6 +133,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         //create the initial state
         State.setMass(mass);
         State.setNames();
+        State.setRadius(new double[]{700000, 2439.7, 6051.8, 6371e3, 1737.1, 3389.5, 69911, 58232, 2575.5e3, 25362, 2462.2, 10, 1});
 
         return new State(positions, velocities, 0);
     }

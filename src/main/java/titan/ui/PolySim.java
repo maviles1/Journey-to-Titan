@@ -229,13 +229,13 @@ public class PolySim extends ScrollPane {
         setContent(canvas);
 
         setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.Z) {
+            if (event.getCode() == KeyCode.Z || event.getCode() == KeyCode.Y) {
                 scale(1.05);
             } else if (event.getCode() == KeyCode.X) {
                 scale(0.95);
-            } else if (event.getCode() == KeyCode.EQUALS) {
+            } else if (event.getCode() == KeyCode.EQUALS || event.getCode() == KeyCode.A) {
                 simSpeed(1);
-            } else if (event.getCode() == KeyCode.MINUS) {
+            } else if (event.getCode() == KeyCode.MINUS || event.getCode() == KeyCode.S) {
                 simSpeed(-1);
             } else if (event.getCode() == KeyCode.C) {
                 console.setVisible(!console.isVisible());
