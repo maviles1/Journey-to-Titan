@@ -1,4 +1,4 @@
-package titan;
+package titan.ui;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
@@ -10,6 +10,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import titan.State;
+import titan.Vector3d;
 import titan.interfaces.StateInterface;
 
 import java.io.File;
@@ -94,7 +96,8 @@ public class PolySim extends ScrollPane {
         Color[] simColors = {Color.valueOf("#2ecc71"), Color.valueOf("#f1c40f"), Color.valueOf("#3498db"), Color.valueOf("#f8a5c2"), Color.valueOf("#F79F1F"), Color.valueOf("#ff5252")};
 
         //First add the current pos in the paths with the actual nasa position data
-        drawNasaPaths(gc);
+        if (count < nasaPos[0].size())
+            drawNasaPaths(gc);
 
         //Now begin drawing the different simulations
         for (int i = 0; i < polyStates.size(); i++) {

@@ -12,7 +12,7 @@ public class State implements StateInterface {
     public static Map<Integer, String> names;
     public Vector3d[] positions;
     public Vector3d[] velocities;
-    static double[] radius;
+    public static double[] radius;
     double time;
     SpaceObject [] bodies;
 
