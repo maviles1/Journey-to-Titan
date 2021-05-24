@@ -17,12 +17,12 @@ Our goal is to simulate the gravitational forces of celestial bodies and find la
 #### To compile: (Windows)
 ``cd`` to the src folder of the cloned repository
 
-``javac --module-path "C:\Users\user\path\to\javafx-sdk\lib" --add-modules javafx.controls,javafx.resources.fxml *.java``
+``javac --module-path "C:\Users\user\path\to\javafx-sdk\lib" --add-modules javafx.controls,javafx.main.java.resources.fxml *.java``
 
 Be sure to replace the path with the actual path to the location of the ``lib`` folder stored on your computer.
 
 #### To run:
 
-``java --module-path "C:\Users\user\path\to\javafx-sdk\lib" --add-modules javafx.controls,javafx.resources.fxml Main``
+``java --module-path "C:\Users\user\path\to\javafx-sdk\lib" --add-modules javafx.controls,javafx.main.java.resources.fxml main.java.Main``
 
 Use the controls to speed up, slow down, pause, zoom or rewind the trajectory.
