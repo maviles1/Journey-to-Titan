@@ -6,7 +6,6 @@ public class Probe extends SpaceObject {
     final double G = 6.67430E-11;
     public Probe(String n, double m, Vector3d pos, Vector3d vel) {
         super(n, m, pos, vel);
-        fuelMass = m;
     }
 
     @Override
@@ -27,21 +26,14 @@ public class Probe extends SpaceObject {
 
     public void thrust(Vector3d thrustVector) {
         //Total mass
-        double totalmass = this.getMass()+this.getFuelMass();
+        double totalmass = this.getMass();
         Vector3d oldvel = this.getVelocity();
         Vector3d newvel = getVelocity().copy().add(thrustVector);
-
-        double FinalForce = totalmass * Math.abs(newvel.magnitude() - oldvel.magnitude());
-//        System.out.println("TotalMass: " + totalmass);
-//        System.out.println("Fuelmass: " + this.getFuelMass());
-//        System.out.println("probemass: " + this.getMass());
-//        System.out.println("newvel: " + newvel.magnitude());
-//        System.out.println("oldvel: " + oldvel.magnitude());
-//        System.out.println("vectormag: " + thrustVector.magnitude());
-//        System.out.println("before-> F: " + FinalForce);
+        double FinalForce = totalmass * thrustVector.norm()/3600;
         double usedmass = FinalForce / newvel.magnitude();
-//        System.out.println("after-> m: " + usedmass);
         fuelMass -= usedmass;
+        this.setMass(getMass() - usedmass);
+        System.out.println("Force used: " + (1/1e6)*(getMass() + usedmass)*thrustVector.norm()/3600);
         this.setVelocity(getVelocity().add(thrustVector));
     }
 

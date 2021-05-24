@@ -11,7 +11,7 @@ public class Solver implements ODESolverInterface {
     double [] probeMass;
 
     public Solver() {
-        stepFunction = new VerletSolver();
+        stepFunction = new RKSolver();
     }
 
     public Solver(StepInterface stepFunction) {
@@ -48,8 +48,12 @@ public class Solver implements ODESolverInterface {
         StateInterface[] s = new StateInterface[size];
         double [] probeMass = new double[size];
         s[0] = y0;
-        probe = new Probe("S",15, y0.getPositions()[y0.getVelocities().length - 1],  new Vector3d(0,0,0));
-        Vector3d initialThrust = s[0].getVelocities()[11];
+        probe = new Probe("S",78000, y0.getPositions()[y0.getVelocities().length - 1],  new Vector3d(0,0,0));
+        probe.setFuelMass(30000);
+        Random rand = new Random();
+        int randomIndex = 10 - rand.nextInt(20);
+        double randomThrust = (0.25) * rand.nextDouble();
+        Vector3d initialThrust = new Vector3d(36549.50290,-70607.50622,-586.6523571);
         s[0].getVelocities()[11] = new Vector3d(0,0,0);
         //probe.setFuelMass(1000);
         double t = 0;
@@ -61,8 +65,8 @@ public class Solver implements ODESolverInterface {
             probe.setPosition(s[i].getPositions()[11]);
             probe.setVelocity(s[i].getVelocities()[11]);
             probeMass[i] = probe.getFuelMass();
-            for (int d = 0; d < 11; d++){
-//                System.out.println(d + ": " + isInOrbit(s[i].getVelocities()[d], s[i].getVelocities()[0], State.mass[d],State.mass[0], s[i].getPositions()[d],s[i].getPositions()[0], h ));
+            if (i == 5200){
+                thrust(probe,s[i],probe.getVelocity().mul(-1).mul(0.7).add(new Vector3d(-10,-10,-10)));
             }
         }
         this.probeMass = probeMass;
@@ -72,27 +76,6 @@ public class Solver implements ODESolverInterface {
         return s;
     }
 
-    public StateInterface [] noThrustSim(ODEFunctionInterface f, StateInterface y0, double tf, double h, Vector3d initialV){
-        //check if t should be the total time
-        int size = (int) Math.round((tf / h) + 1.5);
-        StateInterface[] s = new StateInterface[size];
-        double [] probeMass = new double[size];
-        s[0] = y0;
-        probe = new Probe("S",15, y0.getPositions()[y0.getVelocities().length - 1],  y0.getVelocities()[y0.getVelocities().length - 1]);
-        Vector3d launchVelocity = s[0].getVelocities()[11];
-        s[0].getVelocities()[11] = new Vector3d(0,0,0);
-        //probe.setFuelMass(1000);
-        double t = 0;
-        thrust(probe,s[0], initialV);
-        for (int i = 1; i < size - 1; i++) {
-            t += h;
-            s[i] = step(f, t, s[i - 1], h);
-        }
-
-        s[size - 1] = step(f, tf, s[size - 2], tf - t);
-
-        return s;
-    }
 
     public double [] getProbeMass(){
         return probeMass;
@@ -107,6 +90,7 @@ public class Solver implements ODESolverInterface {
     public void thrust(Probe probe, StateInterface state, Vector3d toThrust){
         probe.thrust(toThrust);
         state.getVelocities()[11] = probe.getVelocity();
+//        State.mass[11] = probe.getMass();
     }
 
     public Vector3d randomV(){
@@ -136,5 +120,17 @@ public class Solver implements ODESolverInterface {
 //            System.out.println("calculations: " + Math.sqrt(6.67430E-11*m2/dist));
             return Math.abs(vel1.norm() - Math.sqrt(6.67430E-11*m2/dist)) < 100;
         }
+    }
+
+    public static int findClosestPoint(StateInterface [] states){
+        int index = 0;
+        double min = states[0].getPositions()[11].dist(states[0].getPositions()[8]);
+        for (int i = 0; i < states.length; i++){
+            if (states[i].getPositions()[11].dist(states[i].getPositions()[8]) < min){
+                index = i;
+                min = states[i].getPositions()[11].dist(states[i].getPositions()[8]);
+            }
+        }
+        return index;
     }
 }

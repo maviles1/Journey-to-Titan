@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI3D">
+   <children>
+      <HBox layoutY="307.0" prefHeight="100.0" prefWidth="600.0">
+         <children>
+            <Button fx:id="camButton" mnemonicParsing="false" onMouseClicked="#changeCamLock" prefHeight="101.0" prefWidth="149.0" text="Cam Lock" />
+            <Region prefHeight="100.0" prefWidth="97.0" />
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="sliderLabel" alignment="CENTER" prefHeight="27.0" prefWidth="100.0" text="Speed" />
+                  <Slider fx:id="slider" min="-100.0" onMouseDragged="#updateSpeed" showTickMarks="true" />
+               </children>
+            </VBox>
+            <Region prefHeight="100.0" prefWidth="91.0" />
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="52.0" prefWidth="122.0" text="Probe Fuel" />
+                  <Label fx:id="fuelCounter" alignment="CENTER" prefHeight="17.0" prefWidth="104.0" text="0" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Group fx:id="simulation" layoutX="280.0" layoutY="115.0" />
+   </children>
+</AnchorPane>

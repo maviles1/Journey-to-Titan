@@ -51,7 +51,8 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         Vector3d p = (Vector3d) p0.add(spaceObjects.get(3).getPosition());
 
         //create probe
-        Probe probe = new Probe("Probe", 15000, p, v);
+        Probe probe = new Probe("Probe", 78000, p, v);
+        probe.setFuelMass(30000);
         spaceObjects.add(probe);
         //create State with planets and probe
         State universe = initUn();
