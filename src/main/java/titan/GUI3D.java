@@ -29,6 +29,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.*;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.transform.*;
 import javafx.scene.transform.Translate;
@@ -47,14 +49,14 @@ import java.util.ArrayList;
 public class GUI3D {
 
     public static final double PROBE_SPEED = 600000; //initial probe speed(scalar) relative to earth
-    public static final double YEAR_IN_SECONDS = 31556926;
+    public static final double YEAR_IN_SECONDS = 31556926*5;
     public static final double STEP_SIZE_TRAJECTORY = 3600;
     public static final int CANVAS_WIDTH = 1400;
     public static final int CANVAS_HEIGHT = 1000;
-    public static double scale = 1e11;
+    public static double scale = 1e9;
     public Camera cam;
     public StateInterface[] states;
-    int counter = 4500;
+    int counter = 7000;
     Group group;
     ArrayList<SpaceObject> planets;
     ArrayList<Shape3D> shapes;
@@ -66,14 +68,19 @@ public class GUI3D {
     Vector3d probePos;
     double anchorX;
     double anchorY;
+    Text distToTitan;
     double anchorAngleX = 0;
     double anchorAngleY = 0;
     final DoubleProperty angleX = new SimpleDoubleProperty(0);
     final DoubleProperty angleY = new SimpleDoubleProperty(0);
+    final DoubleProperty antiAngleX = new SimpleDoubleProperty(0);
+    final DoubleProperty antiAngleY = new SimpleDoubleProperty(0);
     Point zoomAxis = new Point(0,0);
     Group superGroup = new Group();
     double speed;
     Button camLockToggle;
+    Text daysPassed;
+    Text distToEarth;
     Media song;
     Text probeMass;
     Vector3d camLock;
@@ -102,13 +109,22 @@ public class GUI3D {
     private void initMouseControl(Group group, Scene scene){
         Rotate xRotate;
         Rotate yRotate;
+        Rotate antiXRotate = null;
+        Rotate antiYRotate = null;
         group.getTransforms().addAll(
                 xRotate = new Rotate(0, Rotate.X_AXIS),
                 yRotate = new Rotate(0, Rotate.Y_AXIS)
         );
-
+        for (Node name : names){
+            name.getTransforms().addAll(
+                    antiXRotate = new Rotate(0, Rotate.X_AXIS),
+                    antiYRotate = new Rotate(0, Rotate.Y_AXIS)
+            );
+        }
         xRotate.angleProperty().bind(angleX);
         yRotate.angleProperty().bind(angleY);
+        antiXRotate.angleProperty().bind(antiAngleX);
+        antiYRotate.angleProperty().bind(antiAngleY);
         scene.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -116,7 +132,6 @@ public class GUI3D {
                 anchorY = mouseEvent.getY();
                 anchorAngleX = angleX.get();
                 anchorAngleY = angleY.get();
-
             }
         });
 
@@ -125,6 +140,8 @@ public class GUI3D {
             public void handle(MouseEvent mouseEvent) {
                 angleX.set(anchorAngleX - (anchorY - mouseEvent.getSceneY()));
                 angleY.set(anchorAngleY + anchorX - mouseEvent.getSceneX());
+                antiAngleX.set(-1*(anchorAngleX - (anchorY - mouseEvent.getSceneY())));
+                antiAngleY.set(-1*(anchorAngleY + anchorX - mouseEvent.getSceneX()));
             }
         });
     }
@@ -136,7 +153,6 @@ public class GUI3D {
         ArrayList<SpaceObject> spaceObjects = builder.getSpaceObjects();
         planets = spaceObjects;
         double[] radius = new double[]{700000, 2439.7, 6051.8, 6371, 1737.1, 3389.5, 69911, 58232, 2575.7, 25362, 2462.2, 10000};
-
         Vector3d vel = new Vector3d(0, 0, 0);
         Vector3d pos = new Vector3d(-3223960.8810019065,5495059.07408366,6558.208615016209);
         StateInterface [] min = new StateInterface[1];
@@ -145,7 +161,14 @@ public class GUI3D {
         sim.trajectory(pos, vel, YEAR_IN_SECONDS, STEP_SIZE_TRAJECTORY);
         StateInterface [] states = sim.getStates();
         this.states = states;
+        int closest = Solver.findClosestPoint(states);
+        int closestEarth = Solver.findClosestEarthPoint(states);
+        System.out.println("Index: " + closest);
+        System.out.println("Closest (probe to titan): " + states[closest].getPositions()[8].dist(states[closest].getPositions()[11])/1000);
+        System.out.println("Return Index: " + closestEarth);
+        System.out.println("Closest (probe to earth): " + states[closestEarth].getPositions()[3].dist(states[closestEarth].getPositions()[11])/1000);
         this.sim = sim;
+        Group spaceNames = new Group();
         initLight(group);
         probePos = spaceObjects.get(spaceObjects.size() - 1).getPosition();
         for (int j = 0; j < spaceObjects.size(); j++) {
@@ -162,7 +185,7 @@ public class GUI3D {
                 b.translateZProperty().set(toScreenCoordinates(o.getPosition().getZ()) - toScreenCoordinates(probePos.getY()));
                 Text name = new Text(State.names.get(j));
                 name.setStroke(Color.LIMEGREEN);
-                name.setFill(Color.LIMEGREEN);
+                name.setFill(Color.WHITE);
                 name.translateXProperty().set(toScreenCoordinates(o.getPosition().getX())- toScreenCoordinates(probePos.getX()));
                 name.translateYProperty().set(toScreenCoordinates(o.getPosition().getY())- toScreenCoordinates(probePos.getY()));
                 name.translateZProperty().set(toScreenCoordinates(o.getPosition().getZ())- toScreenCoordinates(probePos.getZ()));
@@ -178,10 +201,18 @@ public class GUI3D {
                 group.getChildren().add(sphere);
                 Text name = new Text(State.names.get(j));
                 name.setStroke(Color.LIMEGREEN);
-                name.setFill(Color.LIMEGREEN);
-                name.translateXProperty().set(toScreenCoordinates(o.getPosition().getX()) - toScreenCoordinates(probePos.getX()));
-                name.translateYProperty().set(toScreenCoordinates(o.getPosition().getY()) - toScreenCoordinates(probePos.getY()));
-                name.translateZProperty().set(toScreenCoordinates(o.getPosition().getZ())   - toScreenCoordinates(probePos.getZ()));
+                name.setFill(Color.WHITE);
+                if (State.names.get(j).equals("Moon") || State.names.get(j).equals("Titan")){
+                    name.translateXProperty().set(toScreenCoordinates(o.getPosition().getX()) - toScreenCoordinates(probePos.getX()) + 10);
+                    name.translateYProperty().set(toScreenCoordinates(o.getPosition().getY()) - toScreenCoordinates(probePos.getY()) - 12);
+                    name.translateZProperty().set(toScreenCoordinates(o.getPosition().getZ())   - toScreenCoordinates(probePos.getZ()));
+                    sphere.setRadius(0);
+                }
+                else{
+                    name.translateXProperty().set(toScreenCoordinates(o.getPosition().getX()) - toScreenCoordinates(probePos.getX()));
+                    name.translateYProperty().set(toScreenCoordinates(o.getPosition().getY()) - toScreenCoordinates(probePos.getY()));
+                    name.translateZProperty().set(toScreenCoordinates(o.getPosition().getZ())   - toScreenCoordinates(probePos.getZ()));
+                }
                 group.getChildren().add(name);
                 names.add(name);
                 shapes.add(sphere);
@@ -194,13 +225,31 @@ public class GUI3D {
         }
     }
 
-    public void initProbeFuelCounter(Group superGroup){
-        Text probeFuel = new Text();
-        probeFuel.setFill(Color.WHITE);
+    public void initLabels(Group superGroup){
+        Text probeFuel = new Text("Probe Fuel Mass: ");
+        Text distToTitan = new Text("Distance to Titan: ");
+        Text daysPassed = new Text("Day: ");
+        Text distToEarth = new Text("Distance to Earth: ");
+        probeFuel.setFill(Color.YELLOW);
+        distToTitan.setFill(Color.YELLOW);
+        daysPassed.setFill(Color.YELLOW);
+        distToEarth.setFill(Color.YELLOW);
         superGroup.getChildren().add(probeFuel);
-        probeFuel.setX(CANVAS_WIDTH/2 - 100);
-        probeFuel.setY(CANVAS_HEIGHT - 30);
+        superGroup.getChildren().add(daysPassed);
+        superGroup.getChildren().add(distToTitan);
+        superGroup.getChildren().add(distToEarth);
+        distToTitan.setX(10);
+        distToTitan.setY(40);
+        distToEarth.setX(10);
+        distToEarth.setY(60);
+        probeFuel.setX(10);
+        probeFuel.setY(20);
+        daysPassed.setX(10);
+        daysPassed.setY(80);
+        this.daysPassed = daysPassed;
+        this.distToTitan = distToTitan;
         this.probeMass = probeFuel;
+        this.distToEarth = distToEarth;
     }
 
     public Scene start(Stage primaryStage) throws Exception {
@@ -212,7 +261,7 @@ public class GUI3D {
         superGroup.getChildren().add(new ImageView(new Image("2k_stars.jpeg")));
         superGroup.getChildren().add(group);
         this.group.getChildren().add(paths);
-        initProbeFuelCounter(superGroup);
+        initLabels(superGroup);
         initSlider(superGroup);
         drawState(group);
         Camera cam = new PerspectiveCamera();
@@ -230,6 +279,9 @@ public class GUI3D {
             }
         });
         Button camLockToggle = new Button("CAM");
+        camLockToggle.setLayoutX(100);
+        camLockToggle.setLayoutY(900);
+        camLockToggle.resize(100,100);
         superGroup.getChildren().add(camLockToggle);
         this.camLockToggle = camLockToggle;
         scene.setCamera(cam);
@@ -247,9 +299,13 @@ public class GUI3D {
                     AnimationTimer p = new AnimationTimer() {
                         @Override
                         public void handle(long l) {
+                            daysPassed.setText("Day: " + (counter/24));
+                            distToTitan.setText("Distance to Titan: " + states[counter].getPosition()[8].dist(states[counter].getPosition()[11])/1000 + " km");
+                            distToEarth.setText("Distance to Earth: " + states[counter].getPosition()[3].dist(states[counter].getPosition()[11])/1000 + " km");
                             Vector3d probe = states[counter].getPositions()[states[counter].getPositions().length - 1];
                             probePos = probe;
                             sunPos = states[counter].getPositions()[8];
+//                            System.out.println(states[counter].getPositions()[3].dist(states[counter].getPositions()[8]));
                             if (probeLock){
                                 camLock = states[counter].getPositions()[states[counter].getPositions().length - 1];
                                 double screenX = toScreenCoordinates(states[counter].getPositions()[0].getX()) - toScreenCoordinates(probePos.getX());
@@ -274,7 +330,7 @@ public class GUI3D {
                                     probeLock = !probeLock;
                                 }
                             });
-                            probeMass.setText(String.valueOf(probeFuel[counter]));
+                            probeMass.setText("Probe Fuel Mass: " + String.valueOf(probeFuel[counter]));
 //                            fuelCounter.setText(String.valueOf(probeFuel[counter]));
                             for(int i = 0; i < shapes.size(); i++){
                                 double screenX = toScreenCoordinates(states[counter].getPositions()[i].getX()) - toScreenCoordinates(camLock.getX());
@@ -287,16 +343,24 @@ public class GUI3D {
                                 shapes.get(i).translateZProperty().set(screenZ);
                                 Sphere path = new Sphere(1);
                                 PhongMaterial redMaterial = new PhongMaterial();
-                                redMaterial.setSpecularColor(Color.ORANGE);
-                                redMaterial.setDiffuseColor(Color.RED);
+                                redMaterial.setSpecularColor(Color.LIMEGREEN);
+                                redMaterial.setDiffuseColor(Color.LIMEGREEN);
                                 path.setMaterial(redMaterial);
                                 paths.getChildren().add(path);
                                 path.translateXProperty().set(toScreenCoordinates(states[counter].getPositions()[i].getX()) - toScreenCoordinates(states[counter].getPositions()[0].getX()));
                                 path.translateYProperty().set(toScreenCoordinates(states[counter].getPositions()[i].getY()) - toScreenCoordinates(states[counter].getPositions()[0].getY()));
                                 path.translateZProperty().set(toScreenCoordinates(states[counter].getPositions()[i].getZ()) - toScreenCoordinates(states[counter].getPositions()[0].getZ()));
-                                names.get(i).translateXProperty().set(screenX);
-                                names.get(i).translateYProperty().set(screenY);
-                                names.get(i).translateZProperty().set(screenZ);
+
+                                if (State.names.get(i).equals("Moon") || State.names.get(i).equals("Titan")){
+                                    names.get(i).translateXProperty().set(screenX + 10);
+                                    names.get(i).translateYProperty().set(screenY - 12);
+                                    names.get(i).translateZProperty().set(screenZ);
+                                }
+                                else{
+                                    names.get(i).translateXProperty().set(screenX);
+                                    names.get(i).translateYProperty().set(screenY);
+                                    names.get(i).translateZProperty().set(screenZ);
+                                }
                             }
 
                             counter += speed;
@@ -387,6 +451,8 @@ public class GUI3D {
 
     public void initSlider(Group group){
         Slider slider = new Slider();
+        slider.setMin(-2);
+        slider.setMax(2);
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {

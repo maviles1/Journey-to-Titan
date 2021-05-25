@@ -26,6 +26,7 @@ public class Probe extends SpaceObject {
 
     public void thrust(Vector3d thrustVector) {
         //Total mass
+        System.out.println("Vector used: " + thrustVector);
         double totalmass = this.getMass();
         Vector3d oldvel = this.getVelocity();
         Vector3d newvel = getVelocity().copy().add(thrustVector);
