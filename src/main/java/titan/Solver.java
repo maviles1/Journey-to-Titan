@@ -49,25 +49,52 @@ public class Solver implements ODESolverInterface {
         double [] probeMass = new double[size];
         s[0] = y0;
         probe = new Probe("S",78000, y0.getPositions()[y0.getVelocities().length - 1],  new Vector3d(0,0,0));
-        probe.setFuelMass(30000);
+        probe.setFuelMass(1200);
         Random rand = new Random();
         int randomIndex = 10 - rand.nextInt(20);
         double randomThrust = (0.25) * rand.nextDouble();
-        Vector3d initialThrust = new Vector3d(36549.50290,-70607.50622,-586.6523571);
+        Vector3d v1 = new Vector3d(8.490797981937179E11,-1.2257695631660947E12,-1.3000611491879347E10).sub(s[0].getPositions()[11]);
+        Vector3d initialThrust = new Vector3d(26775.57124009934,-57470.04719025249,-472.36369747524566);
         s[0].getVelocities()[11] = new Vector3d(0,0,0);
-        //probe.setFuelMass(1000);
         double t = 0;
-        //initial thrust
         thrust(probe,s[0], initialThrust);
+        double stateToReach = 7200;
         for (int i = 1; i < size - 1; i++) {
             t += h; //TODO: i think we should be incrementing t at the end of the loop
             s[i] = step(f, t, s[i - 1], h);
             probe.setPosition(s[i].getPositions()[11]);
             probe.setVelocity(s[i].getVelocities()[11]);
             probeMass[i] = probe.getFuelMass();
-            if (i == 5200){
-                thrust(probe,s[i],probe.getVelocity().mul(-1).mul(0.7).add(new Vector3d(-10,-10,-10)));
+            Random r = new Random();
+            //2600 - 2800
+            if (i == 7137){
+                Vector3d v = new Vector3d(8.377236873346893E11,-1.2355819685819001E12,-1.1914403064430511E10).sub(s[i].getPositions()[11]);
+                thrust(probe,s[i],probe.getVelocity().mul(-1).add(v.mul((1.0/(stateToReach - i))/3600)));
             }
+            if (i == stateToReach){
+                thrust(probe,s[i],probe.getVelocity().mul(-1).mul(0.98));
+            }
+            if (i == 8000){
+                Vector3d toEarth = new Vector3d(6.376278079466113E10,1.330882728657392E11,1.791658414687115E7).sub(s[i].getPositions()[11]);
+                thrust(probe,s[i],probe.getVelocity().mul(-1).add(toEarth.mul((1.0/(14500 - i))/3600)));
+            }
+            if (i == 14000){
+                Vector3d toEarth = new Vector3d(6.376278079466113E10,1.330882728657392E11,1.791658414687115E7).sub(s[i].getPositions()[11]);
+                thrust(probe,s[i],probe.getVelocity().mul(-1).add(toEarth.mul((1.0/(14500 - i))/3600)));
+            }
+            if (i == 14400){
+                Vector3d toEarth = new Vector3d(6.376278079466113E10,1.330882728657392E11,1.791658414687115E7).sub(s[i].getPositions()[11]);
+                thrust(probe,s[i],probe.getVelocity().mul(-1).add(toEarth.mul((1.0/(14500 - i))/3600)));
+            }
+            if (i == 14487){
+                Vector3d toEarth = new Vector3d(6.376278079466113E10,1.330882728657392E11,1.791658414687115E7).sub(s[i].getPositions()[11]);
+                thrust(probe,s[i],probe.getVelocity().mul(-1).add(toEarth.mul((1.0/(14500 - i))/3600)));
+            }
+            if (i == 14500){
+                System.out.println("Earth: "  + s[i].getPositions()[3]);
+            }
+
+
         }
         this.probeMass = probeMass;
 
@@ -145,6 +172,18 @@ public class Solver implements ODESolverInterface {
             if (states[i].getPositions()[11].dist(states[i].getPositions()[8]) < min){
                 index = i;
                 min = states[i].getPositions()[11].dist(states[i].getPositions()[8]);
+            }
+        }
+        return index;
+    }
+
+    public static int findClosestEarthPoint(StateInterface [] states){
+        int index =0 ;
+        double min = states[7000].getPositions()[11].dist(states[0].getPositions()[3]);
+        for (int i = 7000; i < states.length; i++){
+            if (states[i].getPositions()[11].dist(states[i].getPositions()[3]) < min){
+                index = i;
+                min = states[i].getPositions()[11].dist(states[i].getPositions()[3]);
             }
         }
         return index;
