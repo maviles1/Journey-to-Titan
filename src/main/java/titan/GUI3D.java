@@ -45,6 +45,8 @@ import java.util.Random;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class GUI3D {
 
@@ -53,10 +55,10 @@ public class GUI3D {
     public static final double STEP_SIZE_TRAJECTORY = 3600;
     public static final int CANVAS_WIDTH = 1400;
     public static final int CANVAS_HEIGHT = 1000;
-    public static double scale = 1e9;
+    public static double scale = 1e11;
     public Camera cam;
     public StateInterface[] states;
-    int counter = 7000;
+    int counter = 0;
     Group group;
     ArrayList<SpaceObject> planets;
     ArrayList<Shape3D> shapes;
@@ -81,6 +83,7 @@ public class GUI3D {
     Button camLockToggle;
     Text daysPassed;
     Text distToEarth;
+    Text probeSpeed;
     Media song;
     Text probeMass;
     Vector3d camLock;
@@ -228,27 +231,33 @@ public class GUI3D {
     public void initLabels(Group superGroup){
         Text probeFuel = new Text("Probe Fuel Mass: ");
         Text distToTitan = new Text("Distance to Titan: ");
-        Text daysPassed = new Text("Day: ");
+        Text daysPassed = new Text("Date: ");
         Text distToEarth = new Text("Distance to Earth: ");
+        Text probeSpeed = new Text("Distance to Earth: ");
         probeFuel.setFill(Color.YELLOW);
         distToTitan.setFill(Color.YELLOW);
         daysPassed.setFill(Color.YELLOW);
         distToEarth.setFill(Color.YELLOW);
+        probeSpeed.setFill(Color.YELLOW);
         superGroup.getChildren().add(probeFuel);
         superGroup.getChildren().add(daysPassed);
         superGroup.getChildren().add(distToTitan);
         superGroup.getChildren().add(distToEarth);
+        superGroup.getChildren().add(probeSpeed);
         distToTitan.setX(10);
         distToTitan.setY(40);
         distToEarth.setX(10);
         distToEarth.setY(60);
+        probeSpeed.setX(10);
+        probeSpeed.setY(80);
         probeFuel.setX(10);
         probeFuel.setY(20);
         daysPassed.setX(10);
-        daysPassed.setY(80);
+        daysPassed.setY(100);
         this.daysPassed = daysPassed;
         this.distToTitan = distToTitan;
         this.probeMass = probeFuel;
+        this.probeSpeed = probeSpeed;
         this.distToEarth = distToEarth;
     }
 
@@ -288,22 +297,42 @@ public class GUI3D {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
+
                 if (keyEvent.getCode().toString() == "SPACE"){
                     String song = "song2.mp3";
                     Media media = new Media(Paths.get(song).toUri().toString());
                     player = new MediaPlayer(media);
 //                    player.play();
                     speed = 1;
+                    scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                        @Override
+                        public void handle(KeyEvent event) {
+                            if (keyEvent.getCode().toString() == "SPACE"){
+                                if (speed == 0){
+                                    speed = 1;
+                                }
+                                else{
+                                    speed = 0;
+                                }
+                            }
+                        }
+                    });
                     double [] probeFuel = sim.getProbeMass();
                     probeLock = true;
                     AnimationTimer p = new AnimationTimer() {
                         @Override
                         public void handle(long l) {
-                            daysPassed.setText("Day: " + (counter/24));
+                            if (counter > states.length - 1){
+                                counter = states.length - 1;
+                            }
+                            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/Y hh:mm a");
+                            Date date = new Date(120,4,counter/24, counter, 0,0);
+                            daysPassed.setText("Date: " + formatter.format(date));
                             distToTitan.setText("Distance to Titan: " + states[counter].getPosition()[8].dist(states[counter].getPosition()[11])/1000 + " km");
                             distToEarth.setText("Distance to Earth: " + states[counter].getPosition()[3].dist(states[counter].getPosition()[11])/1000 + " km");
                             Vector3d probe = states[counter].getPositions()[states[counter].getPositions().length - 1];
                             probePos = probe;
+                            probeSpeed.setText("Probe speed:" + states[counter].getVelocities()[11].norm() + "m/s");
                             sunPos = states[counter].getPositions()[8];
 //                            System.out.println(states[counter].getPositions()[3].dist(states[counter].getPositions()[8]));
                             if (probeLock){
@@ -451,8 +480,8 @@ public class GUI3D {
 
     public void initSlider(Group group){
         Slider slider = new Slider();
-        slider.setMin(-2);
-        slider.setMax(2);
+        slider.setMin(-20);
+        slider.setMax(20);
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {

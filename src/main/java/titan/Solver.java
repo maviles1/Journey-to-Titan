@@ -67,6 +67,10 @@ public class Solver implements ODESolverInterface {
             probeMass[i] = probe.getFuelMass();
             Random r = new Random();
             //2600 - 2800
+            if (i == 5300){
+                Vector3d v = new Vector3d(8.377236873346893E11,-1.2355819685819001E12,-1.1914403064430511E10).sub(s[i].getPositions()[11]);
+                thrust(probe,s[i],probe.getVelocity().mul(-1).add(v.mul((1.0/(stateToReach - i))/3600)));
+            }
             if (i == 7137){
                 Vector3d v = new Vector3d(8.377236873346893E11,-1.2355819685819001E12,-1.1914403064430511E10).sub(s[i].getPositions()[11]);
                 thrust(probe,s[i],probe.getVelocity().mul(-1).add(v.mul((1.0/(stateToReach - i))/3600)));
@@ -74,11 +78,19 @@ public class Solver implements ODESolverInterface {
             if (i == stateToReach){
                 thrust(probe,s[i],probe.getVelocity().mul(-1).mul(0.98));
             }
-            if (i == 8000){
+            if (i == 7550){
                 Vector3d toEarth = new Vector3d(6.376278079466113E10,1.330882728657392E11,1.791658414687115E7).sub(s[i].getPositions()[11]);
                 thrust(probe,s[i],probe.getVelocity().mul(-1).add(toEarth.mul((1.0/(14500 - i))/3600)));
             }
             if (i == 14000){
+                Vector3d toEarth = new Vector3d(6.376278079466113E10,1.330882728657392E11,1.791658414687115E7).sub(s[i].getPositions()[11]);
+                thrust(probe,s[i],probe.getVelocity().mul(-1).add(toEarth.mul((1.0/(14500 - i))/3600)));
+            }
+            if (i == 10000){
+                Vector3d toEarth = new Vector3d(6.376278079466113E10,1.330882728657392E11,1.791658414687115E7).sub(s[i].getPositions()[11]);
+                thrust(probe,s[i],probe.getVelocity().mul(-1).add(toEarth.mul((1.0/(14500 - i))/3600)));
+            }
+            if (i == 13000){
                 Vector3d toEarth = new Vector3d(6.376278079466113E10,1.330882728657392E11,1.791658414687115E7).sub(s[i].getPositions()[11]);
                 thrust(probe,s[i],probe.getVelocity().mul(-1).add(toEarth.mul((1.0/(14500 - i))/3600)));
             }
@@ -93,8 +105,6 @@ public class Solver implements ODESolverInterface {
             if (i == 14500){
                 System.out.println("Earth: "  + s[i].getPositions()[3]);
             }
-
-
         }
         this.probeMass = probeMass;
 
