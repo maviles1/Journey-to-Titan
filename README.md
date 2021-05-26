@@ -6,23 +6,34 @@ Members: Martin Aviles, Lou Feiler, Marie Picquet, Sam Glassman, Yaroslav Tymofi
 Overview
 ---
 
-Our goal is to simulate the gravitational forces of celestial bodies and find launch parameters to launch a space probe to Titan.
+Our goal is to simulate the gravitational forces of celestial bodies using different types of solvers, and to launch a rocket into Titan's orbit and back to Earth again using thrusters.
 
 ### How to run:
 
 1. Clone the repository
-2. Download the JavaFX sdk
-3. Use command line to compile and run the Titan probe simulation.
+2. (Optional) Download and install gradle
 
-#### To compile: (Windows)
-``cd`` to the src folder of the cloned repository
+### To run:
 
-``javac --module-path "C:\Users\user\path\to\javafx-sdk\lib" --add-modules javafx.controls,javafx.main.java.resources.fxml *.java``
+1. ``cd`` to the root folder of the cloned project.
+2. If gradle is installed, execute ``gradle run``. If gradle is not installed, execute ``gradlew run``
+3. In the launcher window, input the launch parameters and select solver(s) (for 2D simulation). Select the 3D option to execute 3D simulation (uses hardcoded parameters)
 
-Be sure to replace the path with the actual path to the location of the ``lib`` folder stored on your computer.
+#### Controls
 
-#### To run:
+For 2D simulation:
+Click on simulation pane to focus
+- zoom out: press ``Z`` or ``Y``
+- zoom in: press ``X``
+- speed up simulation:  press ``=`` or ``A``
+- slow down simulation: press ``-`` or ``S``
+- toggle debug console visibility: press ``C``
+- focus view on Probe: press ``P``
+- focus view on celestial body: press ``0-9``, (where Sun is ``0``, etc)
+- focus view on Titan: press ``T`` or ``8``
+- Use scrolling or dragging in order to pan 
+- pressing a focus view key multiple times will cycle the focus through the different solvers simulating that body. (E.g: pressing ``P`` once focuses view on Probe of first Solver. Pressing ``P`` again will focus view on next Solver's Probe)
 
-``java --module-path "C:\Users\user\path\to\javafx-sdk\lib" --add-modules javafx.controls,javafx.main.java.resources.fxml main.java.Main``
-
-Use the controls to speed up, slow down, pause, zoom or rewind the trajectory.
+For 3D simulation:
+- Press ``SPACE`` to start simulation
+- Click on ``CAM`` button to switch focus
