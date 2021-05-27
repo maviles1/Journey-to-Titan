@@ -37,3 +37,4 @@ Click on simulation pane to focus
 For 3D simulation:
 - Press ``SPACE`` to start simulation
 - Click on ``CAM`` button to switch focus
+- Use scrolling to zoom
