@@ -18,7 +18,8 @@ public class Launcher {
 
     public static final double DEFAULT_STEP_SIZE = 3600;
 
-    public static final double[] DEFAULT_LAUNCH_VELOCITY = {26775.57124009934, -57470.04719025249, -472.36369747524566};
+    public static final double[] DEFAULT_LAUNCH_VELOCITY = {0, 0, 0};
+//    public static final double[] DEFAULT_LAUNCH_VELOCITY = {26775.57124009934, -57470.04719025249, -472.36369747524566};
 //    public static final double[] DEFAULT_LAUNCH_VELOCITY = {40289.2995, -41570.9400, -587.3099};
     public static final double[] DEFAULT_LAUNCH_POSITION = {-3223960.8810019065, 5495059.07408366, 6558.208615016209};
 //    public static final double[] DEFAULT_LAUNCH_POSITION = {6371000.0, 1.0, 1.0};
