@@ -45,22 +45,7 @@ public class Rate implements RateInterface {
         return new Rate(newPositions,newVelocities);
     }
 
-    public String toString(){
-        String s = "";
-        //for (int i = 0; i < size; i++)
-        //{
-                s += " Values: { x=" + positionRates[3].getX()
-                        + ", y=" + positionRates[3].getY()
-                        + ", z=" + positionRates[3].getZ()
-                        //+ " vx=" + velocityRates[i].getX()
-                        //+ ", vy=" + velocityRates[i].getY()
-                        //+ ", vz=" + velocityRates[i].getZ()
-                        + " }\n";
-        //}
-        return s; //this is unused
-    }
-
-    public String coolerToString() {
+    public String toString() {
         String s = "";
         for (int i = 0; i < size; i++) {
             s += " Values: { x=" + positionRates[i].toString()

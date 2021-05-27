@@ -142,5 +142,4 @@ public class RateTest {
         Assertions.assertTrue(rate.add(addRate).equals(solutionRate));
     }
 
-
 }
