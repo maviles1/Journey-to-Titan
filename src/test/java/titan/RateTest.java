@@ -28,6 +28,15 @@ public class RateTest {
     }
 
     @Test
+    public void notEqualsTestNotRate() {
+        Vector3d[] pos = {new Vector3d(1, 1, 1), new Vector3d(2, 2, 2)};
+        Vector3d[] vel = {new Vector3d(1, 1, 1), new Vector3d(2, 2, 2)};
+        Rate rate = new Rate(pos, vel);
+        Object otherRate = new Object();
+        Assertions.assertFalse(rate.equals(otherRate));
+    }
+
+    @Test
     public void mulTestWithScalarOne() {
         Vector3d[] positions = {new Vector3d(1, 2, 3), new Vector3d(2, 3, 4), new Vector3d(5, 6, 7)};
         Vector3d[] velocities = {new Vector3d(1, 2, 3), new Vector3d(2, 3, 4), new Vector3d(5, 6, 7)};
