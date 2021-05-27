@@ -48,8 +48,8 @@ public class Solver implements ODESolverInterface {
         StateInterface[] s = new StateInterface[size];
         double [] probeMass = new double[size];
         s[0] = y0;
-        probe = new Probe("S",78000, y0.getPositions()[y0.getVelocities().length - 1],  new Vector3d(0,0,0));
-        probe.setFuelMass(1200);
+        probe = new Probe("S",State.mass[11], y0.getPositions()[y0.getVelocities().length - 1],  new Vector3d(0,0,0));
+        probe.setFuelMass(2350);
         Random rand = new Random();
         int randomIndex = 10 - rand.nextInt(20);
         double randomThrust = (0.25) * rand.nextDouble();
@@ -66,7 +66,6 @@ public class Solver implements ODESolverInterface {
             probe.setVelocity(s[i].getVelocities()[11]);
             probeMass[i] = probe.getFuelMass();
             Random r = new Random();
-            //2600 - 2800
             if (i == 5300){
                 Vector3d v = new Vector3d(8.377236873346893E11,-1.2355819685819001E12,-1.1914403064430511E10).sub(s[i].getPositions()[11]);
                 thrust(probe,s[i],probe.getVelocity().mul(-1).add(v.mul((1.0/(stateToReach - i))/3600)));

@@ -198,6 +198,7 @@ public class GUI3D {
             else {
                 spaceObjects.get(j).setRadius(radius[j]);
                 Sphere sphere = new Sphere(20);
+//                Sphere sphere = new Sphere(toScreenCoordinates(radius[j]));
                 sphere.translateXProperty().set(toScreenCoordinates(o.getPosition().getX()) - toScreenCoordinates(probePos.getX()));
                 sphere.translateYProperty().set(toScreenCoordinates(o.getPosition().getY()) - toScreenCoordinates(probePos.getY()));
                 sphere.translateZProperty().set(toScreenCoordinates(o.getPosition().getZ()) -  toScreenCoordinates(probePos.getZ()));
@@ -243,17 +244,16 @@ public class GUI3D {
         superGroup.getChildren().add(daysPassed);
         superGroup.getChildren().add(distToTitan);
         superGroup.getChildren().add(distToEarth);
-        superGroup.getChildren().add(probeSpeed);
+//        superGroup.getChildren().add(probeSpeed);
         distToTitan.setX(10);
         distToTitan.setY(40);
         distToEarth.setX(10);
         distToEarth.setY(60);
         probeSpeed.setX(10);
-        probeSpeed.setY(80);
         probeFuel.setX(10);
         probeFuel.setY(20);
         daysPassed.setX(10);
-        daysPassed.setY(100);
+        daysPassed.setY(80);
         this.daysPassed = daysPassed;
         this.distToTitan = distToTitan;
         this.probeMass = probeFuel;
@@ -302,7 +302,7 @@ public class GUI3D {
                     String song = "song2.mp3";
                     Media media = new Media(Paths.get(song).toUri().toString());
                     player = new MediaPlayer(media);
-//                    player.play();
+                    player.play();
                     speed = 1;
                     scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
                         @Override
@@ -333,7 +333,7 @@ public class GUI3D {
                             Vector3d probe = states[counter].getPositions()[states[counter].getPositions().length - 1];
                             probePos = probe;
                             probeSpeed.setText("Probe speed:" + states[counter].getVelocities()[11].norm() + "m/s");
-                            sunPos = states[counter].getPositions()[8];
+                            sunPos = states[counter].getPositions()[0];
 //                            System.out.println(states[counter].getPositions()[3].dist(states[counter].getPositions()[8]));
                             if (probeLock){
                                 camLock = states[counter].getPositions()[states[counter].getPositions().length - 1];
@@ -345,7 +345,7 @@ public class GUI3D {
                                 paths.translateZProperty().set(screenZ);
                             }
                             else{
-                                camLock = states[counter].getPositions()[8];
+                                camLock = states[counter].getPositions()[0];
                                 double screenX = toScreenCoordinates(states[counter].getPositions()[0].getX()) - toScreenCoordinates(sunPos.getX());
                                 double screenY = toScreenCoordinates(states[counter].getPositions()[0].getY()) - toScreenCoordinates(sunPos.getY());
                                 double screenZ = toScreenCoordinates(states[counter].getPositions()[0].getZ()) - toScreenCoordinates(sunPos.getZ());
@@ -372,8 +372,8 @@ public class GUI3D {
                                 shapes.get(i).translateZProperty().set(screenZ);
                                 Sphere path = new Sphere(1);
                                 PhongMaterial redMaterial = new PhongMaterial();
-                                redMaterial.setSpecularColor(Color.LIMEGREEN);
-                                redMaterial.setDiffuseColor(Color.LIMEGREEN);
+                                redMaterial.setSpecularColor(Color.TURQUOISE);
+                                redMaterial.setDiffuseColor(Color.TURQUOISE);
                                 path.setMaterial(redMaterial);
                                 paths.getChildren().add(path);
                                 path.translateXProperty().set(toScreenCoordinates(states[counter].getPositions()[i].getX()) - toScreenCoordinates(states[counter].getPositions()[0].getX()));
