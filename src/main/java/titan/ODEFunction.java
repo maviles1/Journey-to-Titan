@@ -10,7 +10,7 @@ public class ODEFunction implements ODEFunctionInterface {
 
         State state = (State) y;
 
-        int size=state.getPosition().length;
+        int size=state.getPositions().length;
         double dt = t - state.getTime();
 
         double G = 6.67430E-11;
@@ -23,8 +23,8 @@ public class ODEFunction implements ODEFunctionInterface {
 
             for (int j = 0; j < size; j++) {
                 if (i != j) {
-                    double p = (G * State.mass[j])/Math.pow(state.getPosition()[j].dist(state.getPosition()[i]),3);
-                    a = a.addMul(p, state.getPosition()[j].sub(state.getPosition()[i]));
+                    double p = (G * State.mass[j])/Math.pow(state.getPositions()[j].dist(state.getPositions()[i]),3);
+                    a = a.addMul(p, state.getPositions()[j].sub(state.getPositions()[i]));
                 }
             }
 

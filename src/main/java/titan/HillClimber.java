@@ -1,8 +1,6 @@
 package titan;
 
-import titan.interfaces.ODEFunctionInterface;
 import titan.interfaces.StateInterface;
-import titan.interfaces.Vector3dInterface;
 
 public class HillClimber {
 
@@ -31,16 +29,16 @@ public class HillClimber {
         Vector3d position = ((Vector3d) p).copy();
 
         //assuming first state is the target (in that state probe is the closest to the specified position)
-        Vector3d closest = state[0].getPosition()[11].copy();
+        Vector3d closest = state[0].getPositions()[11].copy();
         StateInterface target = state[0].copy();
         int index = 0;
 
         //looping through the rest of the array searching for the right state
         for (int i = 2; i < state.length; i++){
             //if distance in current state is shorter than the distance in, previously assumed, "target" state...
-            if (state[i].getPosition()[11].dist(position) < closest.dist(position)) {
+            if (state[i].getPositions()[11].dist(position) < closest.dist(position)) {
                 //...then reassume and reassign according values
-                closest = state[i].getPosition()[11].copy();
+                closest = state[i].getPositions()[11].copy();
                 target = state[i].copy();
                 index = i;
             }

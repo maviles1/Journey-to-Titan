@@ -111,7 +111,7 @@ public class PolySim extends ScrollPane {
                 polyPaths.get(i).add(paint(i, gc, j));  //draw celestial body and add position to path history
             }
 
-            Label distance = new Label(polyStates.get(i)[count].getPosition()[11].dist(polyStates.get(i)[count].getPosition()[8]) / 1000.0 + "km - " + probeNames[i]);
+            Label distance = new Label(polyStates.get(i)[count].getPositions()[11].dist(polyStates.get(i)[count].getPositions()[8]) / 1000.0 + "km - " + probeNames[i]);
             distance.setTextFill(gc.getFill());
             console.getChildren().add(distance);
         }
@@ -130,8 +130,8 @@ public class PolySim extends ScrollPane {
     public Double[] paint(int i, GraphicsContext gc, int body) {
         State state = (State) polyStates.get(i)[count];
         //scale and position x and y coordinate
-        double x = calcX(state.getPosition()[body].getX());
-        double y = calcY(state.getPosition()[body].getY());
+        double x = calcX(state.getPositions()[body].getX());
+        double y = calcY(state.getPositions()[body].getY());
 //        gc.fillOval(x - 2.5, y - 2.5, 5, 5);
         gc.fillOval(x - Math.max(toCoord(State.radius[i]), 2.5), y - Math.max(toCoord(State.radius[i]), 2.5), Math.max(toCoord(State.radius[i]) * 2, 5), Math.max(toCoord(State.radius[i]) * 2, 5));
 
@@ -143,7 +143,7 @@ public class PolySim extends ScrollPane {
             gc.fillText(names[body], x + 10, y + 10);
 
         //return to be added to path history
-        return new Double[]{state.getPosition()[body].getX(), state.getPosition()[body].getY()};
+        return new Double[]{state.getPositions()[body].getX(), state.getPositions()[body].getY()};
     }
 
     public void drawNasaPaths(GraphicsContext gc) {
@@ -167,12 +167,12 @@ public class PolySim extends ScrollPane {
     }
 
     public double calcX(double d) {
-        double x = WIDTH / 2 - toCoord(polyStates.get(solverFocus)[count].getPosition()[focus].getX()); //if probe
+        double x = WIDTH / 2 - toCoord(polyStates.get(solverFocus)[count].getPositions()[focus].getX()); //if probe
         return x + toCoord(d);
     }
 
     public double calcY(double d) {
-        double y = HEIGHT / 2 - toCoord(polyStates.get(solverFocus)[count].getPosition()[focus].getY());
+        double y = HEIGHT / 2 - toCoord(polyStates.get(solverFocus)[count].getPositions()[focus].getY());
         return y + toCoord(d);
     }
 
