@@ -47,7 +47,7 @@ public class GUI3D {
     public static double scale = 1e11;
     public Camera cam;
     public StateInterface[] states;
-    int counter = 0;
+    int counter = 7200;
     Group group;
     ArrayList<SpaceObject> planets;
     ArrayList<Shape3D> shapes;
