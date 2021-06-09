@@ -302,7 +302,7 @@ public class GUI3D {
                     String song = "song2.mp3";
                     Media media = new Media(Paths.get(song).toUri().toString());
                     player = new MediaPlayer(media);
-                    player.play();
+//                    player.play();
                     speed = 1;
                     scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
                         @Override
@@ -494,7 +494,7 @@ public class GUI3D {
     }
 
     public static double toScreenCoordinates(double d){
-        return ((d / scale)) * 280;
+        return ((d / scale)) * 800;
     }
 
     public void updateSpeed(MouseEvent mouseEvent) {
