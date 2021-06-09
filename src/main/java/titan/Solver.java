@@ -74,6 +74,7 @@ public class Solver implements ODESolverInterface {
                 Vector3d v = new Vector3d(8.377236873346893E11,-1.2355819685819001E12,-1.1914403064430511E10).sub(s[i].getPositions()[11]);
                 thrust(probe,s[i],probe.getVelocity().mul(-1).add(v.mul((1.0/(stateToReach - i))/3600)));
             }
+
             if (i == stateToReach){
                 thrust(probe,s[i],probe.getVelocity().mul(-1).mul(0.98));
             }
@@ -142,7 +143,7 @@ public class Solver implements ODESolverInterface {
     public void thrust(Probe probe, StateInterface state, Vector3d toThrust){
         probe.thrust(toThrust);
         state.getVelocities()[11] = probe.getVelocity();
-//        State.mass[11] = probe.getMass();
+        State.mass[11] = probe.getMass();
     }
 
     public Vector3d randomV(){
