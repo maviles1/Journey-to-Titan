@@ -1,4 +1,4 @@
-package titan;
+package titan.flight;
 
 public class FeedbackController {
 

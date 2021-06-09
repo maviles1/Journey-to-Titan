@@ -1,4 +1,4 @@
-package titan;
+package titan.flight;
 
 import javafx.animation.AnimationTimer;
 import javafx.geometry.VPos;

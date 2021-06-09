@@ -1,4 +1,6 @@
-package titan;
+package titan.landing;
+
+import titan.flight.Vector3d;
 
 import java.util.Random;
 

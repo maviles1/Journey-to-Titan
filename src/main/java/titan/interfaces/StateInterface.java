@@ -7,7 +7,7 @@
 
 package titan.interfaces;
 
-import titan.Vector3d;
+import titan.flight.Vector3d;
 
 /**
  * An interface representing the state of a system described by a differential equation.

@@ -1,4 +1,4 @@
-package titan;
+package titan.flight;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.DoubleProperty;
@@ -47,7 +47,7 @@ public class GUI3D {
     public static double scale = 1e11;
     public Camera cam;
     public StateInterface[] states;
-    int counter = 7200;
+    int counter = 0;
     Group group;
     ArrayList<SpaceObject> planets;
     ArrayList<Shape3D> shapes;

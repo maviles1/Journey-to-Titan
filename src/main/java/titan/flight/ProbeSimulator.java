@@ -1,4 +1,4 @@
-package titan;
+package titan.flight;
 
 import titan.interfaces.ProbeSimulatorInterface;
 import titan.interfaces.StateInterface;

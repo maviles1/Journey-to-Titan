@@ -1,4 +1,4 @@
-package titan;
+package titan.flight;
 
 import titan.interfaces.ODEFunctionInterface;
 import titan.interfaces.RateInterface;

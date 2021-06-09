@@ -3,6 +3,7 @@ package titan;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import titan.flight.*;
 import titan.interfaces.Vector3dInterface;
 import titan.interfaces.StateInterface;
 

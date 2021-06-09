@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import titan.Renderer;
+import titan.flight.Renderer;
 
 /**
  * This class represents the application window which contains the simulation controls as well as the renderer.
