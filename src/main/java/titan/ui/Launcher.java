@@ -119,7 +119,7 @@ public class Launcher {
         if (twoD.isSelected()) {
             errorMsg.setText("");
             runPolySim(pos, vel, stepSize, duration);
-        } else {
+        } else if (threeD.isSelected()){
             //3d simulation
             //TODO: Be able to allow users to select the solver to use instead of hardcoding
             GUI3D gui3D = new GUI3D();
@@ -132,6 +132,23 @@ public class Launcher {
             stage.setOnCloseRequest(event1 -> {
                 //TODO: somehow call the stop() method on the AnimationTimers used in order to prevent memory leak
                 errorMsg.setText("");
+            });
+        } else {
+            //dummy states for demo reasons
+            StateInterface[] states = new StateInterface[1000];
+            for (int i = 0; i < 1000; i ++) {
+                states[i] = new State(new Vector3d[]{new Vector3d(600,  i, 0)}, new Vector3d[]{new Vector3d(0,0,0)}, i);
+            }
+
+            Environment environment = new Environment(states);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(environment.getParent(), 1200, 800));
+            stage.show();
+            environment.start();
+
+            stage.setOnCloseRequest(event2 -> {
+                environment.stop();
+                stage.close();
             });
         }
     }
@@ -192,10 +209,6 @@ public class Launcher {
             simStates.add((rk2.getStates()));
             probeNames.add("RK Original");
         }
-
-        //ProbeSim probeSimTest = new ProbeSim(new Solver(new EulerSolver()));
-        //probeSimTest.trajectory(probe_relative_position, probe_relative_velocity, YEAR, DAY);
-        //simStates.add(probeSimTest.getStates());
 
         PolySim polySim = new PolySim(simStates);
         polySim.setProbeNames(probeNames.toArray(new String[0]));

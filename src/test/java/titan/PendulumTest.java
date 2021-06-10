@@ -16,11 +16,11 @@ public class PendulumTest {
 
     @Test
     void getPendulumData() {
-        Solver eulerSolver = new Solver(new RKSolver());
+        Solver solver = new Solver(new RKSolver());
         Vector3d[] pos = new Vector3d[]{new Vector3d(0, 0, 0)};
         Vector3d[] vel = new Vector3d[]{new Vector3d(0, 3, 0)};
 
-        StateInterface[] states = eulerSolver.solve(new ODEPendulum(), new State(pos, vel, 0), duration, stepSize, true);
+        StateInterface[] states = solver.solve(new ODEPendulum(), new State(pos, vel, 0), duration, stepSize, true);
 
         for (StateInterface s : states) {
             //System.out.println(s.getPositions()[0].getX() + " ");

@@ -1,8 +1,5 @@
 package titan;
 
-import titan.Renderer;
-import titan.Vector3d;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
