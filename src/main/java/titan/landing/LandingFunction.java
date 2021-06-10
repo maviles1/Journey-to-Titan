@@ -24,8 +24,17 @@ public class LandingFunction implements RateInterface {
     }
 
     //wind
+    public Vector3d[] getWindVectors()
+    {
+        WindModel wm = new WindModel();
+        // create severel wind vectors that affect te shuttle
+        //
+
+        return wm.getWindVectors();
+    }
 
     //thruster
+
 
     public RateInterface call(double t, StateInterface y)
     {
@@ -37,6 +46,7 @@ public class LandingFunction implements RateInterface {
         Vector3d[] acceleration = new Vector3d[1];
 
         acceleration[0] = change;
+        velocity[0] = state.getVelocities()[0];
 
         return new Rate(velocity, acceleration);
     }

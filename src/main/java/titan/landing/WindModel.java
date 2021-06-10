@@ -22,7 +22,7 @@ public class WindModel {
         return new Vector3d(1, 1, 1);
     }
 
-    public Vector3d[] getWindModel() {
+    public Vector3d[] getWindVectors() {
         return windarrows;
     }
 
