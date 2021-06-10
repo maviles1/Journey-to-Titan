@@ -68,10 +68,10 @@ public class Environment extends ScrollPane {
         State state = (State) states[count];
         gc.setFill(Color.WHITE);
         //check collision
-        if (state.getPositions()[0].getY() >= HEIGHT - 50)
+        if (state.getPositions()[0].getY()>= HEIGHT - 50)
             gc.fillOval(state.getPositions()[0].getX(), HEIGHT - 60, 10, 10);
         else
-            gc.fillOval(state.getPositions()[0].getX(), state.getPositions()[0].getY(), 10, 10);
+            gc.fillOval(state.getPositions()[0].getX(), state.getPositions()[0].getY() - 50, 10, 10);
 
         gc.setFill(Color.BEIGE);
         gc.fillRect(0, HEIGHT - 50, WIDTH, 50);
@@ -82,7 +82,7 @@ public class Environment extends ScrollPane {
 
     public void prepareConsole() {
         console.getChildren().clear();
-        console.getChildren().add(new Label("Distance to Titan"));
+        console.getChildren().add(new Label("Distance to Titan: " + (Math.max(HEIGHT - (50 + states[count].getPositions()[0].getY()), 0))));
         ((Label)console.getChildren().get(0)).setTextFill(Color.WHITE);
         //((Label)console.getChildren().get(1)).setTextFill(Color.WHITE);
     }
