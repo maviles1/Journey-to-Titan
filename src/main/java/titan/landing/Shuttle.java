@@ -6,28 +6,26 @@ public class Shuttle {
     private double width;
     private double height;
     private double radius;
-    private double weight;
-    private String name = "Lou's baby";
+    private double weight = 8000; //kg
+    private String name = "THE GOAT";
     private Vector3d velocity;
     private Vector3d position;
-    private Vector3d direction; // We need some value to store the direction of the shuttle relative to ?
+    private Vector3d direction;
+
     // direction will only be relevant based on the perpendicular angle to Titan, (no Z axis)
     // Thrusters
     //
 
-    public Shuttle(double width, double height, double weight, Vector3d velocity, Vector3d position, Vector3d direction) {
+
+    public Shuttle(double width, double height, double radius, double weight, String name, Vector3d velocity, Vector3d position, Vector3d direction) {
         this.width = width;
         this.height = height;
+        this.radius = radius;
         this.weight = weight;
+        this.name = name;
         this.velocity = velocity;
         this.position = position;
         this.direction = direction;
-    }
-
-    //empty constructor
-    public Shuttle()
-    {
-
     }
 
     public double getWidth() {
@@ -62,6 +60,7 @@ public class Shuttle {
         this.weight = weight;
     }
 
+
     public Vector3d getVelocity()
     {
         return velocity;
@@ -73,7 +72,6 @@ public class Shuttle {
     public Vector3d getPosition() {
         return position;
     }
-
     public void setPosition(Vector3d position) {
         this.position = position;
     }
@@ -81,10 +79,10 @@ public class Shuttle {
     public Vector3d getDirection() {
         return direction;
     }
-
     public void setDirection(Vector3d direction) {
         this.direction = direction;
     }
+
 
 
 }

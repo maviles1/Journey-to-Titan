@@ -38,5 +38,4 @@ public class ODEFunction implements ODEFunctionInterface {
         return new Rate(vRates, aRates);
     }
 
-
 }
