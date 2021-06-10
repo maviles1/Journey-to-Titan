@@ -6,8 +6,8 @@ public class Shuttle {
     private double width;
     private double height;
     private double radius;
-    private double weight = 8000; //kg
-    private String name = "THE GOAT";
+    private final double weight = 8000; //kg
+    private final String name = "THE GOAT";
     private Vector3d velocity;
     private Vector3d position;
     private Vector3d direction;
@@ -17,12 +17,10 @@ public class Shuttle {
     //
 
 
-    public Shuttle(double width, double height, double radius, double weight, String name, Vector3d velocity, Vector3d position, Vector3d direction) {
+    public Shuttle(double width, double height, double radius, Vector3d velocity, Vector3d position, Vector3d direction) {
         this.width = width;
         this.height = height;
         this.radius = radius;
-        this.weight = weight;
-        this.name = name;
         this.velocity = velocity;
         this.position = position;
         this.direction = direction;
@@ -55,11 +53,6 @@ public class Shuttle {
     public double getWeight() {
         return weight;
     }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
 
     public Vector3d getVelocity()
     {
