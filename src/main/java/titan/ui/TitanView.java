@@ -41,7 +41,7 @@ public class TitanView extends Renderer2D {
         double landerY = state.getPositions()[0].getY();
 
         //check collision
-        if (landerY <= HEIGHT - 50)
+        if (HEIGHT - toCoord(landerY) >= HEIGHT - 50)
             gc.fillOval(landerX, HEIGHT - 60, 10, 10);
         else
             gc.fillOval(landerX, HEIGHT - toCoord(landerY) - 50, 10, 10);
