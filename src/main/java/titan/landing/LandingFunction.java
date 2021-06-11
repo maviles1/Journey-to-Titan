@@ -6,7 +6,6 @@ import titan.flight.Vector3d;
 import titan.interfaces.RateInterface;
 import titan.interfaces.StateInterface;
 
-import java.util.Vector;
 
 public class LandingFunction implements RateInterface {
     private double titanforce = 1.352; //titan gravity m/s (ms-2)
@@ -34,7 +33,6 @@ public class LandingFunction implements RateInterface {
     }
 
     //thruster
-
 
     public RateInterface call(double t, StateInterface y)
     {

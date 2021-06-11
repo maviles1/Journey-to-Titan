@@ -7,6 +7,7 @@ import java.util.Random;
 public class WindModel {
     private Vector3d[] windarrows;
     private Random gen;
+    private final int maxangle = 25;
     private final double ws = 0.92857; //Linear
 
     //wind speed in m/s is altitude divided by ws
@@ -20,14 +21,21 @@ public class WindModel {
         // altitude in meters?
         // new wind vector is created between 0 and max based on altitude
 
-        //Create a random angle with X degrees either positive or negative
-        double angle = gen.nextDouble() * 25;
-        angle = gen.nextBoolean() == true ? angle : (angle * -1);
+        //Create 3 random angles between -max <-> max degrees
+        // use them as aplha, beta, gamma
+        double[] angles = new double[3];
+        for(int i = 0; i < 3; i++)
+        {
+            double angle = gen.nextDouble() * maxangle;
+            angle = gen.nextBoolean() == true ? angle : (angle * -1);
+            angles[i] = angle;
+        }
 
-
+        //Create new wind strength
         Vector3d windvector = previous.mul((altitude/ws)/previous.norm());
 
-
+        //Create new direction
+        windvector = RefactorVector(windvector, angles[0], angles[1], angles[2]);
 
         return windvector;
     }
