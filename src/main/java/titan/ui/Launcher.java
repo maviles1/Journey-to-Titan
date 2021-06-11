@@ -134,22 +134,32 @@ public class Launcher {
                 errorMsg.setText("");
             });
         } else {
-            //dummy states for demo reasons
-            StateInterface[] states = new StateInterface[1000];
-            for (int i = 0; i < 1000; i ++) {
-                states[i] = new State(new Vector3d[]{new Vector3d(600,  i, 0)}, new Vector3d[]{new Vector3d(0,0,0)}, i);
-            }
+                //dummy states for demo reasons
+                ArrayList<StateInterface> generatedStates = new ArrayList<>();
+                double y = 150000;
+                int x = 600;
+                State y0 = new State(new Vector3d[]{new Vector3d(x, y, 0)}, new Vector3d[]{new Vector3d(0, 1, 0)}, 0);
+                generatedStates.add(y0);
+                for (int i = 1; y > 0; i++) {
+                    State prevState = (State) generatedStates.get(i - 1);
+                    Vector3d[] poses = new Vector3d[]{new Vector3d(x, prevState.getPositions()[0].getY() - prevState.getVelocities()[0].getY(), 0)};
+                    Vector3d[] veles = new Vector3d[]{new Vector3d(0, prevState.getVelocities()[0].getY() + 1, 0)};
+                    generatedStates.add(new State(poses, veles, i));
+                    y = poses[0].getY();
+                }
+                StateInterface[] states = generatedStates.toArray(new StateInterface[0]);
+                System.out.println(states.length);
+                TitanView titanView = new TitanView(states);
+                Stage stage = new Stage();
+                stage.setScene(new Scene(titanView.getParent(), 1200, 800));
+                stage.show();
+                titanView.start();
 
-            Environment environment = new Environment(states);
-            Stage stage = new Stage();
-            stage.setScene(new Scene(environment.getParent(), 1200, 800));
-            stage.show();
-            environment.start();
+                stage.setOnCloseRequest(event2 -> {
+                    titanView.stop();
+                    stage.close();
+                });
 
-            stage.setOnCloseRequest(event2 -> {
-                environment.stop();
-                stage.close();
-            });
         }
     }
 
