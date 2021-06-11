@@ -35,6 +35,10 @@ public class WindModel {
     public Vector3d RefactorVector(Vector3d v, double a, double b, double g)
     {
         Vector3d rvec = new Vector3d(0,0,0);
+        a = Math.toRadians(a);
+        b = Math.toRadians(b);
+        g = Math.toRadians(g);
+
         double x = v.getX();
         double y = v.getY();
         double z = v.getZ();
@@ -44,8 +48,8 @@ public class WindModel {
                 ( ( (Math.cos(a) * Math.sin(b) * Math.cos(g)) + (Math.sin(a) * Math.sin(g)) ) * z));
 
         rvec.setY( (Math.sin(a) * Math.cos(b) * x) +
-                ( ( (Math.sin(a) * Math.cos(b) * Math.sin(g)) + (Math.cos(a) * Math.cos(g)) ) * y) +
-                ((Math.sin(a) * Math.sin(b) * Math.cos(g) - Math.cos(a) * Math.sin(g)) * z));
+                ( ( (Math.sin(a) * Math.sin(b) * Math.sin(g)) + (Math.cos(a) * Math.cos(g)) ) * y) +
+                ( ( (Math.sin(a) * Math.sin(b) * Math.cos(g)) - (Math.cos(a) * Math.sin(g)) ) * z));
 
         rvec.setZ( (-Math.sin(b) * x) + (Math.cos(b) * Math.sin(g) * y) + (Math.cos(b) * Math.cos(g) * z) );
 

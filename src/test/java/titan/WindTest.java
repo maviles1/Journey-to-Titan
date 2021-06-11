@@ -9,19 +9,27 @@ import titan.landing.WindModel;
 
 class WindTest
 {
+    //(2.0970401199802953,0.6053953180956588,3.039065521508361)
     @Test
     void testGetX() {
         Vector3d v = new Vector3d(1, 2, 3);
         WindModel wm = new WindModel();
-        assertEquals(1.06742, wm.RefactorVector( v, 10, 20, 30).getX() );
+        assertEquals(2.0970401199802953, wm.RefactorVector( v, 10, 20, 30).getX() );
     }
 
-//    @Test
-//    void testSetX() {
-//        Vector3dInterface v = new Vector3d();
-//        v.setX(-1.1);
-//        assertEquals(-1.1, v.getX());
-//    }
+    @Test
+    void testGetY() {
+        Vector3d v = new Vector3d(1, 2, 3);
+        WindModel wm = new WindModel();
+        assertEquals(0.6053953180956588, wm.RefactorVector( v, 10, 20, 30).getY() );
+    }
+
+    @Test
+    void testGetZ() {
+        Vector3d v = new Vector3d(1, 2, 3);
+        WindModel wm = new WindModel();
+        assertEquals(3.039065521508361, wm.RefactorVector( v, 10, 20, 30).getZ() );
+    }
 
 
 
