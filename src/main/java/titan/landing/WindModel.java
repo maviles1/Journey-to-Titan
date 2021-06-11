@@ -39,13 +39,13 @@ public class WindModel {
         double y = v.getY();
         double z = v.getZ();
 
-        rvec.setX( (Math.cos(a) * Math.cos(g) * x) +
-                ((Math.cos(a) * Math.sin(b) * Math.sin(g) - Math.sin(a) * Math.cos(g)) * y) +
-                ((Math.cos(a) * Math.sin(b) * Math.cos(g) + Math.sin(a) * Math.sin(g)) * z));
+        rvec.setX( (Math.cos(a) * Math.cos(b) * x) +
+                ( ( (Math.cos(a) * Math.sin(b) * Math.sin(g)) - (Math.sin(a) * Math.cos(g)) ) * y) +
+                ( ( (Math.cos(a) * Math.sin(b) * Math.cos(g)) + (Math.sin(a) * Math.sin(g)) ) * z));
 
-        rvec.setY( (Math.sin(a) * Math.cos(g) * x) +
-                ((Math.sin(a) * Math.cos(b) * Math.sin(g) + Math.cos(x) * Math.cos(g)) * y) +
-                ((Math.sin(a) * Math.sin(b) * Math.cos(g) - Math.cos(x) * Math.sin(g)) * z));
+        rvec.setY( (Math.sin(a) * Math.cos(b) * x) +
+                ( ( (Math.sin(a) * Math.cos(b) * Math.sin(g)) + (Math.cos(a) * Math.cos(g)) ) * y) +
+                ((Math.sin(a) * Math.sin(b) * Math.cos(g) - Math.cos(a) * Math.sin(g)) * z));
 
         rvec.setZ( (-Math.sin(b) * x) + (Math.cos(b) * Math.sin(g) * y) + (Math.cos(b) * Math.cos(g) * z) );
 
