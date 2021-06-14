@@ -8,6 +8,10 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import titan.flight.*;
 import titan.interfaces.StateInterface;
+import titan.landing.FeedbackController2;
+import titan.landing.PhysicsEngine;
+import titan.landing.TitanGravityODE;
+import titan.landing.TitanWindODE;
 
 import java.util.ArrayList;
 
@@ -135,20 +139,13 @@ public class Launcher {
             });
         } else {
                 //dummy states for demo reasons
-                ArrayList<StateInterface> generatedStates = new ArrayList<>();
                 double y = 150000;
-                int x = 600;
+                int x = (1200 * 3) / 2;
                 State y0 = new State(new Vector3d[]{new Vector3d(x, y, 0)}, new Vector3d[]{new Vector3d(0, 1, 0)}, 0);
-                generatedStates.add(y0);
-                for (int i = 1; y > 0; i++) {
-                    State prevState = (State) generatedStates.get(i - 1);
-                    Vector3d[] poses = new Vector3d[]{new Vector3d(x, prevState.getPositions()[0].getY() - prevState.getVelocities()[0].getY(), 0)};
-                    Vector3d[] veles = new Vector3d[]{new Vector3d(0, prevState.getVelocities()[0].getY() + 1, 0)};
-                    generatedStates.add(new State(poses, veles, i));
-                    y = poses[0].getY();
-                }
-                StateInterface[] states = generatedStates.toArray(new StateInterface[0]);
-                System.out.println(states.length);
+
+                Solver solver = new Solver(new RKSolver());
+                StateInterface[] states = solver.solve(new PhysicsEngine(new FeedbackController2(), new TitanGravityODE(), new TitanWindODE()), y0, 1000, 1, true);
+
                 TitanView titanView = new TitanView(states);
                 Stage stage = new Stage();
                 stage.setScene(new Scene(titanView.getParent(), 1200, 800));

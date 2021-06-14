@@ -5,20 +5,24 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import titan.State;
+import javafx.scene.transform.Affine;
+import javafx.scene.transform.Rotate;
+import titan.flight.State;
 import titan.interfaces.StateInterface;
 
 public class TitanView extends Renderer2D {
 
-    private double res = 50;
+    private double res = 150;
+    private final double RADIUS = 10;
 
     private double toCoord(double val) {
         return val / res;
     }
 
     public TitanView(StateInterface[] states) {
-        this.WIDTH = 1200;
-        this.HEIGHT = 3000;
+        this.WIDTH = 1200 * 3;
+//        this.HEIGHT = 3000;
+        this.HEIGHT = 1000;
         this.canvas = new Canvas(WIDTH, HEIGHT);
         this.states = states;
 
@@ -42,9 +46,17 @@ public class TitanView extends Renderer2D {
 
         //check collision
         if (HEIGHT - toCoord(landerY) >= HEIGHT - 50)
-            gc.fillOval(landerX, HEIGHT - 60, 10, 10);
-        else
-            gc.fillOval(landerX, HEIGHT - toCoord(landerY) - 50, 10, 10);
+            gc.fillOval(landerX, HEIGHT - 70, RADIUS * 2, RADIUS * 2);
+        else {
+            //double rotationCenterX = landerX + (20 / 2.0);
+            double rotationCenterX = landerX + RADIUS;
+//            double rotationCenterY = HEIGHT - toCoord(landerY) - 50 + (20 /2.0);
+            double rotationCenterY = HEIGHT - toCoord(landerY) - 50 + RADIUS;
+            gc.save();
+            gc.transform(new Affine(new Rotate(45, rotationCenterX, rotationCenterY)));
+            gc.fillRect(landerX, HEIGHT - toCoord(landerY) - 50, RADIUS*2, RADIUS*2);
+            gc.restore();
+        }
 
         gc.setFill(Color.BEIGE);
         gc.fillRect(0, HEIGHT - 50, WIDTH, 50);

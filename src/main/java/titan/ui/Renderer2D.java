@@ -48,8 +48,8 @@ public abstract class Renderer2D extends ScrollPane {
         setVvalue(0.5);
 
         this.setPrefSize(1200, 800);
-        this.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        this.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//        this.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//        this.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         AnchorPane.setBottomAnchor(this, 0.0);
         AnchorPane.setRightAnchor(this, 0.0);
         AnchorPane.setLeftAnchor(this, 0.0);
