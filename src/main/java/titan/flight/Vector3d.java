@@ -1,4 +1,4 @@
-package titan;
+package titan.flight;
 
 import titan.interfaces.RateInterface;
 import titan.interfaces.Vector3dInterface;

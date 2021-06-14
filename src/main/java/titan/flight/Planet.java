@@ -1,4 +1,4 @@
-package titan;
+package titan.flight;
 
 public class Planet extends SpaceObject {
     private double radius;

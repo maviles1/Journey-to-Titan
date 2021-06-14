@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import titan.*;
+import titan.flight.*;
 import titan.interfaces.StateInterface;
 
 import java.util.ArrayList;

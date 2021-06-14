@@ -10,8 +10,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import titan.State;
-import titan.Vector3d;
+import titan.flight.State;
+import titan.flight.Vector3d;
 import titan.interfaces.StateInterface;
 
 import java.io.File;

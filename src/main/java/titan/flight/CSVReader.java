@@ -1,4 +1,4 @@
-package titan;
+package titan.flight;
 
 import java.io.File;
 import java.io.FileNotFoundException;

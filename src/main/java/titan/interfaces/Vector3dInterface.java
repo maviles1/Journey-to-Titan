@@ -25,9 +25,9 @@ public interface Vector3dInterface {
     * @return the result of the multiplication step added to this vector,
     * for example:
     * 
-    *       main.java.titan.Vector3d a = Vector();
+    *       main.java.titan.flight.Vector3d a = Vector();
     *       double h = 2;
-    *       main.java.titan.Vector3d b = Vector();
+    *       main.java.titan.flight.Vector3d b = Vector();
     *       ahb = a.addMul(h, b);
     *       
     * ahb should now contain the result of this mathematical operation:
@@ -47,7 +47,7 @@ public interface Vector3dInterface {
     
     /**
     * @return A string in this format: 
-    * main.java.titan.Vector3d(-1.0, 2, -3.0) should print out (-1.0,2.0,-3.0)
+    * main.java.titan.flight.Vector3d(-1.0, 2, -3.0) should print out (-1.0,2.0,-3.0)
     */
     public String toString();
     
