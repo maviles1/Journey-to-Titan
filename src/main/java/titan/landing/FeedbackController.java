@@ -5,7 +5,7 @@ import titan.flight.State;
 import titan.flight.Vector3d;
 
 public class FeedbackController {
-    private State current_state; // current state which holds the position and the velocity of the Titan
+    private LandingState current_state; // current state of the environment
     private final Shuttle landing_module; // object which holds characteristics of the landing module
 
     // requirement is that the probe is in titan orbit
@@ -20,7 +20,7 @@ public class FeedbackController {
      * @param start_state - the initial state consists of the position and the velocity of the Titan
      * @param landing_module - object which holds characteristics of the landing module
      */
-    public FeedbackController(State start_state, Shuttle landing_module){
+    public FeedbackController(LandingState start_state, Shuttle landing_module){
         current_state = start_state;
         this.landing_module = landing_module;
     }
@@ -31,8 +31,8 @@ public class FeedbackController {
      */
     public Vector3d directionAdjustment(){
         Vector3d direction = landing_module.getDirection(); // direction of landing module
-        Vector3d desired_direction = landing_module.getPosition().sub(current_state.getPositions()[0]); // top is above, bottom is below
-        Vector3d adjustment = desired_direction.sub(direction); //
+        Vector3d desired_direction = landing_module.getPosition(); // direction of the vector that goes from the centre of the Titan to the position of the landing module
+        Vector3d adjustment = desired_direction.sub(direction);
         return adjustment.copy();
     }
 
