@@ -12,8 +12,8 @@ public class TitanGravityODE implements ODEFunctionInterface {
 
     @Override
     public RateInterface call(double t, StateInterface y) {
-        Vector3d[] a = new Vector3d[1];
-        a[0] = new Vector3d(0, GRAVITY, 0);
-        return new Rate(y.getVelocities(), a);
+        LandingState state = (LandingState) y;
+        Vector3d a = new Vector3d(0, GRAVITY, 0);
+        return new LandingRate(state.getVelocity(), a, state.getShuttle_direction(), state.getWind_direction());
     }
 }

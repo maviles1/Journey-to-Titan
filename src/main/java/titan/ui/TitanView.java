@@ -10,6 +10,8 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 import titan.flight.State;
 import titan.interfaces.StateInterface;
+import titan.landing.LandingRate;
+import titan.landing.LandingState;
 
 public class TitanView extends Renderer2D {
 
@@ -41,7 +43,7 @@ public class TitanView extends Renderer2D {
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         //this is where we draw the probe
-        State state = (State) states[count];
+        LandingState state = (LandingState) states[count];
         gc.setFill(Color.WHITE);
 
         double landerX = state.getPositions()[0].getX();

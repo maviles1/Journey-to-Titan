@@ -4,18 +4,20 @@ import titan.flight.*;
 import titan.interfaces.RateInterface;
 import titan.interfaces.StateInterface;
 
-public class LandingState extends State {
+public class LandingState implements StateInterface {
+
     private Vector3d position;
     private Vector3d velocity;
     private Vector3d shuttle_direction;
     private Vector3d wind_direction;
+    private double time;
 
     public LandingState(Vector3d position, Vector3d velocity, Vector3d shuttle_direction, Vector3d wind_direction, double time) {
-        super(null, null, time);
         this.position = position;
         this.velocity = velocity;
         this.shuttle_direction = shuttle_direction;
         this.wind_direction = wind_direction;
+        this.time = time;
     }
 
     @Override
@@ -23,7 +25,9 @@ public class LandingState extends State {
         LandingRate rate = (LandingRate) r;
 
         Vector3d newPosition = position.addMul(step, rate.getPositionRate());
-        Vector3d newVelocity = velocity.addMul(step, rate.getPositionRate());
+        Vector3d newVelocity = velocity.addMul(step, rate.getVelocityRate());
+
+        //TODO: why are these null?
         Vector3d newShuttle_directionRate = null;
         Vector3d newWind_directionRate = null;
 
@@ -61,9 +65,9 @@ public class LandingState extends State {
     public String toString() {
         String s = "";
         s += "Landing Module"
-                + " { x=" + Renderer.toScreenCoordinates(position.getX())
-                + ", y=" + Renderer.toScreenCoordinates(position.getY())
-                + ", z=" + Renderer.toScreenCoordinates(position.getZ())
+                + " { x=" + position.getX()
+                + ", y=" + position.getY()
+                + ", z=" + position.getZ()
 
                 + " vx=" + velocity.getX()
                 + ", vy=" + velocity.getY()
@@ -77,6 +81,21 @@ public class LandingState extends State {
                 + ", w_dy=" + wind_direction.getY()
                 + ", w_dz=" + wind_direction.getZ() + " }\n";
         return s;
+    }
+
+    public double getTime() {
+        return this.time;
+    }
+
+
+    @Override
+    public Vector3d[] getPositions() {
+        return new Vector3d[]{position};
+    }
+
+    @Override
+    public Vector3d[] getVelocities() {
+        return new Vector3d[]{velocity};
     }
 
     public LandingState copy(){
