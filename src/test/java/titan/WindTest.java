@@ -31,6 +31,11 @@ class WindTest
         assertEquals(3.039065521508361, wm.RefactorVector( v, 10, 20, 30).getZ() );
     }
 
-
+//    @Test
+//    void testWindVector()
+//    {
+//        WindModel wm = new WindModel();
+//        assertEquals(1, wm.getStartingWindVector(120000));
+//    }
 
 }

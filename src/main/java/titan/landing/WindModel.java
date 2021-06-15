@@ -101,14 +101,12 @@ public class WindModel {
         }
 
         swv = new Vector3d(xyz[0], xyz[1], xyz[2]);
-        swv.mul((altitude/ws)/swv.norm());
+        swv = swv.mul((altitude/ws)/swv.norm());
 
         return swv;
-
     }
 
     public Vector3d getWindVectors() {
         return windarrows;
     }
-
 }
