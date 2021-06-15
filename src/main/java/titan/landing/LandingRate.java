@@ -9,6 +9,7 @@ public class LandingRate extends Rate {
     private Vector3d velocityRate;
     private Vector3d shuttle_directionRate;
     private Vector3d wind_directionRate;
+
     public LandingRate(Vector3d posR, Vector3d velR, Vector3d s_dR, Vector3d w_dR) {
         super(null, null);
         positionRate = posR;

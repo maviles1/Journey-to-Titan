@@ -11,6 +11,8 @@ public class TitanWindODE implements ODEFunctionInterface {
     @Override
     public RateInterface call(double t, StateInterface y) {
 
+        double altitute = y.getPositions()[0].getY();
+
         double x = Math.random();
         x *= Math.random() < 0.5 ? 1 : -1;
 

@@ -27,12 +27,14 @@ public class PhysicsEngine implements ODEFunctionInterface {
         Rate gravityRate = (Rate) gravityODE.call(t, y);
         //State afterGravity = (State) y.addMul(1, gravityRate);
 
-        Rate windRate = (Rate) windODE.call(t, y);
+        //Rate windRate = (Rate) windODE.call(t, y);
         //State afterWind = (State) afterGravity.addMul(1, windRate);
 
-        Rate thrustRate = (Rate) controller.thrust(windRate, y);
+//        Rate thrustRate = (Rate) controller.thrust(windRate, y);
+        Rate thrustRate = (Rate) controller.thrust(gravityRate, y);
 
-        Rate all = gravityRate.add(windRate).add(thrustRate);
+//        Rate all = gravityRate.add(windRate).add(thrustRate);
+        Rate all = gravityRate.add(thrustRate);
 
         return all;
     }

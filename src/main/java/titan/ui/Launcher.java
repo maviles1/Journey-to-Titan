@@ -8,10 +8,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import titan.flight.*;
 import titan.interfaces.StateInterface;
-import titan.landing.FeedbackController2;
-import titan.landing.PhysicsEngine;
-import titan.landing.TitanGravityODE;
-import titan.landing.TitanWindODE;
+import titan.landing.*;
 
 import java.util.ArrayList;
 
@@ -141,10 +138,10 @@ public class Launcher {
                 //dummy states for demo reasons
                 double y = 150000;
                 int x = (1200 * 3) / 2;
-                State y0 = new State(new Vector3d[]{new Vector3d(x, y, 0)}, new Vector3d[]{new Vector3d(0, 1, 0)}, 0);
+                State y0 = new State(new Vector3d[]{new Vector3d(x, y, 0)}, new Vector3d[]{new Vector3d(0, 0, 0)}, 0);
 
                 Solver solver = new Solver(new RKSolver());
-                StateInterface[] states = solver.solve(new PhysicsEngine(new FeedbackController2(), new TitanGravityODE(), new TitanWindODE()), y0, 1000, 1, true);
+                StateInterface[] states = solver.solve(new PhysicsEngine(new OpenLoopController(), new TitanGravityODE(), new TitanWindODE()), y0, 1000, 1, true);
 
                 TitanView titanView = new TitanView(states);
                 Stage stage = new Stage();

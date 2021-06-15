@@ -3,6 +3,7 @@ package titan.ui;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.transform.Affine;
@@ -12,7 +13,9 @@ import titan.interfaces.StateInterface;
 
 public class TitanView extends Renderer2D {
 
-    private double res = 150;
+//    private double res = 150; // for height 1000
+    private double res = 50; // for height 1000
+
     private final double RADIUS = 10;
 
     private double toCoord(double val) {
@@ -21,8 +24,8 @@ public class TitanView extends Renderer2D {
 
     public TitanView(StateInterface[] states) {
         this.WIDTH = 1200 * 3;
-//        this.HEIGHT = 3000;
-        this.HEIGHT = 1000;
+        this.HEIGHT = 3000;
+//        this.HEIGHT = 1000;
         this.canvas = new Canvas(WIDTH, HEIGHT);
         this.states = states;
 
@@ -43,6 +46,7 @@ public class TitanView extends Renderer2D {
 
         double landerX = state.getPositions()[0].getX();
         double landerY = state.getPositions()[0].getY();
+        setVvalue(1 - (toCoord(landerY) / HEIGHT));
 
         //check collision
         if (HEIGHT - toCoord(landerY) >= HEIGHT - 50)
@@ -50,8 +54,8 @@ public class TitanView extends Renderer2D {
         else {
             //double rotationCenterX = landerX + (20 / 2.0);
             double rotationCenterX = landerX + RADIUS;
-//            double rotationCenterY = HEIGHT - toCoord(landerY) - 50 + (20 /2.0);
             double rotationCenterY = HEIGHT - toCoord(landerY) - 50 + RADIUS;
+
             gc.save();
             gc.transform(new Affine(new Rotate(45, rotationCenterX, rotationCenterY)));
             gc.fillRect(landerX, HEIGHT - toCoord(landerY) - 50, RADIUS*2, RADIUS*2);
@@ -69,14 +73,19 @@ public class TitanView extends Renderer2D {
     protected void prepareConsole() {
         console.getChildren().clear();
         console.getChildren().add(new Label("Distance to Titan: " + Math.max(states[count].getPositions()[0].getY(), 0)));
+        console.getChildren().add(new Label("Distance to Titan: " + states[count].getPositions()[0].getY()));
+        console.getChildren().add(new Label("VY:  " + states[count].getVelocities()[0].getY()));
         ((Label)console.getChildren().get(0)).setTextFill(Color.WHITE);
-        //((Label)console.getChildren().get(1)).setTextFill(Color.WHITE);
+        ((Label)console.getChildren().get(1)).setTextFill(Color.WHITE);
+        ((Label)console.getChildren().get(2)).setTextFill(Color.WHITE);
     }
 
     @Override
     public void addKeyHandler() {
         setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.P) {
 
+            }
         });
     }
 }

@@ -33,7 +33,6 @@ public class LandingFunction implements RateInterface {
     }
 
     //thruster
-
     public RateInterface call(double t, StateInterface y)
     {
         State state = (State)y;
