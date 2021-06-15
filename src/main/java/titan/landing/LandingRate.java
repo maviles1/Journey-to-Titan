@@ -74,13 +74,13 @@ public class LandingRate extends Rate {
                 + ", vy=" + velocityRate.toString()
                 + ", vz=" + velocityRate.toString()
 
-                + " vx=" + shuttle_directionRate.toString()
-                + ", vy=" + shuttle_directionRate.toString()
-                + ", vz=" + shuttle_directionRate.toString()
+                + " s_dx=" + shuttle_directionRate.toString()
+                + ", s_dy=" + shuttle_directionRate.toString()
+                + ", s_dz=" + shuttle_directionRate.toString()
 
-                + " vx=" + wind_directionRate.toString()
-                + ", vy=" + wind_directionRate.toString()
-                + ", vz=" + wind_directionRate.toString() + " }\n";
+                + " w_dx=" + wind_directionRate.toString()
+                + ", w_dy=" + wind_directionRate.toString()
+                + ", w_dz=" + wind_directionRate.toString() + " }\n";
         return s;
     }
 }
