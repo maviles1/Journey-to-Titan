@@ -1,8 +1,6 @@
 package titan.landing;
 
-import titan.flight.Rate;
-import titan.flight.State;
-import titan.flight.Vector3d;
+import titan.flight.*;
 import titan.interfaces.RateInterface;
 import titan.interfaces.StateInterface;
 
@@ -22,18 +20,14 @@ public class LandingState extends State {
 
     @Override
     public StateInterface addMul(double step, RateInterface r) {
-        Rate rate = (Rate) r;
+        LandingRate rate = (LandingRate) r;
 
-        Vector3d[] newPositions = new Vector3d[positions.length];
-        Vector3d[] newVelocities = new Vector3d[velocities.length];
+        Vector3d newPosition = position.addMul(step, rate.getPositionRate());
+        Vector3d newVelocity = velocity.addMul(step, rate.getPositionRate());
+        Vector3d newShuttle_directionRate = null;
+        Vector3d newWind_directionRate = null;
 
-        for (int i = 0; i < velocities.length; i++) {
-            newPositions[i] = positions[i].addMul(step, rate.getPosRates()[i]);
-            newVelocities[i] = velocities[i].addMul(step, rate.getVelRates()[i]);
-        }
-
-        //return new LandingState(newPositions, newVelocities, getTime() + step);
-        return null;
+        return new LandingState(newPosition, newVelocity, newShuttle_directionRate, newWind_directionRate, getTime() + step);
     }
 
     public Vector3d getPosition() {
@@ -62,5 +56,35 @@ public class LandingState extends State {
     }
     public void setWind_direction(Vector3d wind_direction) {
         this.wind_direction = wind_direction;
+    }
+
+    public String toString() {
+        String s = "";
+        s += "Landing Module"
+                + " { x=" + Renderer.toScreenCoordinates(position.getX())
+                + ", y=" + Renderer.toScreenCoordinates(position.getY())
+                + ", z=" + Renderer.toScreenCoordinates(position.getZ())
+
+                + " vx=" + velocity.getX()
+                + ", vy=" + velocity.getY()
+                + ", vz=" + velocity.getZ()
+
+                + " s_dx=" + shuttle_direction.getX()
+                + ", s_dy=" + shuttle_direction.getY()
+                + ", s_dz=" + shuttle_direction.getZ()
+
+                + " w_dx=" + wind_direction.getX()
+                + ", w_dy=" + wind_direction.getY()
+                + ", w_dz=" + wind_direction.getZ() + " }\n";
+        return s;
+    }
+
+    public LandingState copy(){
+        Vector3d position = this.position;
+        Vector3d velocity = this.velocity;
+        Vector3d shuttle_direction = this.shuttle_direction;
+        Vector3d wind_direction = this.wind_direction;
+
+        return new LandingState(position, velocity, shuttle_direction, wind_direction, getTime());
     }
 }
