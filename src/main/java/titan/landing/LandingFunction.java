@@ -27,12 +27,12 @@ public class LandingFunction {
     {
         WindModel wm = new WindModel();
         // create the wind vector that affects te shuttle
-        // apply its rotation effect on the shuttle
 
         return wm.getWindVectors();
     }
 
     //thruster
+
 
     public RateInterface call(double t, StateInterface y)
     {

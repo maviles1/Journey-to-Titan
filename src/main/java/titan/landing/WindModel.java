@@ -84,6 +84,29 @@ public class WindModel {
         return  rvec;
     }
 
+    public Vector3d getStartingWindVector(double altitude)
+    {
+        //wind more common west to east
+        Vector3d swv = new Vector3d();
+
+        //Create random Vector
+        double[] xyz = new double[3];
+        for(int i = 0; i < 3; i++)
+        {
+           double temp = gen.nextDouble();
+           if(temp > 0.5)
+               temp -= 1;
+
+           xyz[i] = temp;
+        }
+
+        swv = new Vector3d(xyz[0], xyz[1], xyz[2]);
+        swv.mul((altitude/ws)/swv.norm());
+
+        return swv;
+
+    }
+
     public Vector3d getWindVectors() {
         return windarrows;
     }

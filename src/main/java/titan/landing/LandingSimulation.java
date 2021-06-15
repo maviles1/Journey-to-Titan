@@ -13,7 +13,13 @@ public class LandingSimulation {
     public void Run()
     {
         //Run landing simulation
+
         //choose controller
+
+        // Call Landing function
+
+
         //create states
+
     }
 }
