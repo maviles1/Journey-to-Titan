@@ -7,6 +7,7 @@ import java.util.Random;
 public class WindModel {
     private Vector3d windarrows;
     private Random gen;
+    private final double airdensity = 1.229; //currently earths m/s
     private final int maxangle = 25;
     private final double ws = 0.92857; //Linear
 
@@ -36,6 +37,12 @@ public class WindModel {
 
         //Create new direction
         windvector = RefactorVector(windvector, angles[0], angles[1], angles[2]);
+
+        //Convert vector to a Force vector that adds to the velocity
+        // F=(1 m2)×(1.229 kg/m3)×(2.24 m/s)2=6.17 N
+        double windforce = (10*10) * (airdensity) * (altitude/ws);
+        //apply force to windvector
+        // divide by norm multiply by force?
 
         return windvector;
     }
