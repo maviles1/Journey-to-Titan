@@ -64,30 +64,23 @@ public class LandingRate extends Rate {
         this.wind_directionRate = wind_directionRate;
     }
 
-//    public String toString() {
-//        String s = "";
-//        for (int i = 0; i < size; i++) {
-//            s += " Values: { x=" + positionRates[i].toString()
-//                    + ", y=" + positionRates[i].toString()
-//                    + ", z=" + positionRates[i].toString()
-//                    + " vx=" + velocityRates[i].toString()
-//                    + ", vy=" + velocityRates[i].toString()
-//                    + ", vz=" + velocityRates[i].toString()
-//                    + " }\n";
-//        }
-//        return s;
-//    }
-//
-//    public boolean equals(Object other) {
-//        if (other instanceof Rate) {
-//            Rate otherRate = (Rate) other;
-//            boolean equals = true;
-//            for (int i = 0; i < positionRates.length; i++) {
-//                if (!positionRates[i].equals(otherRate.getPosRates()[i]) || !velocityRates[i].equals(otherRate.getVelRates()[i]))
-//                    equals = false;
-//            }
-//            return equals;
-//            //return Arrays.equals(this.positionRates, otherRate.positionRates) && Arrays.equals(this.velocityRates, otherRate.velocityRates);
-//        } else return false;
-//    }
+    public String toString() {
+        String s = "";
+        s += " Values: { x=" + positionRate.toString()
+                + ", y=" + positionRate.toString()
+                + ", z=" + positionRate.toString()
+
+                + " vx=" + velocityRate.toString()
+                + ", vy=" + velocityRate.toString()
+                + ", vz=" + velocityRate.toString()
+
+                + " vx=" + shuttle_directionRate.toString()
+                + ", vy=" + shuttle_directionRate.toString()
+                + ", vz=" + shuttle_directionRate.toString()
+
+                + " vx=" + wind_directionRate.toString()
+                + ", vy=" + wind_directionRate.toString()
+                + ", vz=" + wind_directionRate.toString() + " }\n";
+        return s;
+    }
 }
