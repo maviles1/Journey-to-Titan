@@ -7,7 +7,7 @@ import titan.interfaces.RateInterface;
 import titan.interfaces.StateInterface;
 
 
-public class LandingFunction implements RateInterface {
+public class LandingFunction {
     private double titanforce = 1.352; //titan gravity m/s (ms-2)
     private double distance; //probe to titans distance
     private final Vector3d titanpos = new Vector3d(0,0,0);
@@ -22,8 +22,8 @@ public class LandingFunction implements RateInterface {
         return new Vector3d(gravity.getX(), gravity.getY(), gravity.getZ());
     }
 
-    //wind
-    public Vector3d[] getWindVector()
+    // Wind
+    public Vector3d getWindVector()
     {
         WindModel wm = new WindModel();
         // create the wind vector that affects te shuttle
