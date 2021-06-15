@@ -3,24 +3,25 @@ package titan.landing;
 import titan.flight.*;
 
 public class Shuttle {
-    private double width;
-    private double height;
-    private double radius;
+    private Vector3d position; // position of the centre of mass
+    private Vector3d velocity;
+    private Vector3d direction;
+    private double width; // ?
+    private double height; // ?
+    private double length; // ?
     private final double weight = 8000; //kg
     private final String name = "THE GOAT";
-    private Vector3d velocity;
-    private Vector3d position;
-    private Vector3d direction;
+
 
     // direction will only be relevant based on the perpendicular angle to Titan, (no Z axis)
     // Thrusters
     //
 
 
-    public Shuttle(double width, double height, double radius, Vector3d velocity, Vector3d position, Vector3d direction) {
+    public Shuttle(double width, double height, double length, Vector3d velocity, Vector3d position, Vector3d direction) {
         this.width = width;
         this.height = height;
-        this.radius = radius;
+        this.length = length;
         this.velocity = velocity;
         this.position = position;
         this.direction = direction;
@@ -29,7 +30,6 @@ public class Shuttle {
     public double getWidth() {
         return width;
     }
-
     public void setWidth(double width) {
         this.width = width;
     }
@@ -37,21 +37,23 @@ public class Shuttle {
     public double getHeight() {
         return height;
     }
-
     public void setHeight(double height) {
         this.height = height;
     }
 
-    public double getRadius() {
-        return radius;
+    public double getLength() {
+        return length;
     }
-
-    public void setRadius(double radius) {
-        this.radius = radius;
+    public void setLength(double length) {
+        this.length = length;
     }
 
     public double getWeight() {
         return weight;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Vector3d getVelocity()

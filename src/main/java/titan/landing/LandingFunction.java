@@ -23,11 +23,11 @@ public class LandingFunction implements RateInterface {
     }
 
     //wind
-    public Vector3d[] getWindVectors()
+    public Vector3d[] getWindVector()
     {
         WindModel wm = new WindModel();
-        // create several wind vectors that affect te shuttle
-        //
+        // create the wind vector that affects te shuttle
+        // apply its rotation effect on the shuttle
 
         return wm.getWindVectors();
     }
