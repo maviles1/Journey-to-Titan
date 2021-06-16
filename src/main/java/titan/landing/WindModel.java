@@ -9,7 +9,7 @@ public class WindModel {
     private Random gen;
     private final double airdensity = 1.229; //currently earths m/s
     private final int maxangle = 25;
-    private final double ws = 0.92857; //Linear
+    private final double ws = 928.57; //windspeed  -> Linear in m/s based on altitude in m
 
     //wind speed in m/s is altitude divided by ws
 
@@ -25,24 +25,29 @@ public class WindModel {
         //Create 3 random angles between -max <-> max degrees
         // use them as aplha, beta, gamma
         double[] angles = new double[3];
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 2; i++)
         {
             double angle = gen.nextDouble() * maxangle;
             angle = gen.nextBoolean() == true ? angle : (angle * -1);
             angles[i] = angle;
         }
 
+        //Wind is only 2d
+        angles[2] = 0;
+
         //Create new wind strength
         Vector3d windvector = previous.mul((altitude/ws)/previous.norm());
 
         //Create new direction
-        windvector = RefactorVector(windvector, angles[0], angles[1], angles[2]);
+        windvector = RefactorVector(windvector, angles[0], angles[1], angles[2]); //Wind is only 2d
 
         //Convert vector to a Force vector that adds to the velocity
         // F=(1 m2)×(1.229 kg/m3)×(2.24 m/s)2=6.17 N
-        double windforce = (10*10) * (airdensity) * (altitude/ws);
+        double windforce = (6*6) * (airdensity) * (altitude/ws);
+        System.out.println(windforce);
         //apply force to windvector
         // divide by norm multiply by force?
+        windvector = windvector.mul(windforce/windvector.norm());
 
         return windvector;
     }
@@ -98,7 +103,7 @@ public class WindModel {
 
         //Create random Vector
         double[] xyz = new double[3];
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 2; i++)
         {
            double temp = gen.nextDouble();
            if(temp > 0.5)
@@ -107,7 +112,7 @@ public class WindModel {
            xyz[i] = temp;
         }
 
-        swv = new Vector3d(xyz[0], xyz[1], xyz[2]);
+        swv = new Vector3d(xyz[0], xyz[1], 0); //vector in 2d
         swv = swv.mul((altitude/ws)/swv.norm());
 
         return swv;

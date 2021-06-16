@@ -31,11 +31,21 @@ class WindTest
         assertEquals(3.039065521508361, wm.RefactorVector( v, 10, 20, 30).getZ() );
     }
 
-//    @Test
-//    void testWindVector()
-//    {
-//        WindModel wm = new WindModel();
-//        assertEquals(1, wm.getStartingWindVector(120000));
-//    }
+    @Test
+    void testWindVector()
+    {
+        WindModel wm = new WindModel();
+        Vector3d tv = wm.getStartingWindVector(100000);
+        System.out.println(tv.toString());
+        assertEquals(1, wm.CreateWindVector(tv, 100000));
+    }
+
+    @Test
+    void testStartingVector()
+    {
+        WindModel wm = new WindModel();
+        Vector3d tv = wm.getStartingWindVector(100);
+        assertEquals(wm.getStartingWindVector(100), wm.getStartingWindVector(100));
+    }
 
 }
