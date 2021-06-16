@@ -21,7 +21,7 @@ public class TitanWindODE implements ODEFunctionInterface {
 
         Vector3d a = windVector;
 
-        return new LandingRate(state.getVelocity(), a, state.getShuttle_direction(), state.getWind_direction());
+        return new LandingRate(state.getVelocity(), a, state.getShuttle_direction(), state.getWind_direction(), 0);
 
     }
 }

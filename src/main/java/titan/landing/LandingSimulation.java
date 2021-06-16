@@ -24,7 +24,7 @@ public class LandingSimulation {
         //default dimensions of canvas is 150000m x 150000m (scaled down to 3000px x 3000px)
         double y = 150000; //150km
         int x = (150000) / 2; //center
-        LandingState y0 = new LandingState(new Vector3d(x, y, 0), new Vector3d(0, 0, 0), new Vector3d(0,1,0), new Vector3d(1,0,0), 0);
+        LandingState y0 = new LandingState(new Vector3d(x, y, 0), new Vector3d(0, 0, 0), new Vector3d(0,1,0), new Vector3d(1,0,0), 0, 0, 0);
 
         Solver solver = new Solver(new LandingVerlet());
         StateInterface[] states = solver.solve(new PhysicsEngine(new OpenLoopController(), new TitanGravityODE(), new TitanWindODE()), y0, 1000, 1, true);

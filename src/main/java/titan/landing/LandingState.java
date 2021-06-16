@@ -11,13 +11,17 @@ public class LandingState implements StateInterface {
     private Vector3d shuttle_direction;
     private Vector3d wind_direction;
     private double time;
+    private double angle;
+    private double angularVelocity;
 
-    public LandingState(Vector3d position, Vector3d velocity, Vector3d shuttle_direction, Vector3d wind_direction, double time) {
+    public LandingState(Vector3d position, Vector3d velocity, Vector3d shuttle_direction, Vector3d wind_direction, double angle, double angularVelocity, double time) {
         this.position = position;
         this.velocity = velocity;
         this.shuttle_direction = shuttle_direction;
         this.wind_direction = wind_direction;
         this.time = time;
+        this.angle = angle;
+        this.angularVelocity = angularVelocity;
     }
 
     @Override
@@ -31,7 +35,15 @@ public class LandingState implements StateInterface {
         Vector3d newShuttle_directionRate = null;
         Vector3d newWind_directionRate = null;
 
-        return new LandingState(newPosition, newVelocity, newShuttle_directionRate, newWind_directionRate, getTime() + step);
+        return new LandingState(newPosition, newVelocity, newShuttle_directionRate, newWind_directionRate, angle, angularVelocity, getTime() + step);
+    }
+
+    public double getAngle() {
+        return angle;
+    }
+
+    public double getAngularVelocity() {
+        return angularVelocity;
     }
 
     public Vector3d getPosition() {
@@ -104,6 +116,6 @@ public class LandingState implements StateInterface {
         Vector3d shuttle_direction = this.shuttle_direction;
         Vector3d wind_direction = this.wind_direction;
 
-        return new LandingState(position, velocity, shuttle_direction, wind_direction, getTime());
+        return new LandingState(position, velocity, shuttle_direction, wind_direction, angle, angularVelocity, getTime());
     }
 }

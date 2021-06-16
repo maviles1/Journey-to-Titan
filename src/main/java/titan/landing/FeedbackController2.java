@@ -17,7 +17,18 @@ public class FeedbackController2 implements Controller {
         double windX = ((LandingRate) windRate).getVelocityRate().getX();
         double thrustX = -windX * 0.8;
 
-        LandingRate rate = new LandingRate(state.getVelocity(), new Vector3d(thrustX,0,0), state.getShuttle_direction(), state.getWind_direction());
+        //where u is the thrust
+        //horizontal acceleration = u * sin(theta)
+        //vertical acceleration = u * cos(theta) (-g)
+        //angular acceleration = torque
+
+        //double angle: TODO: not really sure where theta comes from. Maybe we define it here instead of using states
+        double mainThrust = 1;
+        double xAccel = mainThrust * Math.sin(state.getAngle());
+        double yAccel = mainThrust * Math.cos(state.getAngle());
+        double angularAccel = 0; //torque TODO: calculate torque
+
+        LandingRate rate = new LandingRate(state.getVelocity(), new Vector3d(thrustX,0,0), state.getShuttle_direction(), state.getWind_direction(), angularAccel);
 
         return rate;
     }
