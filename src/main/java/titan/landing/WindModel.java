@@ -23,27 +23,19 @@ public class WindModel {
         // altitude in meters or km?
         // new wind vector is created between 0 and max based on altitude
 
-        //Create 3 random angles between -max <-> max degrees
-        // use them as aplha, beta, gamma
-        double[] angles = new double[3];
-        for(int i = 0; i < 2; i++)
-        {
-            double angle = gen.nextDouble() * maxangle;
-            angle = gen.nextBoolean() == true ? angle : (angle * -1);
-            angles[i] = angle;
-        }
-
-        //Wind is only 2d
-        angles[2] = 0;
+        //Create a random angle between -max <-> max degrees
+        double angle = gen.nextDouble() * maxangle;
+        angle = gen.nextBoolean() == true ? angle : (angle * -1);
 
         //Create new wind strength
         Vector3d windvector = previous.mul((altitude/ws)/previous.norm());
 
         //Create new direction
-        windvector = RefactorVector(windvector, angles[0], angles[1], angles[2]); //Wind is only 2d
+        windvector = refactor2DVector(windvector, angle); //Wind is only 2d
 
         return windvector;
     }
+
     public Vector3d getForceVector(Vector3d windvector, double altitude)
     {
         //Convert vector to a Force vector that adds to the velocity
@@ -72,7 +64,7 @@ public class WindModel {
         // Calculate the strength of the wind vector in rotations per timestep
     }
 
-    public Vector3d RefactorVector(Vector3d v, double a, double b, double g)
+    public Vector3d Refactor3DVector(Vector3d v, double a, double b, double g)
     {
         Vector3d rvec = new Vector3d(0,0,0);
         a = Math.toRadians(a);
@@ -94,6 +86,21 @@ public class WindModel {
         rvec.setZ( (-Math.sin(b) * x) + (Math.cos(b) * Math.sin(g) * y) + (Math.cos(b) * Math.cos(g) * z) );
 
         return  rvec;
+    }
+
+    public Vector3d refactor2DVector(Vector3d v , double a)
+    {
+        Vector3d rvec = new Vector3d(0,0,0);
+        a = Math.toRadians(a);
+
+        double x = v.getX();
+        double y = v.getY();
+
+        rvec.setX( (x * Math.cos(a)) - (y * Math.sin(a)) );
+
+        rvec.setY( (x * Math.sin(a)) + (y * Math.cos(a)) );
+
+        return rvec;
     }
 
     public Vector3d getStartingWindVector(double altitude)
