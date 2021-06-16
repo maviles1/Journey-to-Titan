@@ -44,7 +44,6 @@ public class WindModel {
 
         return windvector;
     }
-
     public Vector3d getForceVector(Vector3d windvector, double altitude)
     {
         //Convert vector to a Force vector that adds to the velocity
