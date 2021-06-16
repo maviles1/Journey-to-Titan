@@ -17,7 +17,7 @@ public class LandingRate implements RateInterface {
         wind_directionRate = w_dR;
     }
 
-    public LandingRate mul(double scalar){
+    public LandingRate mul(double scalar) {
         Vector3d newPosition = positionRate.mul(scalar);
         Vector3d newVelocity = velocityRate.mul(scalar);
         Vector3d newShuttle_directionRate = null;

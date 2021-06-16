@@ -15,8 +15,14 @@ public class OpenLoopController implements Controller {
         LandingState state = (LandingState) y;
         double altitude = state.getPosition().getY();
         double thru = 1.352 - altitude / 150000.0;
-        System.out.println(thru);
-        Vector3d thrust = new Vector3d(0, thru, 0);
+        double o = 0.1 / (altitude / 150000.0);
+        //System.out.println(thru);
+
+        if (altitude <= 0) {
+            o = 0;
+        }
+
+        Vector3d thrust = new Vector3d(0, o, 0);
 
         return new LandingRate(state.getVelocity(), thrust, state.getShuttle_direction(), state.getWind_direction());
     }
