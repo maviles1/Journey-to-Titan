@@ -3,6 +3,7 @@ package titan.landing;
 import titan.flight.Vector3d;
 
 import java.util.Random;
+import java.util.Vector;
 
 public class WindModel {
     private Vector3d windarrows;
@@ -18,7 +19,7 @@ public class WindModel {
         gen = new Random();
     }
 
-    public Vector3d CreateWindVector(Vector3d previous, double altitude) {
+    public Vector3d CreateNewWindVector(Vector3d previous, double altitude) {
         // altitude in meters or km?
         // new wind vector is created between 0 and max based on altitude
 
@@ -41,15 +42,17 @@ public class WindModel {
         //Create new direction
         windvector = RefactorVector(windvector, angles[0], angles[1], angles[2]); //Wind is only 2d
 
+        return windvector;
+    }
+
+    public Vector3d getForceVector(Vector3d windvector, double altitude)
+    {
         //Convert vector to a Force vector that adds to the velocity
         // F=(1 m2)×(1.229 kg/m3)×(2.24 m/s)2=6.17 N
-        double windforce = (6*6) * (airdensity) * (altitude/ws);
+        double windforce = (6*6) * (airdensity) * (altitude/ws); // 6x6 is shuttle dimensions
         System.out.println(windforce);
         //apply force to windvector
-        // divide by norm multiply by force?
-        windvector = windvector.mul(windforce/windvector.norm());
-
-        return windvector;
+        return windvector.mul(windforce/windvector.norm());
     }
 
     //UNUSED METHOD
@@ -68,9 +71,7 @@ public class WindModel {
         Vector3d windimpact = new Vector3d(newX, newY, sh.getPosition().getZ());
 
         // Calculate the strength of the wind vector in rotations per timestep
-
     }
-
 
     public Vector3d RefactorVector(Vector3d v, double a, double b, double g)
     {

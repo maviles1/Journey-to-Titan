@@ -37,7 +37,15 @@ class WindTest
         WindModel wm = new WindModel();
         Vector3d tv = wm.getStartingWindVector(100000);
         System.out.println(tv.toString());
-        assertEquals(1, wm.CreateWindVector(tv, 100000));
+        assertEquals(1, wm.CreateNewWindVector(tv, 100000));
+    }
+
+    @Test
+    void testWindForceVector()
+    {
+        WindModel wm = new WindModel();
+        Vector3d tv = wm.getStartingWindVector(100000);
+        assertEquals(1, wm.getForceVector(tv, 100000));
     }
 
     @Test
