@@ -73,4 +73,19 @@ class WindTest
         assertEquals(wm.getStartingWindVector(100), wm.getStartingWindVector(100));
     }
 
+    @Test
+    void testMultipleWindVectors()
+    {
+        WindModel wm = new WindModel();
+        Vector3d[] windarrows = new Vector3d[10];
+        Vector3d sv = wm.getStartingWindVector(100000);
+        Vector3d pv = sv;
+        for(int i =0; i < 10; i++)
+        {
+            windarrows[i] = wm.CreateNewWindVector(pv, 100000-(i * 10000));
+            System.out.println(windarrows[i]);
+            pv = windarrows[i];
+        }
+
+    }
 }

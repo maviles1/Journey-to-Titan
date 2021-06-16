@@ -8,8 +8,8 @@ import java.util.Vector;
 public class WindModel {
     private Vector3d windarrows;
     private Random gen;
-    private final double airdensity = 1.229; //currently earths m/s
-    private final int maxangle = 25;
+    private final double airdensity = 1.229; //currently earths m/s (titan is 4.4x)
+    private final int maxangle = 25; //Still need to find proper value for this
     private final double ws = 928.57; //windspeed  -> Linear in m/s based on altitude in m
 
     //wind speed in m/s is altitude divided by ws
