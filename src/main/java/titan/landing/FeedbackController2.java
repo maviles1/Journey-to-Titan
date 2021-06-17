@@ -28,7 +28,7 @@ public class FeedbackController2 implements Controller {
         double yAccel = mainThrust * Math.cos(state.getAngle());
         double angularAccel = 0; //torque TODO: calculate torque
 
-        LandingRate rate = new LandingRate(state.getVelocity(), new Vector3d(thrustX,0,0), state.getShuttle_direction(), state.getWind_direction(), angularAccel);
+        LandingRate rate = new LandingRate(state.getVelocity(), new Vector3d(thrustX,0,0), state.getShuttle_direction(), state.getWind_direction(), state.getPrevWindVector(), angularAccel);
 
         return rate;
     }

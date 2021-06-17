@@ -38,7 +38,7 @@ public class OpenLoopController implements Controller {
 
         //
 
-        return new LandingRate(state.getVelocity(), thrust, state.getShuttle_direction(), state.getWind_direction(), angularAccel);
+        return new LandingRate(state.getVelocity(), thrust, state.getShuttle_direction(), state.getWind_direction(), state.getPrevWindVector(), angularAccel);
     }
 
     public Vector3d torque(Vector3d force, LandingState state) {
@@ -50,7 +50,6 @@ public class OpenLoopController implements Controller {
         Vector3d thrusterPos = new Vector3d(state.getPosition().getX() - RADIUS, state.getPosition().getY(), 0);
         Vector3d r = thrusterPos.sub(state.getPosition());
         r = rotate(state.getAngle(), r);
-
 
 
 
