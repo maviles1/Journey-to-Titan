@@ -55,10 +55,10 @@ public class GUI3D {
     public static final double STEP_SIZE_TRAJECTORY = 3600;
     public static final int CANVAS_WIDTH = 1400;
     public static final int CANVAS_HEIGHT = 1000;
-    public static double scale = 1e11;
+    public static double scale = 1e10;
     public Camera cam;
     public StateInterface[] states;
-    int counter = 0;
+    int counter = 12000;
     Group group;
     ArrayList<SpaceObject> planets;
     ArrayList<Shape3D> shapes;
@@ -197,7 +197,7 @@ public class GUI3D {
             }
             else {
                 spaceObjects.get(j).setRadius(radius[j]);
-                Sphere sphere = new Sphere(20);
+                Sphere sphere = new Sphere(toScreenCoordinates(radius[j]));
 //                Sphere sphere = new Sphere(toScreenCoordinates(radius[j]));
                 sphere.translateXProperty().set(toScreenCoordinates(o.getPosition().getX()) - toScreenCoordinates(probePos.getX()));
                 sphere.translateYProperty().set(toScreenCoordinates(o.getPosition().getY()) - toScreenCoordinates(probePos.getY()));
@@ -210,7 +210,7 @@ public class GUI3D {
                     name.translateXProperty().set(toScreenCoordinates(o.getPosition().getX()) - toScreenCoordinates(probePos.getX()) + 10);
                     name.translateYProperty().set(toScreenCoordinates(o.getPosition().getY()) - toScreenCoordinates(probePos.getY()) - 12);
                     name.translateZProperty().set(toScreenCoordinates(o.getPosition().getZ())   - toScreenCoordinates(probePos.getZ()));
-                    sphere.setRadius(0);
+                    sphere.setRadius(toScreenCoordinates(radius[j]));
                 }
                 else{
                     name.translateXProperty().set(toScreenCoordinates(o.getPosition().getX()) - toScreenCoordinates(probePos.getX()));
@@ -228,6 +228,7 @@ public class GUI3D {
             e.printStackTrace();
         }
     }
+
 
     public void initLabels(Group superGroup){
         Text probeFuel = new Text("Probe Fuel Mass: ");
@@ -302,7 +303,7 @@ public class GUI3D {
                     String song = "song2.mp3";
                     Media media = new Media(Paths.get(song).toUri().toString());
                     player = new MediaPlayer(media);
-                    player.play();
+//                    player.play();
                     speed = 1;
                     scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
                         @Override
@@ -327,13 +328,24 @@ public class GUI3D {
                             }
                             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/Y hh:mm a");
                             Date date = new Date(120,4,counter/24, counter, 0,0);
-                            daysPassed.setText("Date: " + formatter.format(date));
+//                            daysPassed.setText("Date: " + formatter.format(date));
+                            daysPassed.setText("Step: " + counter);
                             distToTitan.setText("Distance to Titan: " + states[counter].getPosition()[8].dist(states[counter].getPosition()[11])/1000 + " km");
                             distToEarth.setText("Distance to Earth: " + states[counter].getPosition()[3].dist(states[counter].getPosition()[11])/1000 + " km");
                             Vector3d probe = states[counter].getPositions()[states[counter].getPositions().length - 1];
                             probePos = probe;
                             probeSpeed.setText("Probe speed:" + states[counter].getVelocities()[11].norm() + "m/s");
                             sunPos = states[counter].getPositions()[0];
+                            Vector3d probePosition = states[counter].getPositions()[11];
+                            Vector3d titanPosition = states[counter].getPositions()[8];
+                            Vector3d rotationPoint =  probePosition.sub(titanPosition);
+                            Vector3d nextRotationPoint = rotationPoint.rotate(100,100,100);
+                            nextRotationPoint = nextRotationPoint.add(states[counter].getPositions()[8]);
+                            Sphere s = new Sphere(500);
+                            s.translateXProperty().set(toScreenCoordinates(nextRotationPoint.getX()));
+                            s.translateYProperty().set(toScreenCoordinates(nextRotationPoint.getY()));
+                            s.translateZProperty().set(toScreenCoordinates(nextRotationPoint.getZ()));
+                            group.getChildren().add(s);
 //                            System.out.println(states[counter].getPositions()[3].dist(states[counter].getPositions()[8]));
                             if (probeLock){
                                 camLock = states[counter].getPositions()[states[counter].getPositions().length - 1];

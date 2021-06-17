@@ -30,16 +30,21 @@ public class Probe extends SpaceObject {
 
     public void thrust(Vector3d thrustVector) {
         //Total mass
-        System.out.println("Vector used: " + thrustVector);
+//        System.out.println("Vector used: " + thrustVector);
         double totalmass = this.getMass();
         Vector3d oldvel = this.getVelocity();
         Vector3d newvel = getVelocity().copy().add(thrustVector);
         double FinalForce = totalmass * thrustVector.norm()/3600;
         double usedmass = FinalForce / newvel.magnitude();
         fuelMass -= usedmass;
-        System.out.println( "used mass: " + usedmass);
+//        System.out.println( "used mass: " + usedmass);
         this.setFuelMass(getFuelMass() - usedmass);
-        System.out.println("Force used: " + (1/1e6)*(getMass() + usedmass)*thrustVector.norm()/3600);
+//        System.out.println("Force used: " + (1/1e6)*(getMass() + usedmass)*thrustVector.norm()/3600);
+        this.setVelocity(getVelocity().add(thrustVector));
+    }
+
+    public void land(Vector3d thrustVector) {
+        //Total mass
         this.setVelocity(getVelocity().add(thrustVector));
     }
 
