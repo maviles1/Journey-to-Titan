@@ -43,18 +43,17 @@ public class OpenLoopController implements Controller {
 
     public Vector3d torque(Vector3d force, LandingState state) {
         //FOR LEFT THRUSTER
-        //I = 1/2 * mass * radius^2
-        double momentInertia = 0.5 * MASS * RADIUS * RADIUS;
+        //I = 1/2 * mass * radius^2 TODO: maybe we should take the moment of inertia of a sphere 2/3 * m * r^2 (hollow) or 2/5 * m * r^2 (solid)
+        //double momentInertia = 0.5 * MASS * RADIUS * RADIUS;
         double thrustAngle = 45;
-        Vector3d torque = force.mul(RADIUS * Math.sin(thrustAngle));
+        double angle = 0;
+        //Vector3d torque = force.mul(RADIUS * Math.sin(thrustAngle));
         Vector3d thrusterPos = new Vector3d(state.getPosition().getX() - RADIUS, state.getPosition().getY(), 0);
         Vector3d r = thrusterPos.sub(state.getPosition());
-        r = rotate(state.getAngle(), r);
+        //r = rotate(state.getAngle(), r);
+        angle = Math.toDegrees(Math.acos(r.dot(force)/(force.norm()*r.norm()))); //angle between force and position in degrees! TODO: is it always 45°?
 
-
-
-
-        return torque;
+        return force.cross(r); //TODO: check if have to take the angle into account?
     }
 
     public Vector3d rotate(double angle, Vector3d vector) {
