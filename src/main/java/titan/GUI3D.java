@@ -1,20 +1,14 @@
 package titan;
 
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
-import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.control.Button;
-import java.net.URL;
-import java.security.spec.RSAOtherPrimeInfo;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -29,19 +23,14 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.*;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.transform.*;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
-import titan.*;
 import titan.interfaces.StateInterface;
 
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
-import java.util.Random;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -328,10 +317,9 @@ public class GUI3D {
                             }
                             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/Y hh:mm a");
                             Date date = new Date(120,4,counter/24, counter, 0,0);
-//                            daysPassed.setText("Date: " + formatter.format(date));
-                            daysPassed.setText("Step: " + counter);
-                            distToTitan.setText("Distance to Titan: " + states[counter].getPosition()[8].dist(states[counter].getPosition()[11])/1000 + " km");
-                            distToEarth.setText("Distance to Earth: " + states[counter].getPosition()[3].dist(states[counter].getPosition()[11])/1000 + " km");
+                            daysPassed.setText("Date: " + formatter.format(date));
+                            distToTitan.setText("Distance to Titan: " + states[counter].getPositions()[8].dist(states[counter].getPositions()[11])/1000 + " km");
+                            distToEarth.setText("Distance to Earth: " + states[counter].getPositions()[3].dist(states[counter].getPositions()[11])/1000 + " km");
                             Vector3d probe = states[counter].getPositions()[states[counter].getPositions().length - 1];
                             probePos = probe;
                             probeSpeed.setText("Probe speed:" + states[counter].getVelocities()[11].norm() + "m/s");
@@ -506,7 +494,7 @@ public class GUI3D {
     }
 
     public static double toScreenCoordinates(double d){
-        return ((d / scale)) * 280;
+        return ((d / scale)) * 800;
     }
 
     public void updateSpeed(MouseEvent mouseEvent) {

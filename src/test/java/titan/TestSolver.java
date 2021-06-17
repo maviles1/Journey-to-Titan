@@ -4,9 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import titan.interfaces.Vector3dInterface;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.System;
 import titan.interfaces.StateInterface;
 
 
@@ -84,7 +81,7 @@ public class TestSolver {
         Vector3d[] planet = new Vector3d[s.length];
         for(int i=0;i<s.length;i++){
             State ph = (State) s[i];
-            planet[i] = ph.getPosition()[7].mul(0.001);
+            planet[i] = ph.getPositions()[7].mul(0.001);
         }
         return planet;
     }
@@ -103,7 +100,7 @@ public class TestSolver {
         Vector3d[] planet = new Vector3d[s.length];
         for(int i=0;i<s.length;i++){
             State ph = (State) s[i];
-            planet[i] = ph.getPosition()[7].mul(0.001);
+            planet[i] = ph.getPositions()[7].mul(0.001);
         }
 
         return planet;

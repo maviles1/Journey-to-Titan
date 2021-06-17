@@ -25,10 +25,6 @@ public class State implements StateInterface {
 //            bodies[i] = new Planet(names.get(i), mass[i], positions[i], velocities[i], radius[i]);
 //        }
     }
-    public Vector3d[] getPositions(){
-        return positions;
-    }
-
     @Override
     public StateInterface addMul(double step, RateInterface r) {
         Rate rate = (Rate) r;
@@ -83,7 +79,8 @@ public class State implements StateInterface {
         State.radius = radius;
     }
 
-    public Vector3d[] getPosition(){
+    @Override
+    public Vector3d[] getPositions(){
         return positions;
     }
 

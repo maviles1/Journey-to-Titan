@@ -83,6 +83,7 @@ public class Solver implements ODESolverInterface {
             if (i < stateToReach - bufferStates && i % 500 == 0){
                 Vector3d ve = v.sub(s[i].getPositions()[11]);
                 thrust(probe,s[i],probe.getVelocity().mul(-1).add(ve.mul((1.0/(stateToReach - bufferStates - i))/3600)));
+
             }
 
             if (i >= stateToReach - bufferStates && i < stateToReach && (stateToReach - i)%4 == 0){
@@ -192,7 +193,7 @@ public class Solver implements ODESolverInterface {
     public void thrust(Probe probe, StateInterface state, Vector3d toThrust){
         probe.thrust(toThrust);
         state.getVelocities()[11] = probe.getVelocity();
-//        State.mass[11] = probe.getMass();
+        State.mass[11] = probe.getMass();
     }
 
     public Vector3d findOrbitPoint(Vector3d titanPos){

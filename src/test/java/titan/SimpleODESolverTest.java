@@ -1,14 +1,10 @@
 package titan;
 
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import titan.interfaces.StateInterface;
-import titan.ui.PolySim;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class SimpleODESolverTest {
 
@@ -36,7 +32,7 @@ public class SimpleODESolverTest {
 
         StateInterface[] states = eulerSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
 
-        Assertions.assertEquals(solutionX, ((State)states[states.length - 1]).getPosition()[0].getX(), delta);
+        Assertions.assertEquals(solutionX, ((State)states[states.length - 1]).getPositions()[0].getX(), delta);
     }
 
     @Test
@@ -47,7 +43,7 @@ public class SimpleODESolverTest {
 
         StateInterface[] states = eulerSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
 
-        Assertions.assertEquals(solutionY, ((State)states[states.length - 1]).getPosition()[0].getY(), delta);
+        Assertions.assertEquals(solutionY, ((State)states[states.length - 1]).getPositions()[0].getY(), delta);
     }
 
     @Test
@@ -57,7 +53,7 @@ public class SimpleODESolverTest {
         Vector3d[] vel = new Vector3d[]{new Vector3d(initialVel, 0, 0)};
 
         StateInterface[] states = verletSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
-        Assertions.assertEquals(solutionX, ((State)states[states.length - 1]).getPosition()[0].getX(), delta);
+        Assertions.assertEquals(solutionX, ((State)states[states.length - 1]).getPositions()[0].getX(), delta);
     }
 
     @Test
@@ -67,7 +63,7 @@ public class SimpleODESolverTest {
         Vector3d[] vel = new Vector3d[]{new Vector3d(initialVel, 0, 0)};
 
         StateInterface[] states = verletSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
-        Assertions.assertEquals(solutionY, ((State)states[states.length - 1]).getPosition()[0].getY(), delta);
+        Assertions.assertEquals(solutionY, ((State)states[states.length - 1]).getPositions()[0].getY(), delta);
     }
 
     @Test
@@ -77,7 +73,7 @@ public class SimpleODESolverTest {
         Vector3d[] vel = new Vector3d[]{new Vector3d(initialVel, 0, 0)};
 
         StateInterface[] states = rkSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
-        Assertions.assertEquals(solutionX, ((State)states[states.length - 1]).getPosition()[0].getX(), delta);
+        Assertions.assertEquals(solutionX, ((State)states[states.length - 1]).getPositions()[0].getX(), delta);
     }
 
     @Test
@@ -87,7 +83,7 @@ public class SimpleODESolverTest {
         Vector3d[] vel = new Vector3d[]{new Vector3d(initialVel, 0, 0)};
 
         StateInterface[] states = rkSolver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
-        Assertions.assertEquals(solutionY, ((State)states[states.length - 1]).getPosition()[0].getY(), delta);
+        Assertions.assertEquals(solutionY, ((State)states[states.length - 1]).getPositions()[0].getY(), delta);
     }
 
     @Test
@@ -97,7 +93,7 @@ public class SimpleODESolverTest {
         Vector3d[] vel = new Vector3d[]{new Vector3d(initialVel, 0, 0)};
 
         StateInterface[] states = rk2Solver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
-        Assertions.assertEquals(solutionX, ((State)states[states.length - 1]).getPosition()[0].getX(), delta);
+        Assertions.assertEquals(solutionX, ((State)states[states.length - 1]).getPositions()[0].getX(), delta);
     }
 
     @Test
@@ -107,7 +103,7 @@ public class SimpleODESolverTest {
         Vector3d[] vel = new Vector3d[]{new Vector3d(initialVel, 0, 0)};
 
         StateInterface[] states = rk2Solver.solve(new SimpleODE(), new State(pos, vel, 0), duration, stepSize, true);
-        Assertions.assertEquals(solutionY, ((State)states[states.length - 1]).getPosition()[0].getY(), delta);
+        Assertions.assertEquals(solutionY, ((State)states[states.length - 1]).getPositions()[0].getY(), delta);
     }
 
     @Test
@@ -131,7 +127,7 @@ public class SimpleODESolverTest {
             System.out.println("-----------");
             for (int i = 0; i < states.length; i++) {
                 State y = (State) states[i];
-                System.out.println(y.getPosition()[0].getY());
+                System.out.println(y.getPositions()[0].getY());
             }
             System.out.println("-----------");
         }

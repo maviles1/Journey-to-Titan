@@ -24,7 +24,7 @@ public class VerletSolver implements StepInterface {
         Vector3d[] pos = new Vector3d[size];
         for(int i = 0 ; i < size; i++){
             //x(t + ∆t) = x(t) * ∆t + 1/2 * a(t) * ∆t^2
-            pos[i] = state.getPosition()[i].addMul(h, state.getVelocities()[i]).addMul(0.5 * h * h, rate.getVelRates()[i]);
+            pos[i] = state.getPositions()[i].addMul(h, state.getVelocities()[i]).addMul(0.5 * h * h, rate.getVelRates()[i]);
         }
 
         State nextState = new State(pos, state.getVelocities(), t + h);
@@ -74,7 +74,7 @@ class V2 implements StepInterface {
         Vector3d[] pos = new Vector3d[size];
         for (int i = 0; i < size; i++) {
             //x(t + ∆t) = x(t) + v(t + 1/2*∆t) * ∆t
-            pos[i] = state.getPosition()[i].addMul(h, vel[i]);  //calculate new position
+            pos[i] = state.getPositions()[i].addMul(h, vel[i]);  //calculate new position
         }
 
         State nextState = new State(pos, state.getVelocities(), t + h); //to get the new acceleration

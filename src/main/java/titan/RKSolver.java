@@ -16,7 +16,7 @@ public class RKSolver implements StepInterface {
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         State state = (State) y; //w
-        Rate stateRate = new Rate(state.getPosition(), state.getVelocities()); //also w
+        Rate stateRate = new Rate(state.getPositions(), state.getVelocities()); //also w
 
         Rate r1 = ((Rate) f.call(t, y)).mul(h); //k1=h*f(t,w);
 
@@ -46,7 +46,7 @@ class RK2 implements StepInterface{
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         State state = (State) y;
-        Rate stateRate = new Rate(state.getPosition(), state.getVelocities()); //w
+        Rate stateRate = new Rate(state.getPositions(), state.getVelocities()); //w
 
         Rate r1 = ((Rate) f.call(t, y)).mul(h); //k1=hf(t,w);
 

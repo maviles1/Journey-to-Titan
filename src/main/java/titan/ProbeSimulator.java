@@ -4,8 +4,6 @@ import titan.interfaces.ProbeSimulatorInterface;
 import titan.interfaces.StateInterface;
 import titan.interfaces.Vector3dInterface;
 
-import java.io.File;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -67,7 +65,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         Vector3d[] vector = new Vector3d[s.length];
         for(int i=0;i<s.length;i++){
             State ph = (State) s[i];
-            vector[i] = ph.getPosition()[ph.getPosition().length-1];
+            vector[i] = ph.getPositions()[ph.getPositions().length-1];
         }
         return vector;
     }
@@ -106,7 +104,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         Vector3d[] vector = new Vector3d[s.length];
         for(int i=0;i<s.length;i++){
             State ph = (State) s[i];
-            vector[i] = ph.getPosition()[ph.getPosition().length-1];
+            vector[i] = ph.getPositions()[ph.getPositions().length-1];
         }
 
         return vector;

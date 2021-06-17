@@ -5,7 +5,6 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Sphere;
 import javafx.scene.text.TextAlignment;
 import titan.interfaces.StateInterface;
 import titan.ui.View;
@@ -55,8 +54,8 @@ public class Renderer extends AnimationTimer {
             startNanoTime = now;
 
         gc.setFill(Paint.valueOf("#469FCB"));
-        for (int i = 0; i < state.getPosition().length; i++) {
-            drawSpaceObject(gc, state.getPosition()[i], i);
+        for (int i = 0; i < state.getPositions().length; i++) {
+            drawSpaceObject(gc, state.getPositions()[i], i);
         }
 
         gc.setTextAlign(TextAlignment.CENTER);
