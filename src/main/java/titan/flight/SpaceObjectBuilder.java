@@ -1,4 +1,4 @@
-package titan;
+package titan.flight;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

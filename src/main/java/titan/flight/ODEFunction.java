@@ -1,4 +1,4 @@
-package titan;
+package titan.flight;
 
 import titan.interfaces.ODEFunctionInterface;
 import titan.interfaces.RateInterface;
@@ -37,6 +37,5 @@ public class ODEFunction implements ODEFunctionInterface {
 
         return new Rate(vRates, aRates);
     }
-
 
 }

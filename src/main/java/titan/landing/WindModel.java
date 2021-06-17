@@ -1,0 +1,133 @@
+package titan.landing;
+
+import titan.flight.Vector3d;
+
+import java.util.Random;
+import java.util.Vector;
+
+public class WindModel {
+    private Vector3d windarrows;
+    private Random gen;
+    private final double airdensity = 1.229; //currently earths m/s (titan is 4.4x)
+    private final int maxangle = 25; //Still need to find proper value for this
+    private final double ws = 928.57; //windspeed  -> Linear in m/s based on altitude in m
+
+    //wind speed in m/s is altitude divided by ws
+
+    public WindModel() {
+        windarrows = new Vector3d();
+        gen = new Random();
+    }
+
+    public Vector3d CreateNewWindVector(Vector3d previous, double altitude) {
+        // altitude in meters or km?
+        // new wind vector is created between 0 and max based on altitude
+
+        //Create a random angle between -max <-> max degrees
+        double angle = gen.nextDouble() * maxangle;
+        angle = gen.nextBoolean() == true ? angle : (angle * -1);
+
+        //Create new wind strength
+        System.out.println(previous);
+        Vector3d windvector = previous.mul((altitude/ws)/previous.norm());
+
+        //Create new direction
+        windvector = refactor2DVector(windvector, angle); //Wind is only 2d
+
+        return windvector;
+    }
+
+    public Vector3d getForceVector(Vector3d windvector, double altitude)
+    {
+        //Convert vector to a Force vector that adds to the velocity
+        // F=(1 m2)×(1.229 kg/m3)×(2.24 m/s)2=6.17 N
+        double windforce = (7*7) * (airdensity) * (altitude/ws); // 6x6 is shuttle dimensions
+        windforce = windforce / 10000; //test for now
+        System.out.println("windforce: " + windforce);
+        //apply force to windvector
+        return windvector.mul(windforce/windvector.norm());
+    }
+
+    //UNUSED METHOD
+    public void CalculateWindRotation(Vector3d windvector, Shuttle sh)
+    {
+        // Select a random point where it hits the probe (on the y-axis)
+        double radius = sh.getHeight()/2;
+        double Ymax = sh.getPosition().getY() + radius;
+        double Ymin = sh.getPosition().getY() - radius;
+        double Xmax = sh.getPosition().getX() + radius;
+        double Xmin = sh.getPosition().getX() - radius;
+        double newY = (Ymax-Ymin) * gen.nextDouble() + Ymin;
+        double newX = (Xmax-Xmin) * gen.nextDouble() + Xmin;
+
+        // Point where the wind hits the probe
+        Vector3d windimpact = new Vector3d(newX, newY, sh.getPosition().getZ());
+
+        // Calculate the strength of the wind vector in rotations per timestep
+    }
+
+    public Vector3d Refactor3DVector(Vector3d v, double a, double b, double g)
+    {
+        Vector3d rvec = new Vector3d(0,0,0);
+        a = Math.toRadians(a);
+        b = Math.toRadians(b);
+        g = Math.toRadians(g);
+
+        double x = v.getX();
+        double y = v.getY();
+        double z = v.getZ();
+
+        rvec.setX( (Math.cos(a) * Math.cos(b) * x) +
+                ( ( (Math.cos(a) * Math.sin(b) * Math.sin(g)) - (Math.sin(a) * Math.cos(g)) ) * y) +
+                ( ( (Math.cos(a) * Math.sin(b) * Math.cos(g)) + (Math.sin(a) * Math.sin(g)) ) * z));
+
+        rvec.setY( (Math.sin(a) * Math.cos(b) * x) +
+                ( ( (Math.sin(a) * Math.sin(b) * Math.sin(g)) + (Math.cos(a) * Math.cos(g)) ) * y) +
+                ( ( (Math.sin(a) * Math.sin(b) * Math.cos(g)) - (Math.cos(a) * Math.sin(g)) ) * z));
+
+        rvec.setZ( (-Math.sin(b) * x) + (Math.cos(b) * Math.sin(g) * y) + (Math.cos(b) * Math.cos(g) * z) );
+
+        return  rvec;
+    }
+
+    public Vector3d refactor2DVector(Vector3d v , double a)
+    {
+        Vector3d rvec = new Vector3d(0,0,0);
+        a = Math.toRadians(a);
+
+        double x = v.getX();
+        double y = v.getY();
+
+        rvec.setX( (x * Math.cos(a)) - (y * Math.sin(a)) );
+
+        rvec.setY( (x * Math.sin(a)) + (y * Math.cos(a)) );
+
+        return rvec;
+    }
+
+    public Vector3d getStartingWindVector(double altitude)
+    {
+        //wind more common west to east
+        Vector3d swv = new Vector3d();
+
+        //Create random Vector
+        double[] xyz = new double[3];
+        for(int i = 0; i < 2; i++)
+        {
+            double temp = gen.nextDouble();
+            if(temp > 0.5)
+                temp -= 1;
+
+            xyz[i] = temp;
+        }
+
+        swv = new Vector3d(xyz[0], xyz[1], 0); //vector in 2d
+        swv = swv.mul((altitude/ws)/swv.norm());
+
+        return swv;
+    }
+
+    public Vector3d getWindVectors() {
+        return windarrows;
+    }
+}

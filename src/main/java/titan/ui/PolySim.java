@@ -10,8 +10,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import titan.State;
-import titan.Vector3d;
+import titan.flight.State;
+import titan.flight.Vector3d;
 import titan.interfaces.StateInterface;
 
 import java.io.File;
@@ -21,30 +21,20 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unchecked")
-public class PolySim extends ScrollPane {
+public class PolySim extends Renderer2D {
 
-    //private final double WIDTH = 1000 * 5.5;
-    //private final double HEIGHT = 1000 * 5.5;
-    private final double WIDTH = 1000 * 3;
-    private final double HEIGHT = 1000 * 3;
     private final int AMOUNT_BODIES = 12;
     public static final Vector3d TEST_POINT = new Vector3d(-2.4951517995514418E13, -1.794349344879982E12,2.901591968932223E7); //test point given by probesimulatortest
 
     private double res = 7e8;
     private int speedOffset = 1; //default render speed, 1 state/frame
 
-    private final Canvas canvas;
     private final ArrayList<Double[]> nasaPaths = new ArrayList<>();
     private final ArrayList<Vector3d>[] nasaPos = new ArrayList[AMOUNT_BODIES - 1]; //no probe in nasa data
 
-    private int count = 0;
     private int minSim;
     private int solverFocus = 0;
     private int focus = 0;
-
-    private final AnimationTimer renderer;
-    private final AnchorPane pane;
-    private VBox console;
 
     ArrayList<StateInterface[]> polyStates;
     List<List<Double[]>> polyPaths = new ArrayList<>();
@@ -57,10 +47,12 @@ public class PolySim extends ScrollPane {
     }
 
     public PolySim(ArrayList<StateInterface[]> polyStates) {
+        this.WIDTH = 1000 * 3;
+        this.HEIGHT = 1000 * 3;
         this.canvas = new Canvas(WIDTH, HEIGHT);
-        pane = new AnchorPane();
-        this.renderer = setUpRenderer();
         this.polyStates = polyStates;   //list containing the different simulations to display
+
+        setUpRenderer();
         setUpScrollPane();
         initHorizons();                 //gets the planet positions data from nasa
 
@@ -74,6 +66,7 @@ public class PolySim extends ScrollPane {
         }
     }
 
+    @Override
     public void prepareConsole() {
         console.getChildren().clear();
 
@@ -86,7 +79,8 @@ public class PolySim extends ScrollPane {
         ((Label)console.getChildren().get(1)).setTextFill(Color.WHITE);
     }
 
-    public void render() {
+    @Override
+    protected void render() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         prepareConsole();
 
@@ -197,37 +191,8 @@ public class PolySim extends ScrollPane {
         return null;
     }
 
-    private AnimationTimer setUpRenderer() {
-        return new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                render();
-            }
-        };
-    }
-
-    private void setUpScrollPane() {
-        pane.getChildren().add(this);
-
-        setPannable(true);
-        setHvalue(0.5);
-        setVvalue(0.5);
-
-        this.setPrefSize(1200, 800);
-        this.setHbarPolicy(ScrollBarPolicy.NEVER);
-        this.setVbarPolicy(ScrollBarPolicy.NEVER);
-        AnchorPane.setBottomAnchor(this, 0.0);
-        AnchorPane.setRightAnchor(this, 0.0);
-        AnchorPane.setLeftAnchor(this, 0.0);
-        AnchorPane.setTopAnchor(this, 0.0);
-
-        console = new VBox();
-        AnchorPane.setLeftAnchor(console, 20.0);
-        AnchorPane.setTopAnchor(console, 20.0);
-
-        pane.getChildren().add(console);
-        setContent(canvas);
-
+    @Override
+    public void addKeyHandler() {
         setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.Z || event.getCode() == KeyCode.Y) {
                 scale(1.05);
@@ -273,14 +238,6 @@ public class PolySim extends ScrollPane {
         focus = f;
         setHvalue(0.5);
         setVvalue(0.5);
-    }
-
-    public void start() {
-        renderer.start();
-    }
-
-    public void stop() {
-        renderer.stop();
     }
 
     public void setProbeNames(String[] probeNames) {

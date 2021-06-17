@@ -1,5 +1,6 @@
 package titan;
 import java.util.ArrayList;
+package titan.flight;
 import java.util.Random;
 
 import javafx.css.converter.DeriveColorConverter;

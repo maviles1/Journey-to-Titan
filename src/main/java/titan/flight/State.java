@@ -1,4 +1,4 @@
-package titan;
+package titan.flight;
 
 import titan.interfaces.RateInterface;
 import titan.interfaces.StateInterface;
@@ -44,9 +44,9 @@ public class State implements StateInterface {
         String s = "";
         for (int i = 0; i < positions.length; i++) {
             s += names.get(i)
-                    + " { x=" + Renderer.toScreenCoordinates(positions[i].getX())
-                    + ", y=" + Renderer.toScreenCoordinates(positions[i].getY())
-                    + ", z=" + Renderer.toScreenCoordinates(positions[i].getZ())
+                    + " { x=" + positions[i].getX()
+                    + ", y=" + positions[i].getY()
+                    + ", z=" + positions[i].getZ()
                     + " vx=" + velocities[i].getX()
                     + ", vy=" + velocities[i].getY()
                     + ", vz=" + velocities[i].getZ() + " }\n";

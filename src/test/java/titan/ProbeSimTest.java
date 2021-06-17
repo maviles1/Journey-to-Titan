@@ -3,6 +3,10 @@ package titan;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import titan.flight.EulerSolver;
+import titan.flight.ProbeSim;
+import titan.flight.Solver;
+import titan.flight.Vector3d;
 import titan.interfaces.ProbeSimulatorInterface;
 import titan.interfaces.Vector3dInterface;
 

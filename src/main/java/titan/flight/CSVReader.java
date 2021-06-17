@@ -1,7 +1,4 @@
-package titan;
-
-import titan.Renderer;
-import titan.Vector3d;
+package titan.flight;
 
 import java.io.File;
 import java.io.FileNotFoundException;

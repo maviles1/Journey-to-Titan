@@ -2,6 +2,8 @@ package titan;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import titan.flight.Rate;
+import titan.flight.Vector3d;
 
 public class RateTest {
 

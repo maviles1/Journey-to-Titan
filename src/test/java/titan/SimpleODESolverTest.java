@@ -2,6 +2,7 @@ package titan;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import titan.flight.*;
 import titan.interfaces.StateInterface;
 
 import java.util.ArrayList;

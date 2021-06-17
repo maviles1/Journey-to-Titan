@@ -6,8 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import titan.*;
+import titan.flight.*;
 import titan.interfaces.StateInterface;
+import titan.landing.*;
 
 import java.util.ArrayList;
 
@@ -119,7 +120,7 @@ public class Launcher {
         if (twoD.isSelected()) {
             errorMsg.setText("");
             runPolySim(pos, vel, stepSize, duration);
-        } else {
+        } else if (threeD.isSelected()){
             //3d simulation
             //TODO: Be able to allow users to select the solver to use instead of hardcoding
             GUI3D gui3D = new GUI3D();
@@ -133,6 +134,8 @@ public class Launcher {
                 //TODO: somehow call the stop() method on the AnimationTimers used in order to prevent memory leak
                 errorMsg.setText("");
             });
+        } else {
+            new LandingSimulation().run();
         }
     }
 
@@ -192,10 +195,6 @@ public class Launcher {
             simStates.add((rk2.getStates()));
             probeNames.add("RK Original");
         }
-
-        //ProbeSim probeSimTest = new ProbeSim(new Solver(new EulerSolver()));
-        //probeSimTest.trajectory(probe_relative_position, probe_relative_velocity, YEAR, DAY);
-        //simStates.add(probeSimTest.getStates());
 
         PolySim polySim = new PolySim(simStates);
         polySim.setProbeNames(probeNames.toArray(new String[0]));

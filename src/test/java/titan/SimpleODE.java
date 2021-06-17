@@ -1,5 +1,8 @@
 package titan;
 
+import titan.flight.Rate;
+import titan.flight.State;
+import titan.flight.Vector3d;
 import titan.interfaces.ODEFunctionInterface;
 import titan.interfaces.RateInterface;
 import titan.interfaces.StateInterface;
