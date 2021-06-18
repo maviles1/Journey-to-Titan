@@ -28,8 +28,9 @@ public class WindModel {
         angle = gen.nextBoolean() == true ? angle : (angle * -1);
 
         //Create new wind strength
-        System.out.println(previous);
-        Vector3d windvector = previous.mul((altitude/ws)/previous.norm());
+        //System.out.println(previous);
+        double windstrength = gen.nextDouble() * (altitude/ws);
+        Vector3d windvector = previous.mul(windstrength/previous.norm());
 
         //Create new direction
         windvector = refactor2DVector(windvector, angle); //Wind is only 2d
@@ -37,33 +38,14 @@ public class WindModel {
         return windvector;
     }
 
-    public Vector3d getForceVector(Vector3d windvector, double altitude)
+    public Vector3d getForceVector(Vector3d windvector)
     {
         //Convert vector to a Force vector that adds to the velocity
         // F=(1 m2)×(1.229 kg/m3)×(2.24 m/s)2=6.17 N
-        double windforce = (6*6) * (airdensity) * (altitude/ws); // 6x6 is shuttle dimensions
+        double windforce = (6*6) * (airdensity) * windvector.norm(); // 6x6 is shuttle dimensions
         windforce = windforce / 6000; //shuttle mass
-        System.out.println("windforce: " + windforce);
         //apply force to windvector
         return windvector.mul(windforce/windvector.norm());
-    }
-
-    //UNUSED METHOD
-    public void CalculateWindRotation(Vector3d windvector, Shuttle sh)
-    {
-        // Select a random point where it hits the probe (on the y-axis)
-        double radius = sh.getHeight()/2;
-        double Ymax = sh.getPosition().getY() + radius;
-        double Ymin = sh.getPosition().getY() - radius;
-        double Xmax = sh.getPosition().getX() + radius;
-        double Xmin = sh.getPosition().getX() - radius;
-        double newY = (Ymax-Ymin) * gen.nextDouble() + Ymin;
-        double newX = (Xmax-Xmin) * gen.nextDouble() + Xmin;
-
-        // Point where the wind hits the probe
-        Vector3d windimpact = new Vector3d(newX, newY, sh.getPosition().getZ());
-
-        // Calculate the strength of the wind vector in rotations per timestep
     }
 
     public Vector3d Refactor3DVector(Vector3d v, double a, double b, double g)
@@ -107,7 +89,7 @@ public class WindModel {
 
     public Vector3d getStartingWindVector(double altitude)
     {
-        //wind more common west to east
+        //wind more common west to east (not implemented yet)
         Vector3d swv = new Vector3d();
 
         //Create random Vector
@@ -122,7 +104,7 @@ public class WindModel {
         }
 
         swv = new Vector3d(xyz[0], xyz[1], 0); //vector in 2d
-        swv = swv.mul((altitude/ws)/swv.norm());
+        swv = swv.mul((gen.nextDouble() * (altitude/ws))/swv.norm());
 
         return swv;
     }
