@@ -19,13 +19,13 @@ public class WindModel {
         gen = new Random();
     }
 
-    public Vector3d CreateNewWindVector(Vector3d previous, double altitude) {
+    public Vector3d createNewWindVector(Vector3d previous, double altitude) {
         // altitude in meters or km?
         // new wind vector is created between 0 and max based on altitude
 
         //Create a random angle between -max <-> max degrees
         double angle = gen.nextDouble() * maxangle;
-        angle = gen.nextBoolean() == true ? angle : (angle * -1);
+        angle = gen.nextBoolean() ? angle : (angle * -1);
 
         //Create new wind strength
         //System.out.println(previous);
@@ -42,7 +42,8 @@ public class WindModel {
     {
         //Convert vector to a Force vector that adds to the velocity
         // F=(1 m2)×(1.229 kg/m3)×(2.24 m/s)2=6.17 N
-        double windforce = (6*6) * (airdensity) * windvector.norm(); // 6x6 is shuttle dimensions
+//        double windforce = (6*6) * (airdensity) * windvector.norm(); // 6x6 is shuttle dimensions
+        double windforce = (Math.PI * 3 * 3) * (airdensity) * windvector.norm(); // area of circle is pi*r^2
         windforce = windforce / 6000; //shuttle mass
         //apply force to windvector
         return windvector.mul(windforce/windvector.norm());

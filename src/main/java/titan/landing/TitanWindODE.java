@@ -1,13 +1,9 @@
 package titan.landing;
 
-import titan.flight.Rate;
 import titan.flight.Vector3d;
 import titan.interfaces.ODEFunctionInterface;
 import titan.interfaces.RateInterface;
 import titan.interfaces.StateInterface;
-import titan.landing.*;
-
-import java.util.Random;
 
 public class TitanWindODE implements ODEFunctionInterface {
 
@@ -19,7 +15,7 @@ public class TitanWindODE implements ODEFunctionInterface {
 
         //using windmodel
         WindModel wm = new WindModel();
-        Vector3d newwindvec = wm.CreateNewWindVector(state.getPrevWindVector(), altitute);
+        Vector3d newwindvec = wm.createNewWindVector(state.getPrevWindVector(), altitute);
 
         Vector3d forceVector = wm.getForceVector(newwindvec);
 
