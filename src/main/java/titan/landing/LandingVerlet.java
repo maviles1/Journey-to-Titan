@@ -9,6 +9,7 @@ public class LandingVerlet implements StepInterface  {
 
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
+        System.out.println("------");
         LandingRate rate = (LandingRate) f.call(t, y);
         LandingState state  = (LandingState) y;
 
@@ -24,6 +25,7 @@ public class LandingVerlet implements StepInterface  {
         //v(t + ∆t) = v(t) + 1/2*(a(t) + a(t + ∆t))*∆t
         Vector3d vel = state.getVelocity().addMul(0.5 * h, rate.getVelocityRate().add(accel));
         double angularVel = state.getAngularVelocity() + 0.5 * h * (rate.getAngularAcceleration() + angularAccel);
+        System.out.println("------");
 
         return new LandingState(pos, vel, rate.getShuttle_directionRate(), rate.getWind_directionRate(), state.getPrevWindVector(), angle, angularVel, t + h);
     }

@@ -10,7 +10,7 @@ public class OpenLoopController implements Controller {
     final double MASS = 6000;
     final double RADIUS = 3;
     double targetAngle;
-    final double angleTolerance = 0.1;
+    final double angleTolerance = 0.01;
 
     @Override
     public RateInterface thrust(RateInterface windRate, StateInterface y) {
@@ -28,19 +28,20 @@ public class OpenLoopController implements Controller {
         double yAccel = mainThrust * Math.cos(state.getAngle());
         double angularAcceleration = 0;
 
-        System.out.println(state.getAngle() % (2 * Math.PI));
-        if (Math.abs(state.getAngle() % (2 * Math.PI)) - targetAngle < angleTolerance) {
+        System.out.println(state.getAngle() % (2 * Math.PI) - targetAngle);
+        if (Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle) < angleTolerance) {
             System.out.println("Reached target angle: " + targetAngle);
             //now we need to counter torque
             if (targetAngle == 0) {
                 //if we wanted to become upright, and now we are upright
-                angularAcceleration = angularAcceleration(rightTorque(10000, state));
+
+                angularAcceleration = angularAcceleration(rightTorque(1800, state));
                 targetAngle = Math.toRadians(-45);
                 System.out.println("New Target Angle: " + targetAngle);
             } else {
                 if (state.getAngularVelocity() < 0) { //spinning counter-clockwise
                     //need to apply leftTorque
-                    angularAcceleration = angularAcceleration(leftTorque(10000, state));
+                    angularAcceleration = angularAcceleration(leftTorque(1800, state));
                 }
             }
         }
