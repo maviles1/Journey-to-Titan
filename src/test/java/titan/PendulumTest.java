@@ -2,6 +2,7 @@ package titan;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import titan.flight.Solver;
 import titan.interfaces.StateInterface;
 
 import javax.swing.*;
