@@ -14,6 +14,11 @@ public class WindModel {
 
     //wind speed in m/s is altitude divided by ws
 
+    public WindModel(long seed) {
+        windarrows = new Vector3d();
+        gen = new Random(seed);
+    }
+
     public WindModel() {
         windarrows = new Vector3d();
         gen = new Random();
