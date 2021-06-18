@@ -9,11 +9,13 @@ import titan.ui.TitanView;
 
 public class LandingSimulation {
 
+    private static Vector3d landing_location;
+
     public LandingSimulation() {
         //shuttle pos, vel
         //starting wind  will be created after method run is called
         //distance to titan (surface)
-
+        createLandingPosition();
     }
 
     public void run() {
@@ -40,5 +42,16 @@ public class LandingSimulation {
             titanView.stop();
             stage.close();
         });
+    }
+
+    private void createLandingPosition(){
+        double x = 0;
+        double y = 0;
+        double z = 0;
+        landing_location = new Vector3d(x, y, z);
+    }
+
+    public static Vector3d getLandingPosition(){
+        return landing_location;
     }
 }

@@ -43,7 +43,7 @@ public class FeedbackController {
      */
     public Vector3d dist(){
         Vector3d pos = current_state.getPosition();
-        Vector3d ll = current_state.getLanding_location();
+        Vector3d ll = LandingSimulation.getLandingPosition();
 
         return pos.sub(ll);
     }

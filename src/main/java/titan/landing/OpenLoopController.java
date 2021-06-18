@@ -80,5 +80,4 @@ public class OpenLoopController implements Controller {
         double newY = vector.getX() * Math.sin(angle) + vector.getY() * Math.cos(angle);
         return new Vector3d(newX, newY, 0);
     }
-
 }
