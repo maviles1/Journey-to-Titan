@@ -24,8 +24,8 @@ public class LandingSimulation {
         //create states
 
         //default dimensions of canvas is 150000m x 150000m (scaled down to 3000px x 3000px)
-        double y = 120000; //150km
-        int x = (150000) / 2; //center
+        double y = 122200; //150km
+        int x = (200000) / 2; //center
         WindModel wm = new WindModel();
         LandingState y0 = new LandingState(new Vector3d(x, y, 0), new Vector3d(0, 0, 0), new Vector3d(0,1,0), new Vector3d(1,0,0), wm.getStartingWindVector(y), Math.toRadians(0), 0, 0);
 

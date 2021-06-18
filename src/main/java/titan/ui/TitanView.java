@@ -43,7 +43,7 @@ public class TitanView extends Renderer2D {
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         //draw ground
-        gc.setFill(Color.RED);
+        gc.setFill(Paint.valueOf("#e79c61"));
         gc.fillRect(0, HEIGHT - 50, WIDTH, 50);
 
         //this is where we draw the probe

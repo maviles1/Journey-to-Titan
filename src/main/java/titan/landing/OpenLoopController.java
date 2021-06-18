@@ -34,13 +34,13 @@ public class OpenLoopController implements Controller {
             //now we need to counter torque
             if (targetAngle == 0) {
                 //if we wanted to become upright, and now we are upright
-                angularAcceleration = angularAcceleration(rightTorque(1500, state));
+                angularAcceleration = angularAcceleration(rightTorque(5000, state));
                 targetAngle = Math.toRadians(360-45);
                 System.out.println("New Target Angle: " + targetAngle);
             } else {
                 if (state.getAngularVelocity() < 0) { //spinning counter-clockwise
                     //need to apply leftTorque
-                    angularAcceleration = angularAcceleration(leftTorque(1500, state));
+                    angularAcceleration = angularAcceleration(leftTorque(5000, state));
                 }
             }
         }
