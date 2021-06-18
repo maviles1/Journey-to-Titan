@@ -27,7 +27,6 @@ public class TitanView extends Renderer2D {
     public TitanView(StateInterface[] states) {
         this.WIDTH = 3000;
         this.HEIGHT = 3000;
-//        this.HEIGHT = 1000;
         this.canvas = new Canvas(WIDTH, HEIGHT);
         this.states = states;
 
@@ -90,7 +89,6 @@ public class TitanView extends Renderer2D {
     double errorVX = 0;
     double errorVY = 0;
     boolean landed = false;
-
 
     @Override
     protected void prepareConsole() {

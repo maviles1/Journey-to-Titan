@@ -9,6 +9,8 @@ public class OpenLoopController implements Controller {
 
     final double MASS = 6000;
     final double RADIUS = 3;
+    double targetAngle;
+    final double angleTolerance = 0.1;
 
     @Override
     public RateInterface thrust(RateInterface windRate, StateInterface y) {
@@ -21,27 +23,51 @@ public class OpenLoopController implements Controller {
         //vertical acceleration = u * cos(theta) (-g)
         //angular acceleration = torque
 
-        //double angle: TODO: not really sure where theta comes from. Maybe we define it here instead of using states
-        double mainThrust = 1;
+        double mainThrust = 1; //TODO: potential base thrust off of altitute or if we are doing course correction
         double xAccel = mainThrust * Math.sin(state.getAngle());
         double yAccel = mainThrust * Math.cos(state.getAngle());
-        double angularAccel = angularAcceleration(torque(new Vector3d(100,100,0), state));
-        Vector3d thrust = new Vector3d(xAccel, yAccel, 0);
-        //
+        double angularAcceleration = 0;
 
-        System.out.println("angular accel: " +  angularAccel);
-        System.out.println("angular vel: " +  state.getAngularVelocity());
-        System.out.println("angle: " +  state.getAngle());
-        return new LandingRate(state.getVelocity(), thrust, state.getShuttle_direction(), state.getWind_direction(), state.getPrevWindVector(), angularAccel);
+        System.out.println(state.getAngle() % (2 * Math.PI));
+        if (Math.abs(state.getAngle() % (2 * Math.PI)) - targetAngle < angleTolerance) {
+            System.out.println("Reached target angle: " + targetAngle);
+            //now we need to counter torque
+            if (targetAngle == 0) {
+                //if we wanted to become upright, and now we are upright
+                angularAcceleration = angularAcceleration(rightTorque(10000, state));
+                targetAngle = Math.toRadians(-45);
+                System.out.println("New Target Angle: " + targetAngle);
+            } else {
+                if (state.getAngularVelocity() < 0) { //spinning counter-clockwise
+                    //need to apply leftTorque
+                    angularAcceleration = angularAcceleration(leftTorque(10000, state));
+                }
+            }
+        }
+
+        //double angularAccel = angularAcceleration(rightTorque(100, state));
+        Vector3d thrust = new Vector3d(xAccel, yAccel, 0);
+
+//        System.out.println("angular accel: " +  angularAcceleration);
+//        System.out.println("angular vel: " +  state.getAngularVelocity());
+//        System.out.println("angle: " +  state.getAngle());
+        return new LandingRate(state.getVelocity(), thrust, state.getShuttle_direction(), state.getWind_direction(), state.getPrevWindVector(), angularAcceleration);
     }
 
-    public Double torque(Vector3d force, LandingState state) {
-//        //FOR LEFT THRUSTER
-        double thrustAngle = 45;
-        force = rotate(state.getAngle(), force);
-        double forceMagnitude = force.norm();
-        return forceMagnitude*RADIUS*Math.sin(thrustAngle);
+    public double leftTorque(double strength, LandingState state) {
+        Vector3d force = new Vector3d(strength, strength, 0);
+        return torque(force, state.getAngle(), 45);
+    }
 
+    public double rightTorque(double strength, LandingState state) {
+        Vector3d force = new Vector3d(-strength, strength, 0);
+        return torque(force, state.getAngle(), -45);
+    }
+
+    public double torque(Vector3d force, double probeAngle, double thrustAngle) {
+        force = rotate(probeAngle, force);
+        double forceMagnitude = force.norm();
+        return forceMagnitude * RADIUS * Math.sin(Math.toRadians(thrustAngle));
     }
 
     public double angularAcceleration(double torque) {
@@ -54,6 +80,5 @@ public class OpenLoopController implements Controller {
         double newY = vector.getX() * Math.sin(angle) + vector.getY() * Math.cos(angle);
         return new Vector3d(newX, newY, 0);
     }
-
 
 }

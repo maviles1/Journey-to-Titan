@@ -30,7 +30,6 @@ public class PhysicsEngine implements ODEFunctionInterface {
 
         //LandingRate all = gravityRate.add(windRate).add(thrustRate);
         LandingRate all = gravityRate.add(thrustRate);
-        System.out.println(all.getAngularAcceleration());
         return all;
     }
 }
