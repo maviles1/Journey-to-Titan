@@ -25,7 +25,7 @@ public class LandingSimulation {
 
         //default dimensions of canvas is 150000m x 150000m (scaled down to 3000px x 3000px)
         double y = 122200; //150km
-        int x = (200000) / 2; //center
+        int x = (150000) / 2; //center
 //        double y = 120000; //150km
 //        int x = (150000) / 2; //center
         WindModel wm = new WindModel();

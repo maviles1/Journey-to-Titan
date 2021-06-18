@@ -28,9 +28,8 @@ public class OpenLoopController implements Controller {
         //vertical acceleration = u * cos(theta) (-g)
         //angular acceleration = torque
 
-        double mainThrust = 1; //TODO: potential base thrust off of altitute or if we are doing course correction
-        double xAccel = mainThrust * Math.sin(state.getAngle());
-        double yAccel = mainThrust * Math.cos(state.getAngle());
+        double mainThrust = 0; //TODO: potential base thrust off of altitute or if we are doing course correction
+
         double angularAcceleration = 0;
 
         if (state.getTime() == 1) {
@@ -54,7 +53,9 @@ public class OpenLoopController implements Controller {
                     System.out.println("applying right torque");
                     angularAcceleration = angularAcceleration(rightTorque(50, state));
                 } else {
-                    System.out.println("aaahhhhhhhhhhhhh");
+                    //now we should be uprightish
+                    angularAcceleration = -state.getAngularVelocity();
+                    mainThrust = 1.3;
                 }
             } else {
                 if (state.getAngularVelocity() < 0 - angleTolerance) { //spinning counter-clockwise
@@ -69,12 +70,15 @@ public class OpenLoopController implements Controller {
                     //now we are at our target angle and don't have any other rotational velocity
                     //now we can thrust hard
                     targetAngle = 0;
+                    mainThrust = 100;
                     angularAcceleration = angularAcceleration(rightTorque(100, state));
                 }
             }
         }
 
-        //double angularAccel = angularAcceleration(rightTorque(100, state));
+        double xAccel = mainThrust * Math.sin(state.getAngle());
+        double yAccel = mainThrust * Math.cos(state.getAngle());
+
         Vector3d thrust = new Vector3d(xAccel, yAccel, 0);
 
 //        System.out.println("angular accel: " +  angularAcceleration);
