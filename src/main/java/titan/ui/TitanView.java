@@ -39,7 +39,7 @@ public class TitanView extends Renderer2D {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         prepareConsole();
 
-        gc.setFill(Paint.valueOf("#000000"));
+        gc.setFill(Paint.valueOf("#1c253c"));
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         //draw ground
