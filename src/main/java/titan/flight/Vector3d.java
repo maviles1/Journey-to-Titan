@@ -47,6 +47,12 @@ public class Vector3d implements Vector3dInterface {
         return x + y + z;
     }
 
+    public Vector3d cross(Vector3d other){
+        double a = getY()*other.getZ() - getZ()*other.getY();
+        double b = getZ()*other.getX() - getX()*other.getZ();
+        double c = getX()*other.getY() - getY()*other.getX();
+        return new Vector3d(a, b, c);
+    }
 
     public Vector3d add(Vector3dInterface other) {
 
