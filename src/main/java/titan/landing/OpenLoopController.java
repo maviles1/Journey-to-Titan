@@ -51,8 +51,6 @@ public class OpenLoopController implements Controller {
         Vector3d r = thrusterPos.sub(state.getPosition());
         r = rotate(state.getAngle(), r);
 
-
-
         return torque;
     }
 
@@ -61,6 +59,5 @@ public class OpenLoopController implements Controller {
         double newY = vector.getX() * Math.sin(angle) + vector.getY() * Math.cos(angle);
         return new Vector3d(newX, newY, 0);
     }
-
 
 }

@@ -73,7 +73,7 @@ public class TitanView extends Renderer2D {
             double rotationCenterY = HEIGHT - toCoord(landerY) - 50;
 
             gc.save();
-            gc.transform(new Affine(new Rotate(45, rotationCenterX, rotationCenterY)));
+            gc.transform(new Affine(new Rotate(state.getAngle(), rotationCenterX, rotationCenterY)));
             gc.fillRect(toCoord(landerX) - RADIUS, HEIGHT - toCoord(landerY) - 50 - RADIUS, RADIUS*2, RADIUS*2);
             gc.restore();
         }
