@@ -27,19 +27,13 @@ public class TitanWindODE implements ODEFunctionInterface {
         WindModel wm = new WindModel();
         Vector3d newwindvec = new Vector3d();
         System.out.println(altitute);
-        if(altitute >= 149999)
-        {
-            //At start create start vector, afterwards use the new vecor
-            newwindvec = wm.getStartingWindVector(altitute);
-        }
-        else
-        {
-             newwindvec = wm.CreateNewWindVector(state.getPrevWindVector(), altitute);
-        }
-        newwindvec = wm.getForceVector(newwindvec, altitute);
+
+        newwindvec = wm.CreateNewWindVector(state.getPrevWindVector(), altitute);
+
+        Vector3d forceVector = wm.getForceVector(newwindvec, altitute);
         System.out.println("Wind vec:" + newwindvec);
 
-        return new LandingRate(state.getVelocity(), newwindvec, state.getShuttle_direction(), state.getWind_direction(), newwindvec, 0);
+        return new LandingRate(state.getVelocity(), forceVector, state.getShuttle_direction(), state.getWind_direction(), newwindvec, 0);
 
     }
 }

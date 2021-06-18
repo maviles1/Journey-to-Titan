@@ -8,7 +8,7 @@ import java.util.Vector;
 public class WindModel {
     private Vector3d windarrows;
     private Random gen;
-    private final double airdensity = 1.229; //currently earths m/s (titan is 4.4x)
+    private final double airdensity = 1.229 * 4.4; //currently earths m/s (titan is 4.4x)
     private final int maxangle = 25; //Still need to find proper value for this
     private final double ws = 928.57; //windspeed  -> Linear in m/s based on altitude in m
 
@@ -41,8 +41,8 @@ public class WindModel {
     {
         //Convert vector to a Force vector that adds to the velocity
         // F=(1 m2)×(1.229 kg/m3)×(2.24 m/s)2=6.17 N
-        double windforce = (7*7) * (airdensity) * (altitude/ws); // 6x6 is shuttle dimensions
-        windforce = windforce / 10000; //test for now
+        double windforce = (6*6) * (airdensity) * (altitude/ws); // 6x6 is shuttle dimensions
+        windforce = windforce / 6000; //shuttle mass
         System.out.println("windforce: " + windforce);
         //apply force to windvector
         return windvector.mul(windforce/windvector.norm());
