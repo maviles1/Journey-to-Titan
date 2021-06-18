@@ -72,7 +72,7 @@ public class TitanView extends Renderer2D {
             double rotationCenterY = HEIGHT - toCoord(landerY) - 50;
 
             gc.save();
-            gc.transform(new Affine(new Rotate(state.getAngle(), rotationCenterX, rotationCenterY)));
+            gc.transform(new Affine(new Rotate(Math.toDegrees(state.getAngle()), rotationCenterX, rotationCenterY)));
             gc.fillRect(toCoord(landerX) - RADIUS, HEIGHT - toCoord(landerY) - 50 - RADIUS, RADIUS*2, RADIUS*2);
             gc.restore();
         }
@@ -92,6 +92,7 @@ public class TitanView extends Renderer2D {
 
     @Override
     protected void prepareConsole() {
+        LandingState state = (LandingState) states[count];
         console.getChildren().clear();
         console.getChildren().add(new Label("Distance to Titan: " + Math.max(states[count].getPositions()[0].getY(), 0)));
         console.getChildren().add(new Label("Distance to Titan: " + states[count].getPositions()[0].getY()));
@@ -99,10 +100,13 @@ public class TitanView extends Renderer2D {
         console.getChildren().add(new Label("ErrorX:  " + errorX));
         console.getChildren().add(new Label("ErrorVX:  " + errorVX));
         console.getChildren().add(new Label("ErrorVY:  " + errorVY));
-//        console.getChildren().add(new Label("Errorθ:  " + states[count].getVelocities()[0].getY()));
+        console.getChildren().add(new Label("Angle:  " + Math.toDegrees(state.getAngle() % (2*Math.PI))));
+        console.getChildren().add(new Label("AngularVel:  " + state.getAngularVelocity()));
         ((Label)console.getChildren().get(0)).setTextFill(Color.WHITE);
         ((Label)console.getChildren().get(1)).setTextFill(Color.WHITE);
         ((Label)console.getChildren().get(2)).setTextFill(Color.WHITE);
+        ((Label)console.getChildren().get(6)).setTextFill(Color.WHITE);
+        ((Label)console.getChildren().get(7)).setTextFill(Color.WHITE);
 
         if (errorX < 0.1)
             ((Label)console.getChildren().get(3)).setTextFill(Color.GREEN);
