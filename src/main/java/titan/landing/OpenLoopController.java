@@ -15,15 +15,6 @@ public class OpenLoopController implements Controller {
         //return predetermined thrust
         LandingState state = (LandingState) y;
         double altitude = state.getPosition().getY();
-        double thru = 1.352 - altitude / 150000.0;
-        double o = 0.1 / (altitude / 150000.0);
-        //System.out.println(thru);
-
-        if (altitude <= 0) {
-            o = 0;
-        }
-
-        Vector3d thrust = new Vector3d(0, o, 0);
 
         //where u is the thrust
         //horizontal acceleration = u * sin(theta)
@@ -34,26 +25,19 @@ public class OpenLoopController implements Controller {
         double mainThrust = 1;
         double xAccel = mainThrust * Math.sin(state.getAngle());
         double yAccel = mainThrust * Math.cos(state.getAngle());
-        double angularAccel = angularAcceleration(torque(new Vector3d(2,2,0), state));
-
+        double angularAccel = angularAcceleration(torque(new Vector3d(100,100,0), state));
+        Vector3d thrust = new Vector3d(xAccel, yAccel, 0);
         //
 
+        System.out.println("angular accel: " +  angularAccel);
+        System.out.println("angular vel: " +  state.getAngularVelocity());
+        System.out.println("angle: " +  state.getAngle());
         return new LandingRate(state.getVelocity(), thrust, state.getShuttle_direction(), state.getWind_direction(), state.getPrevWindVector(), angularAccel);
     }
 
     public Double torque(Vector3d force, LandingState state) {
 //        //FOR LEFT THRUSTER
-//        //I = 1/2 * mass * radius^2 TODO: maybe we should take the moment of inertia of a sphere 2/3 * m * r^2 (hollow) or 2/5 * m * r^2 (solid)
-//        //double momentInertia = 0.5 * MASS * RADIUS * RADIUS;
         double thrustAngle = 45;
-//        double angle = 0;
-//        //Vector3d torque = force.mul(RADIUS * Math.sin(thrustAngle));
-//        Vector3d thrusterPos = new Vector3d(state.getPosition().getX() - RADIUS, state.getPosition().getY(), 0);
-//        Vector3d r = thrusterPos.sub(state.getPosition());
-//        //r = rotate(state.getAngle(), r);
-//        angle = Math.toDegrees(Math.acos(r.dot(force)/(force.norm()*r.norm()))); //angle between force and position in degrees! TODO: is it always 45°?
-//
-//        return force.cross(r); //TODO: check if have to take the angle into account?
         force = rotate(state.getAngle(), force);
         double forceMagnitude = force.norm();
         return forceMagnitude*RADIUS*Math.sin(thrustAngle);

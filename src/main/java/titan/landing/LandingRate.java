@@ -34,6 +34,7 @@ public class LandingRate implements RateInterface {
         LandingRate r = (LandingRate) rate;
         Vector3d newPosition = positionRate.add(r.getPositionRate());
         Vector3d newVelocity = velocityRate.add(r.getVelocityRate());
+        angularAcceleration += r.getAngularAcceleration();
 
         //TODO: why are these null?
         Vector3d newShuttle_directionRate = null;
