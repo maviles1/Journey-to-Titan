@@ -106,6 +106,11 @@ public class WindModel {
         swv = new Vector3d(xyz[0], xyz[1], 0); //vector in 2d
         swv = swv.mul((gen.nextDouble() * (altitude/ws))/swv.norm());
 
+
+        //make y value always negative
+        if(swv.getY() > 0)
+            swv.setY(swv.getY()*-1);
+
         return swv;
     }
 
