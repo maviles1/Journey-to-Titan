@@ -33,8 +33,8 @@ public class OpenLoopController implements Controller {
         double angularAcceleration = 0;
 
         if (state.getTime() == 1) {
-            angularAcceleration = angularAcceleration(leftTorque(50, state));
-            targetAngle = Math.toRadians(45);
+            angularAcceleration = angularAcceleration(rightTorque(50, state));
+            targetAngle = Math.toRadians(-45);
             System.out.println("New Target Angle: " + targetAngle);
         }
 
@@ -70,8 +70,8 @@ public class OpenLoopController implements Controller {
                     //now we are at our target angle and don't have any other rotational velocity
                     //now we can thrust hard
                     targetAngle = 0;
-                    mainThrust = 100;
-                    angularAcceleration = angularAcceleration(rightTorque(100, state));
+                    mainThrust = 180;
+                    angularAcceleration = angularAcceleration(leftTorque(100, state));
                 }
             }
         }
