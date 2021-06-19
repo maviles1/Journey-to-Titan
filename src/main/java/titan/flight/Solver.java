@@ -90,23 +90,23 @@ public class Solver implements ODESolverInterface {
                 thrust(probe,s[i],probe.getVelocity().mul(-1).add(ve.mul((1.0/(stateToReach - i))/3600)));
             }
             if (i == 12132){
-                System.out.println(probe.getVelocity());
+                System.out.println(s[i].getVelocities()[7]);
             }
 
-//            if (i >= stateToReach){
-//                Vector3d probePosition = s[i].getPositions()[11];
-//                Vector3d titanPosition = s[i].getPositions()[8];
-//                rotationPoint =  probePosition.sub(titanPosition);
-//                Vector3d nextRotationPoint = rotationPoint.rotate(20,0,0);
-//                nextRotationPoint = nextRotationPoint.add(s[i].getPositions()[8]);
+            if (i >= stateToReach){
+                Vector3d probePosition = s[i].getPositions()[11];
+                Vector3d titanPosition = s[i].getPositions()[8];
+                rotationPoint =  probePosition.sub(titanPosition);
+                Vector3d nextRotationPoint = rotationPoint.rotate(20,0,0);
+                nextRotationPoint = nextRotationPoint.add(s[i].getPositions()[8]);
 //                if (probePosition.dist(titanPosition)/1000 < 2800 && probePosition.dist(titanPosition)/1000 > 2700 ){
 //                    System.out.println(i + " " + (probePosition.dist(titanPosition)/1000) + " " + probe.getVelocity());
 //                }
-//                StateInterface next = step(f,t,s[i],h);
-//                Vector3d nextTitan = next.getPositions()[8].sub(titanPosition);
-//                Vector3d thrustVector = nextRotationPoint.sub(s[i].getPositions()[11]).add(nextTitan);
-//                thrust(probe,s[i],probe.getVelocity().mul(-1).add(thrustVector.mul(1.0/3600)));
-//            }
+                StateInterface next = step(f,t,s[i],h);
+                Vector3d nextTitan = next.getPositions()[8].sub(titanPosition);
+                Vector3d thrustVector = nextRotationPoint.sub(s[i].getPositions()[11]).add(nextTitan);
+                thrust(probe,s[i],probe.getVelocity().mul(-1).add(thrustVector.mul(1.0/3600)));
+            }
         }
         this.probeMass = probeMass;
 
@@ -153,6 +153,9 @@ public class Solver implements ODESolverInterface {
                 Vector3d ve = new Vector3d(9.094459151959227E11,-1.1776811924820583E12,-1.6206528943657473E10).sub(s[i].getPositions()[11]);
                 thrust(probe,s[i],probe.getVelocity().mul(-1).add(ve.mul((1.0/(stateToReach - i))/3600)));
             }
+            if (i == 12132){
+                System.out.println(s[i].getVelocities()[8]);
+            }
         }
         this.probeMass = probeMass;
 
@@ -186,7 +189,6 @@ public class Solver implements ODESolverInterface {
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         return stepFunction.step(f, t, y, h);
     }
-
 
     public void thrust(Probe probe, StateInterface state, Vector3d toThrust){
         probe.thrust(toThrust);
