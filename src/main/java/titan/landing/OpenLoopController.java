@@ -40,9 +40,7 @@ public class OpenLoopController implements Controller {
 
         //This is just to give it initial angular rotation in the first state
         if (state.getTime() == 1) {
-            angularAcceleration = angularAcceleration(rightTorque(100, state));
-            targetAngle = Math.toRadians(-45);
-            System.out.println("New Target Angle: " + targetAngle);
+            angularAcceleration = startRotation(state, Math.toRadians(-45));
         }
 
         System.out.println("timestep: " + state.getTime());
@@ -50,52 +48,41 @@ public class OpenLoopController implements Controller {
         if (Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle) < angleTolerance) {
             System.out.println("Reached target angle: " + targetAngle);
             //now we need to counter torque
-            if (targetAngle == 0) {
-                //if we wanted to become upright, and now we are upright
-                System.out.println("UPRIGHT");
+            angularAcceleration = stabilize(state, angleTolerance);
 
-                angularAcceleration = stabilize(state, angleTolerance/2.0);
+            if (isStable(state, angleTolerance) && state.getTime() > 0) {
+                if (targetAngle == 0) {
+                    System.out.println("UPRIGHT");
+                    //the lander is upright and stable.
+                    //So now we can either use our main thrusters or initiate another rotation
 
-                if (isStable(state, angleTolerance)) {
-                    //shuttle is stable, so we can use main thrusters to cancel gravity OR initiate another rotation
-                    if (state.getTime() > 0) {
-
-                        if (state.getTime() < 216 + 60) { //stable at timestep 216
-                            mainThrust = useMainThruster(state, 3, 60);
-                        } else if (state.getTime() == 216 + 60) {
-                            isSetThrustUntil = false;
-                            targetAngle = Math.toRadians(45);
-                            angularAcceleration = angularAcceleration(leftTorque(100, state));
-                        }
-
-                        if (state.getTime() > 276 && state.getTime() < 591 + 100) { //stable at timestep 591
-                            mainThrust = useMainThruster(state, 3, 100);
-                        } else {
-                            //do nothing
-                        }
+                    if (state.getTime() < 216 + 60) { //stable at timestep 216
+                        mainThrust = useMainThruster(state, 3, 60);
+                    } else if (state.getTime() == 216 + 60) {
+                        angularAcceleration = startRotation(state, Math.toRadians(45));
                     }
-                }
-            } else {
-                //we wanted to rotate, and we have reached this desired angle
-                angularAcceleration = stabilize(state, angleTolerance);
-                if (isStable(state, angleTolerance)) {
-                    //the shuttle is stable, so now we can use main thrusters to course correct OR initiate reverse rotation
-                    System.out.println("stable at: "+state.getTime());
+
+                    if (state.getTime() > 276 && state.getTime() < 591 + 100) { //stable at timestep 591
+                        mainThrust = useMainThruster(state, 3, 100);
+                    } else {
+                        //do nothing
+                    }
+                } else {
+                    System.out.println("REACHED TARGET ANGLE");
+                    //the lander is at its target angle and is stable
+                    //now we can use main thrusters for trajectory correction
+                    //or put lander back into upright position
 
                     if (state.getTime() < 71 + 75) { //stable at timestep 71
                         mainThrust = useMainThruster(state, 3, 75);
                     } else if (state.getTime() == 146) { //THIS KINDA DEPENDS ON THE TIME STEP
-                        isSetThrustUntil = false;
-                        targetAngle = 0;
-                        angularAcceleration = angularAcceleration(leftTorque(100, state));
+                        angularAcceleration = startRotation(state, 0);
                     }
 
                     if (state.getTime() > 146 && state.getTime() < 461 + 60) { //stable at 461
                         mainThrust = useMainThruster(state, 3, 60);
                     } else if (state.getTime() == 461 + 60) {
-                        isSetThrustUntil = false;
-                        targetAngle = 0;
-                        angularAcceleration = angularAcceleration(rightTorque(100, state));
+                        angularAcceleration = startRotation(state, 0);
                     }
                 }
             }
@@ -112,8 +99,22 @@ public class OpenLoopController implements Controller {
         return new LandingRate(state.getVelocity(), thrust, state.getShuttle_direction(), state.getWind_direction(), state.getPrevWindVector(), angularAcceleration);
     }
 
+    public double startRotation(LandingState state, double targetAngle) {
+        isSetThrustUntil = false;
+        this.targetAngle = targetAngle;
+        if (state.getAngle() - targetAngle > 0) {
+            //we need to rotate to the left
+            return angularAcceleration(rightTorque(100, state));
+        } else if (state.getAngle() - targetAngle < 0) {
+            return angularAcceleration(leftTorque(100, state));
+        } else {
+            return 0;
+        }
+    }
+
     public double useMainThruster(LandingState state, double strength, double duration) {
         if (!isSetThrustUntil) {
+            //we only want to update the thrustUntil variable once per "session" so we can keep track of duration without overwriting
             thrustUntil = state.getTime() + duration;
             isSetThrustUntil = true;
         }
@@ -121,7 +122,6 @@ public class OpenLoopController implements Controller {
         if (state.getTime() < thrustUntil) {
             return strength;
         } else {
-            //isSetThrustUntil = false;
             return 0;
         }
     }
