@@ -11,6 +11,7 @@ public class LandingRate implements RateInterface {
     private Vector3d wind_directionRate;
     private Vector3d prevwindvec;
     private double angularAcceleration;
+    private double angularVelocity;
 
     public LandingRate(Vector3d posR, Vector3d velR, Vector3d s_dR, Vector3d w_dR, Vector3d pwv, double angularAcceleration) {
         positionRate = posR;
@@ -21,29 +22,44 @@ public class LandingRate implements RateInterface {
         this.angularAcceleration = angularAcceleration;
     }
 
+    public LandingRate(Vector3d posRate, Vector3d velRate, double angularVelocity, double angularAcceleration) {
+        positionRate = posRate;
+        velocityRate = velRate;
+        this.angularVelocity = angularVelocity;
+        this.angularAcceleration = angularAcceleration;
+    }
+
     public LandingRate mul(double scalar) {
         Vector3d newPosition = positionRate.mul(scalar);
         Vector3d newVelocity = velocityRate.mul(scalar);
-        Vector3d newShuttle_directionRate = null;
-        Vector3d newWind_directionRate = null;
-        Vector3d prevwv = null;
-        return new LandingRate(newPosition, newVelocity, newShuttle_directionRate, newWind_directionRate, prevwv, angularAcceleration);
+        double newAngularVel = angularVelocity * scalar;
+        double newAngularAccel = angularAcceleration * scalar;
+//        Vector3d newShuttle_directionRate = null;
+//        Vector3d newWind_directionRate = null;
+//        Vector3d prevwv = null;
+//        return new LandingRate(newPosition, newVelocity, newShuttle_directionRate, newWind_directionRate, prevwv, angularAcceleration);
+        return new LandingRate(newPosition, newVelocity, newAngularVel, newAngularAccel);
     }
 
     public LandingRate add(RateInterface rate){
         LandingRate r = (LandingRate) rate;
         Vector3d newPosition = positionRate.add(r.getPositionRate());
         Vector3d newVelocity = velocityRate.add(r.getVelocityRate());
+        double newAngularVel = angularVelocity + r.getAngularVelocity();
+        double newAngularAccel = angularAcceleration + r.getAngularAcceleration();
 
-        //TODO: why are these null?
-        Vector3d newShuttle_directionRate = null;
-        Vector3d newWind_directionRate = null;
-        Vector3d prevwv = null;
-        return new LandingRate(newPosition, newVelocity, newShuttle_directionRate, newWind_directionRate, prevwv, angularAcceleration);
+//        //TODO: why are these null?
+//        Vector3d newShuttle_directionRate = null;
+//        Vector3d newWind_directionRate = null;
+//        Vector3d prevwv = null;
+        return new LandingRate(newPosition, newVelocity, newAngularVel, newAngularAccel);
     }
 
     public double getAngularAcceleration() {
         return angularAcceleration;
+    }
+    public double getAngularVelocity() {
+        return angularVelocity;
     }
 
     public Vector3d getPositionRate() {

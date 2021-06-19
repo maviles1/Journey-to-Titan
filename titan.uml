@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>titan</OriginalElement>
+  <nodes>
+    <node x="253.99999999999997" y="80.0">titan.EulerSolver</node>
+    <node x="294.0" y="390.0">titan.Solver</node>
+    <node x="35.5" y="545.0">titan.State</node>
+    <node x="488.0" y="235.0">titan.SimpleODE</node>
+    <node x="0.0" y="465.0">titan.interfaces.StateInterface</node>
+    <node x="408.0" y="80.0">titan.V2</node>
+    <node x="492.0" y="80.0">titan.RKSolver</node>
+    <node x="334.0" y="235.0">titan.ODEFunction</node>
+    <node x="0.0" y="620.0">titan.HillClimber</node>
+    <node x="179.0" y="620.0">titan.CSVReader</node>
+    <node x="247.0" y="310.0">titan.interfaces.ODESolverInterface</node>
+    <node x="499.0" y="620.0">titan.ui.PolySim</node>
+    <node x="32.0" y="310.0">titan.SpaceObject</node>
+    <node x="343.0" y="620.0">titan.ui.Launcher</node>
+    <node x="107.0" y="390.0">titan.Planet</node>
+    <node x="131.0" y="235.0">titan.ProbeSimulator</node>
+    <node x="238.0" y="545.0">titan.Rate</node>
+    <node x="0.0" y="235.0">titan.ProbeSim</node>
+    <node x="516.0" y="390.0">titan.Vector3d</node>
+    <node x="161.99999999999997" y="80.0">titan.RK2</node>
+    <node x="398.0" y="465.0">titan.SpaceObjectBuilder</node>
+    <node x="481.0" y="310.0">titan.interfaces.Vector3dInterface</node>
+    <node x="371.75" y="155.0">titan.interfaces.ODEFunctionInterface</node>
+    <node x="0.0" y="390.0">titan.Probe</node>
+    <node x="203.0" y="465.0">titan.interfaces.RateInterface</node>
+    <node x="18.75" y="155.0">titan.interfaces.ProbeSimulatorInterface</node>
+    <node x="647.0" y="620.0">titan.GUI3D</node>
+    <node x="0.0" y="695.0">Main</node>
+    <node x="245.99999999999997" y="0.0">titan.interfaces.StepInterface</node>
+    <node x="0.0" y="80.0">titan.VerletSolver</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="titan.EulerSolver" target="titan.interfaces.StepInterface">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="titan.Rate" target="titan.interfaces.RateInterface">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="titan.RKSolver" target="titan.interfaces.StepInterface">
+      <point x="2.8421709430404007E-14" y="-15.0" />
+      <point x="547.5" y="50.0" />
+      <point x="381.0" y="50.0" />
+      <point x="60.0" y="15.0" />
+    </edge>
+    <edge source="titan.RK2" target="titan.interfaces.StepInterface">
+      <point x="0.0" y="-15.0" />
+      <point x="197.99999999999997" y="60.0" />
+      <point x="291.0" y="60.0" />
+      <point x="-30.0" y="15.0" />
+    </edge>
+    <edge source="titan.ODEFunction" target="titan.interfaces.ODEFunctionInterface">
+      <point x="0.0" y="-15.0" />
+      <point x="401.0" y="210.0" />
+      <point x="423.0" y="210.0" />
+      <point x="-51.25" y="15.0" />
+    </edge>
+    <edge source="titan.ProbeSimulator" target="titan.interfaces.ProbeSimulatorInterface">
+      <point x="0.0" y="-15.0" />
+      <point x="210.0" y="210.0" />
+      <point x="189.75" y="210.0" />
+      <point x="57.0" y="15.0" />
+    </edge>
+    <edge source="titan.ProbeSim" target="titan.interfaces.ProbeSimulatorInterface">
+      <point x="0.0" y="-15.0" />
+      <point x="55.5" y="210.0" />
+      <point x="75.75" y="210.0" />
+      <point x="-57.0" y="15.0" />
+    </edge>
+    <edge source="titan.Probe" target="titan.SpaceObject">
+      <point x="0.0" y="-15.0" />
+      <point x="43.5" y="365.0" />
+      <point x="65.5" y="365.0" />
+      <point x="-33.5" y="15.0" />
+    </edge>
+    <edge source="titan.Solver" target="titan.interfaces.ODESolverInterface">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="titan.State" target="titan.interfaces.StateInterface">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="titan.VerletSolver" target="titan.interfaces.StepInterface">
+      <point x="0.0" y="-15.0" />
+      <point x="71.0" y="50.0" />
+      <point x="261.0" y="50.0" />
+      <point x="-60.0" y="15.0" />
+    </edge>
+    <edge source="titan.SimpleODE" target="titan.interfaces.ODEFunctionInterface">
+      <point x="0.0" y="-15.0" />
+      <point x="547.5" y="210.0" />
+      <point x="525.5" y="210.0" />
+      <point x="51.25" y="15.0" />
+    </edge>
+    <edge source="titan.Vector3d" target="titan.interfaces.Vector3dInterface">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="titan.V2" target="titan.interfaces.StepInterface">
+      <point x="0.0" y="-15.0" />
+      <point x="440.0" y="60.0" />
+      <point x="351.0" y="60.0" />
+      <point x="30.0" y="15.0" />
+    </edge>
+    <edge source="titan.Planet" target="titan.SpaceObject">
+      <point x="0.0" y="-15.0" />
+      <point x="154.5" y="365.0" />
+      <point x="132.5" y="365.0" />
+      <point x="33.5" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.5413635081747479" x="949.7735293796976" y="269.35864143993825" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

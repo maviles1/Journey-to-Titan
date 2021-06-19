@@ -8,28 +8,34 @@ import java.util.Vector;
 public class WindModel {
     private Vector3d windarrows;
     private Random gen;
-    private final double airdensity = 1.229; //currently earths m/s (titan is 4.4x)
+    private final double airdensity = 1.229 * 4.4; //currently earths m/s (titan is 4.4x)
     private final int maxangle = 25; //Still need to find proper value for this
     private final double ws = 928.57; //windspeed  -> Linear in m/s based on altitude in m
 
     //wind speed in m/s is altitude divided by ws
+
+    public WindModel(long seed) {
+        windarrows = new Vector3d();
+        gen = new Random(seed);
+    }
 
     public WindModel() {
         windarrows = new Vector3d();
         gen = new Random();
     }
 
-    public Vector3d CreateNewWindVector(Vector3d previous, double altitude) {
+    public Vector3d createNewWindVector(Vector3d previous, double altitude) {
         // altitude in meters or km?
         // new wind vector is created between 0 and max based on altitude
 
         //Create a random angle between -max <-> max degrees
         double angle = gen.nextDouble() * maxangle;
-        angle = gen.nextBoolean() == true ? angle : (angle * -1);
+        angle = gen.nextBoolean() ? angle : (angle * -1);
 
         //Create new wind strength
-        System.out.println(previous);
-        Vector3d windvector = previous.mul((altitude/ws)/previous.norm());
+        //System.out.println(previous);
+        double windstrength = gen.nextDouble() * (altitude/ws);
+        Vector3d windvector = previous.mul(windstrength/previous.norm());
 
         //Create new direction
         windvector = refactor2DVector(windvector, angle); //Wind is only 2d
@@ -37,33 +43,15 @@ public class WindModel {
         return windvector;
     }
 
-    public Vector3d getForceVector(Vector3d windvector, double altitude)
+    public Vector3d getForceVector(Vector3d windvector)
     {
         //Convert vector to a Force vector that adds to the velocity
         // F=(1 m2)×(1.229 kg/m3)×(2.24 m/s)2=6.17 N
-        double windforce = (7*7) * (airdensity) * (altitude/ws); // 6x6 is shuttle dimensions
-        windforce = windforce / 10000; //test for now
-        System.out.println("windforce: " + windforce);
+//        double windforce = (6*6) * (airdensity) * windvector.norm(); // 6x6 is shuttle dimensions
+        double windforce = (Math.PI * 3 * 3) * (airdensity) * windvector.norm(); // area of circle is pi*r^2
+        windforce = windforce / 6000; //shuttle mass
         //apply force to windvector
         return windvector.mul(windforce/windvector.norm());
-    }
-
-    //UNUSED METHOD
-    public void CalculateWindRotation(Vector3d windvector, Shuttle sh)
-    {
-        // Select a random point where it hits the probe (on the y-axis)
-        double radius = sh.getHeight()/2;
-        double Ymax = sh.getPosition().getY() + radius;
-        double Ymin = sh.getPosition().getY() - radius;
-        double Xmax = sh.getPosition().getX() + radius;
-        double Xmin = sh.getPosition().getX() - radius;
-        double newY = (Ymax-Ymin) * gen.nextDouble() + Ymin;
-        double newX = (Xmax-Xmin) * gen.nextDouble() + Xmin;
-
-        // Point where the wind hits the probe
-        Vector3d windimpact = new Vector3d(newX, newY, sh.getPosition().getZ());
-
-        // Calculate the strength of the wind vector in rotations per timestep
     }
 
     public Vector3d Refactor3DVector(Vector3d v, double a, double b, double g)
@@ -107,7 +95,7 @@ public class WindModel {
 
     public Vector3d getStartingWindVector(double altitude)
     {
-        //wind more common west to east
+        //wind more common west to east (not implemented yet)
         Vector3d swv = new Vector3d();
 
         //Create random Vector
@@ -122,7 +110,12 @@ public class WindModel {
         }
 
         swv = new Vector3d(xyz[0], xyz[1], 0); //vector in 2d
-        swv = swv.mul((altitude/ws)/swv.norm());
+        swv = swv.mul((gen.nextDouble() * (altitude/ws))/swv.norm());
+
+
+        //make y value always negative
+        if(swv.getY() > 0)
+            swv.setY(swv.getY()*-1);
 
         return swv;
     }

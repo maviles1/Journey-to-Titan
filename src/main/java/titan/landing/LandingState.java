@@ -28,19 +28,29 @@ public class LandingState implements StateInterface {
         this.angularVelocity = angularVelocity;
     }
 
+    public LandingState(Vector3d position, Vector3d velocity, Vector3d prevWindVec, double angle, double angularVelocity, double time) {
+        this.position = position;
+        this.velocity = velocity;
+        this.prevWindVector = prevWindVec;
+        this.time = time;
+        this.angle = angle;
+        this.angularVelocity = angularVelocity;
+    }
+
     @Override
     public StateInterface addMul(double step, RateInterface r) {
         LandingRate rate = (LandingRate) r;
 
         Vector3d newPosition = position.addMul(step, rate.getPositionRate());
         Vector3d newVelocity = velocity.addMul(step, rate.getVelocityRate());
+        double newAngularVel = angularVelocity + step* rate.getAngularAcceleration();
 
-        //TODO: why are these null?
-        Vector3d newShuttle_directionRate = null;
-        Vector3d newWind_directionRate = null;
-        Vector3d prevwindvec = null;
+//        //TODO: why are these null?
+//        Vector3d newShuttle_directionRate = null;
+//        Vector3d newWind_directionRate = null;
+//        Vector3d prevwindvec = null;
 
-        return new LandingState(newPosition, newVelocity, newShuttle_directionRate, newWind_directionRate, prevwindvec, angle, angularVelocity, getTime() + step);
+        return new LandingState(newPosition, newVelocity, prevWindVector, angle, newAngularVel, getTime() + step);
     }
 
     public double getAngle() {

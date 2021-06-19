@@ -27,7 +27,6 @@ public class TitanView extends Renderer2D {
     public TitanView(StateInterface[] states) {
         this.WIDTH = 3000;
         this.HEIGHT = 3000;
-//        this.HEIGHT = 1000;
         this.canvas = new Canvas(WIDTH, HEIGHT);
         this.states = states;
 
@@ -40,11 +39,11 @@ public class TitanView extends Renderer2D {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         prepareConsole();
 
-        gc.setFill(Paint.valueOf("#000000"));
+        gc.setFill(Paint.valueOf("#1c253c"));
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         //draw ground
-        gc.setFill(Color.RED);
+        gc.setFill(Paint.valueOf("#e79c61"));
         gc.fillRect(0, HEIGHT - 50, WIDTH, 50);
 
         //this is where we draw the probe
@@ -58,14 +57,14 @@ public class TitanView extends Renderer2D {
         //check collision
         if (checkCollision(landerY)) {
             if (!landed) {
-                errorX = Math.abs(landerX);
+                errorX = Math.abs(landerX - (150000 / 2.0));
                 errorVX = Math.abs(state.getVelocity().getX());
                 errorVY = Math.abs(state.getVelocity().getY());
                 landed = true;
             }
             gc.fillOval(toCoord(landerX) - RADIUS, HEIGHT - 50 - RADIUS * 2, RADIUS * 2, RADIUS * 2); //I dunno why the height has to be subtracted by radius * 2
         } else {
-            errorX = Math.abs(landerX);
+            errorX = Math.abs(landerX - (150000 / 2.0));
             errorVX = Math.abs(state.getVelocity().getX());
             errorVY = Math.abs(state.getVelocity().getY());
 
@@ -73,7 +72,7 @@ public class TitanView extends Renderer2D {
             double rotationCenterY = HEIGHT - toCoord(landerY) - 50;
 
             gc.save();
-            gc.transform(new Affine(new Rotate(45, rotationCenterX, rotationCenterY)));
+            gc.transform(new Affine(new Rotate(Math.toDegrees(state.getAngle()), rotationCenterX, rotationCenterY)));
             gc.fillRect(toCoord(landerX) - RADIUS, HEIGHT - toCoord(landerY) - 50 - RADIUS, RADIUS*2, RADIUS*2);
             gc.restore();
         }
@@ -91,9 +90,9 @@ public class TitanView extends Renderer2D {
     double errorVY = 0;
     boolean landed = false;
 
-
     @Override
     protected void prepareConsole() {
+        LandingState state = (LandingState) states[count];
         console.getChildren().clear();
         console.getChildren().add(new Label("Distance to Titan: " + Math.max(states[count].getPositions()[0].getY(), 0)));
         console.getChildren().add(new Label("Distance to Titan: " + states[count].getPositions()[0].getY()));
@@ -101,10 +100,13 @@ public class TitanView extends Renderer2D {
         console.getChildren().add(new Label("ErrorX:  " + errorX));
         console.getChildren().add(new Label("ErrorVX:  " + errorVX));
         console.getChildren().add(new Label("ErrorVY:  " + errorVY));
-//        console.getChildren().add(new Label("Errorθ:  " + states[count].getVelocities()[0].getY()));
+        console.getChildren().add(new Label("Angle:  " + Math.toDegrees(state.getAngle() % (2*Math.PI))));
+        console.getChildren().add(new Label("AngularVel:  " + state.getAngularVelocity()));
         ((Label)console.getChildren().get(0)).setTextFill(Color.WHITE);
         ((Label)console.getChildren().get(1)).setTextFill(Color.WHITE);
         ((Label)console.getChildren().get(2)).setTextFill(Color.WHITE);
+        ((Label)console.getChildren().get(6)).setTextFill(Color.WHITE);
+        ((Label)console.getChildren().get(7)).setTextFill(Color.WHITE);
 
         if (errorX < 0.1)
             ((Label)console.getChildren().get(3)).setTextFill(Color.GREEN);

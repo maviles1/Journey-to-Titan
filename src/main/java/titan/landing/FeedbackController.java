@@ -7,6 +7,7 @@ import titan.flight.Vector3d;
 public class FeedbackController {
     private LandingState current_state; // current state of the environment
     private final Shuttle landing_module; // object which holds characteristics of the landing module
+    private Vector3d desired_velocity;
 
     // requirement is that the probe is in titan orbit
     // we check the distance between titans center and the probe and determine the direction of the vector
@@ -36,7 +37,28 @@ public class FeedbackController {
         return adjustment.copy();
     }
 
-    public Vector3d thruster(double dis, Vector3d probe_vel){
-        return null;
+    /**
+     * Method to produce the vector that starts at landing module's position and ends at landing location
+     * @return the vector that represents the distance between landing module and landing location
+     */
+    public Vector3d dist(){
+        Vector3d pos = current_state.getPosition();
+        Vector3d ll = LandingSimulation.getLandingPosition();
+
+        return pos.sub(ll);
+    }
+
+    /**
+     * Method to produce thrust with the main thruster towards the landing location
+     * @return the vector that represents an acceleration applied to the landing module - its main thruster's thrust
+     */
+    public Vector3d thruster(){
+        Vector3d dir = dist();
+        double desired_velocity = dir.getX() / dir.getY();
+        double desired_acceleration = desired_velocity - current_state.getVelocity().norm();
+
+        Vector3d thrust = current_state.getShuttle_direction().normalize().mul(desired_acceleration);
+
+        return thrust;
     }
 }
