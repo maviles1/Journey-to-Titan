@@ -7,8 +7,10 @@ import titan.interfaces.StateInterface;
 
 public class FeedbackController extends Controller {
 
-    private double angle_of_rotation = 45.0;
+    private double angle_of_rotation = 90;
     private double strength = 10000;
+
+    private static boolean flag = false;
 
     /**
      * Constructor for the feedback controller
@@ -36,12 +38,23 @@ public class FeedbackController extends Controller {
 
         double angularAcceleration = 0;
 
-        double wind_acc = windRate.getVelocityRate().norm();
-        double acc = desiredAcceleration(state) - wind_acc; // strength of acceleration
-        strength = acc;
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+//        double wind_acc = windRate.getVelocityRate().norm();
+//        double acc = desiredAcceleration(state) - wind_acc; // strength of acceleration
+//
+//        strength = acc;
+//
+//        double direction = - Math.signum(windRate.getVelocityRate().getX()); // -1 if left, 1 if right
+//        targetAngle = angle_of_rotation * direction;
 
-        double direction = - Math.signum(windRate.getPositionRate().getX()); // -1 if left, 1 if right
-        targetAngle = angle_of_rotation * direction;
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Vector3d w = windRate.getVelocityRate();
+        Vector3d g = TitanGravityODE.getGravitationalPullingForce();
+
+        strength = w.add(g).mul(0.5).norm();
+        targetAngle = angle(w.add(g).mul(-1), new Vector3d(0, 1, 0));
+
         angularAcceleration = startRotation(state, Math.toRadians(targetAngle));
 
         //System.out.println("timestep: " + state.getTime());
@@ -94,7 +107,6 @@ public class FeedbackController extends Controller {
                 //////////////////////////////////////////////////////////////////////////////////////
             }
         }
-
         double xAccel = mainThrust * Math.sin(state.getAngle());
         double yAccel = mainThrust * Math.cos(state.getAngle());
 
@@ -128,6 +140,11 @@ public class FeedbackController extends Controller {
 
     public boolean rotationNeeded(LandingState state){
         return !(targetAngle - state.getPosition().getY() / state.getPosition().getX() <= angleTolerance);
+    }
+
+    public double angle(Vector3d a, Vector3d b){
+        double sum = a.getX()*b.getX() + a.getY()*b.getY() + a.getZ()*b.getZ();
+        return  Math.acos(sum / (a.norm() * b.norm()));
     }
 
 //    /**

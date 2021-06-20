@@ -156,7 +156,6 @@ public class FeedbackController2 extends Controller {
                 }
             }
         }
-
         double xAccel = mainThrust * Math.sin(state.getAngle());
         double yAccel = mainThrust * Math.cos(state.getAngle());
 
