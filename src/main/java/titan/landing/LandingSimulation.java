@@ -29,7 +29,11 @@ public class LandingSimulation {
         WindModel wm = new WindModel(); //Seed with decent value for testing: 9806980
         //Initial velocity
         Vector3d iv = new Vector3d(294.947, -134.15 ,0 ); //roughly 1000km/h
-        LandingState y0 = new LandingState(new Vector3d(x, y, 0), iv, new Vector3d(0,1,0), new Vector3d(1,0,0), wm.getStartingWindVector(y), Math.toRadians(0), 0, 0);
+        //Vector3d iv = new Vector3d(0, -0 ,0 ); //roughly 1000km/h
+
+        Vector3d iwv = wm.getStartingWindVector(y);
+        System.out.println(iwv.toString());
+        LandingState y0 = new LandingState(new Vector3d(x, y, 0), iv, new Vector3d(0,1,0), new Vector3d(1,0,0),  iwv, Math.toRadians(0), 0, 0);
 
         Solver solver = new Solver(new LandingVerlet());
         StateInterface[] states = solver.solve(new PhysicsEngine(new OpenLoopController(), new TitanGravityODE(), new TitanWindODE()), y0, 1000, 1, true);

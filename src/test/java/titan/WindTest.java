@@ -14,23 +14,21 @@ class WindTest
     void testGetX() {
         Vector3d v = new Vector3d(1, 2, 3);
         WindModel wm = new WindModel();
-        assertEquals(2.0970401199802953, wm.RefactorVector( v, 10, 20, 30).getX() );
+        assertEquals(2.0970401199802953, wm.Refactor3DVector( v, 10, 20, 30).getX() );
     }
 
     @Test
     void testGetY() {
         Vector3d v = new Vector3d(1, 2, 3);
         WindModel wm = new WindModel();
-        assertEquals(0.6053953180956588, wm.RefactorVector( v, 10, 20, 30).getY() );
+        assertEquals(0.6053953180956588, wm.Refactor3DVector( v, 10, 20, 30).getY() );
     }
 
     @Test
     void testGetZ() {
         Vector3d v = new Vector3d(1, 2, 3);
         WindModel wm = new WindModel();
-        assertEquals(3.039065521508361, wm.RefactorVector( v, 10, 20, 30).getZ() );
+        assertEquals(3.039065521508361, wm.Refactor3DVector( v, 10, 20, 30).getZ() );
     }
-
-
 
 }

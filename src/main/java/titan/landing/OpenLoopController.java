@@ -30,13 +30,13 @@ public class OpenLoopController implements Controller {
 
         System.out.println(state.getAngle() % (2 * Math.PI));
         if (Math.abs(state.getAngle() % (2 * Math.PI)) - targetAngle < angleTolerance) {
-            System.out.println("Reached target angle: " + targetAngle);
+            //System.out.println("Reached target angle: " + targetAngle);
             //now we need to counter torque
             if (targetAngle == 0) {
                 //if we wanted to become upright, and now we are upright
                 angularAcceleration = angularAcceleration(rightTorque(5000, state));
                 targetAngle = Math.toRadians(360-45);
-                System.out.println("New Target Angle: " + targetAngle);
+                //System.out.println("New Target Angle: " + targetAngle);
             } else {
                 if (state.getAngularVelocity() < 0) { //spinning counter-clockwise
                     //need to apply leftTorque
