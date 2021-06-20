@@ -102,6 +102,7 @@ public class TitanView extends Renderer2D {
         console.getChildren().add(new Label("ErrorVY:  " + errorVY));
         console.getChildren().add(new Label("Angle:  " + Math.toDegrees(state.getAngle() % (2*Math.PI))));
         console.getChildren().add(new Label("AngularVel:  " + state.getAngularVelocity()));
+
         ((Label)console.getChildren().get(0)).setTextFill(Color.WHITE);
         ((Label)console.getChildren().get(1)).setTextFill(Color.WHITE);
         ((Label)console.getChildren().get(2)).setTextFill(Color.WHITE);

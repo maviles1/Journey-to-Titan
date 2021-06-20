@@ -32,4 +32,9 @@ public class PhysicsEngine implements ODEFunctionInterface {
         LandingRate all = gravityRate.add(thrustRate);
         return all;
     }
+
+    @Override
+    public PhysicsEngine clone() {
+        return new PhysicsEngine(controller.clone(), new TitanGravityODE(), new TitanWindODE());
+    }
 }

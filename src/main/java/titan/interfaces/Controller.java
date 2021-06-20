@@ -2,6 +2,7 @@ package titan.interfaces;
 
 import titan.flight.State;
 
-public interface Controller {
-    RateInterface thrust(RateInterface windRate, StateInterface y);
+public abstract class Controller {
+    public abstract RateInterface thrust(RateInterface windRate, StateInterface y);
+    public abstract Controller clone();
 }
