@@ -49,7 +49,7 @@ public class LandingSimulation {
     }
 
     private void createLandingPosition(){
-        double x = 0;
+        double x = 50000;
         double y = 0;
         double z = 0;
         landing_location = new Vector3d(x, y, z);

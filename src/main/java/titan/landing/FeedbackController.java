@@ -10,7 +10,7 @@ public class FeedbackController extends Controller {
     private double angle_of_rotation = 90;
     private double strength = 10000;
 
-    private static boolean flag = false;
+    private static boolean flag = true;
 
     /**
      * Constructor for the feedback controller
@@ -27,7 +27,6 @@ public class FeedbackController extends Controller {
         //return predetermined thrust
         LandingState state = (LandingState) y;
         LandingRate windRate = (LandingRate) wR;
-        double altitude = state.getPosition().getY();
 
         //where u is the thrust
         //horizontal acceleration = u * sin(theta)
@@ -39,33 +38,48 @@ public class FeedbackController extends Controller {
         double angularAcceleration = 0;
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
-//        double wind_acc = windRate.getVelocityRate().norm();
-//        double acc = desiredAcceleration(state) - wind_acc; // strength of acceleration
-//
-//        strength = acc;
-//
-//        double direction = - Math.signum(windRate.getVelocityRate().getX()); // -1 if left, 1 if right
-//        targetAngle = angle_of_rotation * direction;
+        if (state.getPosition().getX() - LandingSimulation.getLandingPosition().getX() > 10) {
+            double wind_direction = Math.signum(windRate.getVelocityRate().getX()); // -1 if left, 1 if right
+            double landing_point_direction = Math.signum(state.getPosition().getX() - LandingSimulation.getLandingPosition().getX()); // -1 if left, 1 if right
+
+            double wind_acc = windRate.getVelocityRate().norm(); // strength of acceleration
+            double acc = desiredAcceleration(state) - wind_acc;
+            System.out.println("acc" + acc);
+            double direction;
+            if (wind_direction == landing_point_direction) {
+                direction = - wind_direction;
+            } else {
+                direction = wind_direction;
+                acc *= 0.5;
+            }
+
+            strength = acc;
+            System.out.println("strength" + strength);
+            targetAngle = angle_of_rotation * direction;
+        } else {
+            Vector3d w = windRate.getVelocityRate();
+            Vector3d g = TitanGravityODE.getGravitationalPullingForce().mul(1/8000.0);
+
+            strength = w.add(g).norm() * 0.5;
+            targetAngle = angle(w.add(g).mul(-1), new Vector3d(0, 1, 0));
+        }
+        System.out.println(strength + "strenght");
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-        Vector3d w = windRate.getVelocityRate();
-        Vector3d g = TitanGravityODE.getGravitationalPullingForce().mul(1/8000.0);
-
-        strength = w.add(g).norm() * 0.5;
-        targetAngle = angle(w.add(g).mul(-1), new Vector3d(0, 1, 0));
-
-        System.out.println("strength " + strength);
-        System.out.println("targetAngle " + targetAngle);
 
         angularAcceleration = startRotation(state, Math.toRadians(targetAngle));
 
         //System.out.println("timestep: " + state.getTime());
         //System.out.println("difference: " + (state.getAngle() % (2 * Math.PI) - targetAngle));
+
+        System.out.println(state.getAngle() + "    state.getAngle()");
+        System.out.println(targetAngle + "     targetAngle");
+        System.out.println(angleTolerance + "        angleTolerance");
         if (Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle) < angleTolerance) {
             System.out.println("Reached target angle: " + targetAngle);
+            flag = true;
             //now we need to counter torque
-            angularAcceleration = stabilize(state, angleTolerance);
+            angularAcceleration = stabilize(state, Math.toRadians(angleTolerance));
 
             if (isStable(state, angleTolerance)) {
                 ////////////////////////////////////////////////////////////////////////////////////////
@@ -110,13 +124,16 @@ public class FeedbackController extends Controller {
                 //////////////////////////////////////////////////////////////////////////////////////
             }
         }
+        System.out.println(Math.sin(state.getAngle()) + " ' " + Math.cos(state.getAngle()));
+        System.out.println("mainThrust " + mainThrust);
         double xAccel = mainThrust * Math.sin(state.getAngle());
         double yAccel = mainThrust * Math.cos(state.getAngle());
+        System.out.println(xAccel + " ' " + yAccel);
 
         Vector3d thrust = new Vector3d(xAccel, yAccel, 0);
 
 //        System.out.println("angular accel: " +  angularAcceleration);
-        //System.out.println("angular vel: " +  state.getAngularVelocity());
+//        System.out.println("angular vel: " +  state.getAngularVelocity());
 //        System.out.println("angle: " +  state.getAngle());
         return new LandingRate(state.getVelocity(), thrust, state.getShuttle_direction(), state.getWind_direction(), state.getPrevWindVector(), angularAcceleration);
     }
