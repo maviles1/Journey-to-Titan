@@ -44,17 +44,17 @@ public class FeedbackController extends Controller {
 
             double wind_acc = windRate.getVelocityRate().norm(); // strength of acceleration
             double acc = desiredAcceleration(state) - wind_acc;
-            System.out.println("acc" + acc);
+//            System.out.println("acc" + acc);
             double direction;
             if (wind_direction == landing_point_direction) {
-                direction = - wind_direction;
+                direction = -1 * wind_direction;
             } else {
                 direction = wind_direction;
                 acc *= 0.5;
             }
 
             strength = acc;
-            System.out.println("strength" + strength);
+//            System.out.println("strength" + strength);
             targetAngle = angle_of_rotation * direction;
         } else {
             Vector3d w = windRate.getVelocityRate();
@@ -63,25 +63,28 @@ public class FeedbackController extends Controller {
             strength = w.add(g).norm() * 0.5;
             targetAngle = angle(w.add(g).mul(-1), new Vector3d(0, 1, 0));
         }
-        System.out.println(strength + "strenght");
+//        System.out.println(strength + "strenght");
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-        angularAcceleration = startRotation(state, Math.toRadians(targetAngle));
+        if (flag) {
+            angularAcceleration = startRotation(state, Math.toRadians(targetAngle));
+            flag = false;
+        }
 
         //System.out.println("timestep: " + state.getTime());
         //System.out.println("difference: " + (state.getAngle() % (2 * Math.PI) - targetAngle));
 
-        System.out.println(state.getAngle() + "    state.getAngle()");
-        System.out.println(targetAngle + "     targetAngle");
-        System.out.println(angleTolerance + "        angleTolerance");
+//        System.out.println(state.getAngle() + "    state.getAngle()");
+//        System.out.println(targetAngle + "     targetAngle");
+//        System.out.println(angleTolerance + "        angleTolerance");
         if (Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle) < angleTolerance) {
-            System.out.println("Reached target angle: " + targetAngle);
-            flag = true;
+//            System.out.println("Reached target angle: " + targetAngle);
             //now we need to counter torque
             angularAcceleration = stabilize(state, Math.toRadians(angleTolerance));
 
             if (isStable(state, angleTolerance)) {
+                flag = true;
                 ////////////////////////////////////////////////////////////////////////////////////////
                 if (targetAngle == 0) {
                     System.out.println("UPRIGHT");
@@ -124,11 +127,11 @@ public class FeedbackController extends Controller {
                 //////////////////////////////////////////////////////////////////////////////////////
             }
         }
-        System.out.println(Math.sin(state.getAngle()) + " ' " + Math.cos(state.getAngle()));
-        System.out.println("mainThrust " + mainThrust);
+//        System.out.println(Math.sin(state.getAngle()) + " ' " + Math.cos(state.getAngle()));
+//        System.out.println("mainThrust " + mainThrust);
         double xAccel = mainThrust * Math.sin(state.getAngle());
         double yAccel = mainThrust * Math.cos(state.getAngle());
-        System.out.println(xAccel + " ' " + yAccel);
+//        System.out.println(xAccel + " ' " + yAccel);
 
         Vector3d thrust = new Vector3d(xAccel, yAccel, 0);
 
