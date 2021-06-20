@@ -7,7 +7,7 @@ import titan.interfaces.StateInterface;
 
 public class FeedbackController extends Controller {
 
-    private double angle_of_rotation = 90.0;
+    private double angle_of_rotation = 45.0;
     private double strength = 10000;
 
     /**
@@ -36,11 +36,11 @@ public class FeedbackController extends Controller {
 
         double angularAcceleration = 0;
 
-        double wind_acc_X = windRate.getVelocityRate().getX();
-        double accX = desiredAccelerationX(state) - wind_acc_X; // strength of acceleration
-        strength = accX;
+        double wind_acc = windRate.getVelocityRate().norm();
+        double acc = desiredAcceleration(state) - wind_acc; // strength of acceleration
+        strength = acc;
 
-        double direction = Math.signum(windRate.getPositionRate().getX()); // -1 if left, 1 if right
+        double direction = - Math.signum(windRate.getPositionRate().getX()); // -1 if left, 1 if right
         targetAngle = angle_of_rotation * direction;
         angularAcceleration = startRotation(state, Math.toRadians(targetAngle));
 
@@ -92,9 +92,6 @@ public class FeedbackController extends Controller {
 //                    }
                 }
                 //////////////////////////////////////////////////////////////////////////////////////
-//                if (rotationNeeded(state)) {
-//                    mainThrust = strength;
-//                } else angularAcceleration = startRotation(state, 0);
             }
         }
 
@@ -114,7 +111,7 @@ public class FeedbackController extends Controller {
         return new FeedbackController(targetAngle, thrustUntil, isSetThrustUntil);
     }
 
-    public double desiredAccelerationX(LandingState state){
+    public double desiredAcceleration(LandingState state){
         Vector3d dir = dist(state);
         double desired_velocity = dir.getX() / dir.getY();
         double desired_acceleration = desired_velocity - state.getVelocity().getX();
@@ -126,7 +123,7 @@ public class FeedbackController extends Controller {
         Vector3d pos = state.getPosition();
         Vector3d ll = LandingSimulation.getLandingPosition();
 
-        return pos.sub(ll);
+        return ll.sub(pos);
     }
 
     public boolean rotationNeeded(LandingState state){

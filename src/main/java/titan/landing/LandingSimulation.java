@@ -10,6 +10,7 @@ import titan.ui.TitanView;
 public class LandingSimulation {
 
     private static Vector3d landing_location;
+    private static double step_size = 1;
 
     public LandingSimulation() {
         //shuttle pos, vel
@@ -29,10 +30,11 @@ public class LandingSimulation {
 //        double y = 120000; //150km
 //        int x = (150000) / 2; //center
         WindModel wm = new WindModel();
-        LandingState y0 = new LandingState(new Vector3d(x, y, 0),  new Vector3d(294.947, -134.15 ,0 ), new Vector3d(0,1,0), new Vector3d(1,0,0), wm.getStartingWindVector(y), Math.toRadians(0), 0, 0);
+        //LandingState y0 = new LandingState(new Vector3d(x, y, 0),  new Vector3d(294.947, -134.15 ,0 ), new Vector3d(0,1,0), new Vector3d(1,0,0), wm.getStartingWindVector(y), Math.toRadians(0), 0, 0);
+        LandingState y0 = new LandingState(new Vector3d(x, y, 0),  new Vector3d(0, 0 ,0 ), new Vector3d(0,1,0), new Vector3d(1,0,0), wm.getStartingWindVector(y), Math.toRadians(0), 0, 0);
 
         Solver solver = new Solver(new LandingVerlet());
-        StateInterface[] states = solver.solve(new PhysicsEngine(new FeedbackController(), new TitanGravityODE(), new TitanWindODE()), y0, 1000, 1, true);
+        StateInterface[] states = solver.solve(new PhysicsEngine(new FeedbackController(), new TitanGravityODE(), new TitanWindODE()), y0, 1000, step_size, true);
 
         TitanView titanView = new TitanView(states);
         Stage stage = new Stage();
@@ -55,5 +57,9 @@ public class LandingSimulation {
 
     public static Vector3d getLandingPosition(){
         return landing_location;
+    }
+
+    public static double getStepSize() {
+        return step_size;
     }
 }
