@@ -50,13 +50,13 @@ public class OpenLoopController extends Controller {
                     state.setAngle(0); //hacky, i know, but its gotta be
 
                     double t0 = 380 + 250;//259 is when its upright, 380 is when it stops rising
-                    double duration = 407;
+                    double duration = 409; //409 and 2.1921 = 1.5vy // also 409 and 2.19211 = 1.5
 
                     if (state.getVelocity().getY() > 0)
                         System.out.println("RISING");
 
                     if (state.getTime() > t0 && state.getTime() < t0 + duration) { //stable at timestep 216
-                        mainThrust = useMainThruster(state, 2.192157, duration);
+                        mainThrust = useMainThruster(state, 2.1921, duration);
                     } else if (state.getTime() == t0 + duration) {
                         //angularAcceleration = startRotation(state, Math.toRadians(45));
                     }

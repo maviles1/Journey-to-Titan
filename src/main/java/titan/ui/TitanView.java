@@ -69,12 +69,14 @@ public class TitanView extends Renderer2D {
                 errorVY = Math.abs(state.getVelocity().getY());
                 landed = true;
             }
+
             gc.fillOval(toCoord(landerX) - RADIUS, HEIGHT - 50 - RADIUS * 2, RADIUS * 2, RADIUS * 2); //I dunno why the height has to be subtracted by radius * 2
         } else {
 //            errorX = Math.abs(landerX - landingPadX);
             errorX = landerX - landingPadX;
             errorVX = Math.abs(state.getVelocity().getX());
             errorVY = Math.abs(state.getVelocity().getY());
+
 
             double rotationCenterX = toCoord(landerX);
             double rotationCenterY = HEIGHT - toCoord(landerY) - 50;
