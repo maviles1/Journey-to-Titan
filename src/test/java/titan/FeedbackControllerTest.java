@@ -15,7 +15,7 @@ public class FeedbackControllerTest {
         Vector3d position = new Vector3d(0, 120000, 0);
         Vector3d velocity = new Vector3d(0, 0, 0);
         Vector3d shuttle_direction = new Vector3d(0, 1, 0);
-        Vector3d wind_direction = new WindModel().getStartingWindVector(position.getY());
+        Vector3d wind_direction = new WindModel(0).getStartingWindVector(position.getY());
         Vector3d prevWindVec = new Vector3d(0, 0, 0);
         double angle = 0;
         double angularVelocity = 0;
@@ -29,9 +29,9 @@ public class FeedbackControllerTest {
 
         Shuttle s = new Shuttle(width, height, length, velocity, position, shuttle_direction);
 
-        FeedbackController fc = new FeedbackController(ls, s);
+        FeedbackController2 fc = new FeedbackController2(ls, s);
         Vector3d v = new Vector3d(0,0,0);
 
-        assertEquals(fc.thruster(), v);
+        assertEquals(null, fc.thruster());
     }
 }
