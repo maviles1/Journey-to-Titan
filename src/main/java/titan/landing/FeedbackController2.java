@@ -11,7 +11,6 @@ public class FeedbackController2 extends Controller {
 
     double tolerance = 0.1;
 
-
     public FeedbackController2() {}
     public FeedbackController2(double targetAngle, double thrustUntil, boolean isSetThrustUntil) {
         this.targetAngle = targetAngle;

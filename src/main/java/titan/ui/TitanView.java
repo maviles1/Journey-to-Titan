@@ -18,6 +18,8 @@ public class TitanView extends Renderer2D {
 //    private double res = 150; // for height 1000
     private double res = 50; // for height 1000
 
+    private double landingPadX = 125000;
+
     private final double RADIUS = 10;
 
     private double toCoord(double val) {
@@ -46,6 +48,10 @@ public class TitanView extends Renderer2D {
         gc.setFill(Paint.valueOf("#e79c61"));
         gc.fillRect(0, HEIGHT - 50, WIDTH, 50);
 
+        //draw landing pad
+        gc.setFill(Color.AQUA);
+        gc.fillRect(toCoord(landingPadX) - 2, HEIGHT - 50, 4, 4);
+
         //this is where we draw the probe
         LandingState state = (LandingState) states[count];
         gc.setFill(Color.WHITE);
@@ -57,14 +63,16 @@ public class TitanView extends Renderer2D {
         //check collision
         if (checkCollision(landerY)) {
             if (!landed) {
-                errorX = Math.abs(landerX - (150000 / 2.0));
+//                errorX = Math.abs(landerX - landingPadX);
+                errorX = landerX - landingPadX;
                 errorVX = Math.abs(state.getVelocity().getX());
                 errorVY = Math.abs(state.getVelocity().getY());
                 landed = true;
             }
             gc.fillOval(toCoord(landerX) - RADIUS, HEIGHT - 50 - RADIUS * 2, RADIUS * 2, RADIUS * 2); //I dunno why the height has to be subtracted by radius * 2
         } else {
-            errorX = Math.abs(landerX - (150000 / 2.0));
+//            errorX = Math.abs(landerX - landingPadX);
+            errorX = landerX - landingPadX;
             errorVX = Math.abs(state.getVelocity().getX());
             errorVY = Math.abs(state.getVelocity().getY());
 
@@ -98,7 +106,9 @@ public class TitanView extends Renderer2D {
         console.getChildren().add(new Label("Distance to Titan: " + states[count].getPositions()[0].getY()));
         console.getChildren().add(new Label("VY:  " + states[count].getVelocities()[0].getY()));
         console.getChildren().add(new Label("ErrorX:  " + errorX));
-        console.getChildren().add(new Label("ErrorVX:  " + errorVX));
+//        console.getChildren().add(new Label("ErrorX:  " + state.getPosition().getX()));
+//        console.getChildren().add(new Label("ErrorVX:  " + errorVX));
+        console.getChildren().add(new Label("ErrorVX:  " + state.getVelocity().getX()));
         console.getChildren().add(new Label("ErrorVY:  " + errorVY));
         console.getChildren().add(new Label("Angle:  " + Math.toDegrees(state.getAngle() % (2*Math.PI))));
         console.getChildren().add(new Label("AngularVel:  " + state.getAngularVelocity()));

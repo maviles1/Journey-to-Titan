@@ -57,6 +57,10 @@ public class LandingState implements StateInterface {
         return angle;
     }
 
+    public void setAngle(double angle) {
+        this.angle = angle;
+    }
+
     public double getAngularVelocity() {
         return angularVelocity;
     }
