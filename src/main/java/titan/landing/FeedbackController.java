@@ -50,10 +50,13 @@ public class FeedbackController extends Controller {
         ///////////////////////////////////////////////////////////////////////////////////////////////////
 
         Vector3d w = windRate.getVelocityRate();
-        Vector3d g = TitanGravityODE.getGravitationalPullingForce();
+        Vector3d g = TitanGravityODE.getGravitationalPullingForce().mul(1/8000.0);
 
-        strength = w.add(g).mul(0.5).norm();
+        strength = w.add(g).norm();
         targetAngle = angle(w.add(g).mul(-1), new Vector3d(0, 1, 0));
+
+        System.out.println("strength " + strength);
+        System.out.println("targetAngle " + targetAngle);
 
         angularAcceleration = startRotation(state, Math.toRadians(targetAngle));
 
