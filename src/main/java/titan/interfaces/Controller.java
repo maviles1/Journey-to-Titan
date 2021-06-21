@@ -18,14 +18,14 @@ public abstract class Controller {
 
     public abstract Controller clone();
 
-    public double startRotation(LandingState state, double targetAngle) {
+    public double startRotation(LandingState state, double targetAngle, double strength) {
         isSetThrustUntil = false;
         this.targetAngle = targetAngle;
         if (state.getAngle() - targetAngle > 0) {
             //we need to rotate to the left
-            return angularAcceleration(rightTorque(100, state));
+            return angularAcceleration(rightTorque(strength, state));
         } else if (state.getAngle() - targetAngle < 0) {
-            return angularAcceleration(leftTorque(100, state));
+            return angularAcceleration(leftTorque(strength, state));
         } else {
             return 0;
         }
