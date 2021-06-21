@@ -8,9 +8,14 @@ import titan.interfaces.StateInterface;
 public class FeedbackController extends Controller {
 
     private double angle_of_rotation = 90;
-    private double strength = 10000;
+    private double strength = 1;
+
+    private double max_angular_velocity = 0.05;
+    private double max_velocity = 100.0;
 
     private static boolean flag = true;
+
+    private static String process = "rotating";
 
     /**
      * Constructor for the feedback controller
@@ -33,9 +38,56 @@ public class FeedbackController extends Controller {
         //vertical acceleration = u * cos(theta) (-g)
         //angular acceleration = torque
 
-        double mainThrust = 0; //TODO: potential base thrust off of altitude or if we are doing course correction
+        double mainThrust = 0, angularAcceleration = 0; //TODO: potential base thrust off of altitude or if we are doing course correction
 
-        double angularAcceleration = 0;
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+        if (flag) {
+            targetAngle = getAngle(state, windRate);
+            flag = false;
+        }
+
+        System.out.println("state.getAngle()    " + state.getAngle());
+        System.out.println("targetAngle         " + targetAngle);
+        System.out.println("angleTolerance      " + angleTolerance);
+        System.out.println("thingy              " + Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle));
+
+        switch (process) {
+            case "rotating": {
+                if (Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle) < angleTolerance) {
+                    angularAcceleration = stabilize(state, angleTolerance);
+                    process = "stabilizing";
+                    flag = true;
+
+                    System.out.println("CHECK1.1");
+                } else if (Math.abs(state.getAngularVelocity()) <= max_angular_velocity) {
+                    targetAngle = getAngle(state, windRate);
+                    angularAcceleration = startRotation(state, Math.toRadians(targetAngle));
+
+                    System.out.println("CHECK1.2");
+                }
+            } break;
+            case "stabilizing": {
+                if (isStable(state, angleTolerance * 0.1)) {
+                    mainThrust = getStrength(state, windRate);
+                    process = "thrusting";
+
+                    System.out.println("CHECK2.1");
+                } else if (Math.abs(state.getAngularVelocity()) <= max_angular_velocity) {
+                    angularAcceleration = stabilize(state, angleTolerance);
+
+                    System.out.println("CHECK2.2");
+                }
+            } break;
+            case "thrusting": {
+                if (state.getVelocity().norm() > max_velocity) {
+                    mainThrust = getStrength(state, windRate);
+                }
+                process = "rotating";
+
+                System.out.println("CHECK3");
+            }
+        }
+        //System.out.println("PROCESS                         " + process);
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         //if (state.getPosition().getX() - LandingSimulation.getLandingPosition().getX() > 10) {
@@ -68,75 +120,89 @@ public class FeedbackController extends Controller {
 
         //////////////////////////////////////////////////////////////////////////////////////////////////
 
-        if (flag) {
-            targetAngle = angle_of_rotation;
-            angularAcceleration = startRotation(state, Math.toRadians(targetAngle));
-            //System.out.println(targetAngle);
-            flag = false;
-        }
-
-        //System.out.println("timestep: " + state.getTime());
-        //System.out.println("difference: " + (state.getAngle() % (2 * Math.PI) - targetAngle));
-
-        System.out.println("state.getAngle()    " + state.getAngle());
-        System.out.println("targetAngle         " + targetAngle);
-        System.out.println("angleTolerance      " + angleTolerance);
-        System.out.println("thingy              " + Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle));
-
-        if (Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle) < angleTolerance) {
-            System.out.println("Reached target angle: " + targetAngle);
-            //now we need to counter torque
-            angularAcceleration = stabilize(state, angleTolerance);
-            //alternatively
-            //state.setAngularVelocity(0.0);
-
-            if (isStable(state, angleTolerance)) {
-                flag = true;
-                ////////////////////////////////////////////////////////////////////////////////////////
-                if (targetAngle == 0) {
-                    System.out.println("UPRIGHT");
-                    //the lander is upright and stable.
-                    //So now we can either use our main thrusters or initiate another rotation
-
-                    //mainThrust = strength;
-
-//                    if (state.getTime() < 216 + 60) { //stable at timestep 216
-//                        mainThrust = useMainThruster(state, strength, 60);
-//                    } else if (state.getTime() == 216 + 60) {
-//                        angularAcceleration = startRotation(state, Math.toRadians(45));
+//        if (Math.abs(state.getAngularVelocity()) <= max_angular_velocity && !flag) {
+//            targetAngle = angle_of_rotation;
+//            angularAcceleration = startRotation(state, Math.toRadians(targetAngle));
+//            //System.out.println(targetAngle);
+//        }
+//
+//        //System.out.println("timestep: " + state.getTime());
+//        //System.out.println("difference: " + (state.getAngle() % (2 * Math.PI) - targetAngle));
+//
+//        System.out.println("state.getAngle()    " + state.getAngle());
+//        System.out.println("targetAngle         " + targetAngle);
+//        System.out.println("angleTolerance      " + angleTolerance);
+//        System.out.println("thingy              " + Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle));
+//
+//        if (Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle) < angleTolerance || flag) {
+//            System.out.println("Reached target angle: " + targetAngle);
+//            flag = true;
+//
+//            if (Math.abs(state.getAngularVelocity()) <= max_angular_velocity  && flag) {
+//                //now we need to counter torque
+//                angularAcceleration = stabilize(state, angleTolerance);
+//            }
+//
+//            if (isStable(state, angleTolerance)) {
+//                System.out.println("REACHED TARGET ANGLE");
+//                flag = false;
+//                ////////////////////////////////////////////////////////////////////////////////////////
+//                if (targetAngle == 0) {
+//                    System.out.println("UPRIGHT");
+//                    //the lander is upright and stable.
+//                    //So now we can either use our main thrusters or initiate another rotation
+//
+//                    //mainThrust = strength;
+//
+//                    if (Math.abs(state.getAngularVelocity()) <= max_angular_velocity ) {
+//                        targetAngle = -angle_of_rotation;
+//                        angularAcceleration = startRotation(state, Math.toRadians(targetAngle));
+//                        //System.out.println(targetAngle);
 //                    }
-
-//                    if (state.getTime() > 276 && state.getTime() < 591 + 100) { //stable at timestep 591
-//                        mainThrust = useMainThruster(state, strength, 100);
-//                    } else {
-//                        //do nothing
-//                    }
-                } else {
-                    System.out.println("REACHED TARGET ANGLE");
-                    //the lander is at its target angle and is stable
-                    //now we can use main thrusters for trajectory correction
-                    //or put lander back into upright position
-
-                    //mainThrust = strength;
-
-//                    if (state.getTime() < 71 + 75) { //stable at timestep 71
-//                        mainThrust = useMainThruster(state, strength, 75);
-//                    } else if (state.getTime() == 146) { //THIS KINDA DEPENDS ON THE TIME STEP
-//                        angularAcceleration = startRotation(state, 0);
-//                    }
-
-//                    if (state.getTime() > 146 && state.getTime() < 461 + 60) { //stable at 461
-//                        mainThrust = useMainThruster(state, strength, 60);
-//                    } else if (state.getTime() == 461 + 60) {
-//                        angularAcceleration = startRotation(state, 0);
-//                    }
-                }
-                //////////////////////////////////////////////////////////////////////////////////////
-            }
-        }
+//
+////                    if (state.getTime() < 216 + 60) { //stable at timestep 216
+////                        mainThrust = useMainThruster(state, strength, 60);
+////                    } else if (state.getTime() == 216 + 60) {
+////                        angularAcceleration = startRotation(state, Math.toRadians(45));
+////                    }
+//
+////                    if (state.getTime() > 276 && state.getTime() < 591 + 100) { //stable at timestep 591
+////                        mainThrust = useMainThruster(state, strength, 100);
+////                    } else {
+////                        //do nothing
+////                    }
+//                } else {
+//                    System.out.println("REACHED TARGET ANGLE");
+//                    //the lander is at its target angle and is stable
+//                    //now we can use main thrusters for trajectory correction
+//                    //or put lander back into upright position
+//
+//                    //mainThrust = strength;
+//
+////                    targetAngle = 0;
+////                    angularAcceleration = 2 * 5 * startRotation(state, Math.toRadians(targetAngle));
+//
+////                    if (state.getTime() < 71 + 75) { //stable at timestep 71
+////                        mainThrust = useMainThruster(state, strength, 75);
+////                    } else if (state.getTime() == 146) { //THIS KINDA DEPENDS ON THE TIME STEP
+////                        angularAcceleration = startRotation(state, 0);
+////                    }
+//
+////                    if (state.getTime() > 146 && state.getTime() < 461 + 60) { //stable at 461
+////                        mainThrust = useMainThruster(state, strength, 60);
+////                    } else if (state.getTime() == 461 + 60) {
+////                        angularAcceleration = startRotation(state, 0);
+////                    }
+//                }
+//                //////////////////////////////////////////////////////////////////////////////////////
+//            }
+//        }
 
 //        System.out.println(Math.sin(state.getAngle()) + " ' " + Math.cos(state.getAngle()));
-        System.out.println("mainThrust              " + mainThrust);
+//        System.out.println("mainThrust              " + mainThrust);
+
+        mainThrust = 0;//---------------------------------------------------------------------------------
+
         double xAccel = mainThrust * Math.sin(state.getAngle());
         double yAccel = mainThrust * Math.cos(state.getAngle());
 //        System.out.println(xAccel + " ' " + yAccel);
@@ -152,6 +218,34 @@ public class FeedbackController extends Controller {
     @Override
     public Controller clone() {
         return new FeedbackController(targetAngle, thrustUntil, isSetThrustUntil);
+    }
+
+    public double getAngle(LandingState state, LandingRate windRate){
+//        Vector3d w = windRate.getVelocityRate();
+//        Vector3d g = TitanGravityODE.getGravitationalPullingForce();
+//
+//        //return angle(w.add(g).mul(-1), new Vector3d(0, 1, 0));
+//        return angle(new Vector3d(w.add(g).getX(), Math.abs(w.add(g).getY()), w.add(g).getZ()), new Vector3d(0, 1, 0));
+
+        double wind_direction = Math.signum(windRate.getVelocityRate().getX()); // -1 if left, 1 if right
+        double landing_point_direction = Math.signum(state.getPosition().getX() - LandingSimulation.getLandingPosition().getX()); // -1 if left, 1 if right
+
+        double direction;
+        if (wind_direction == landing_point_direction) {
+            direction = -1 * wind_direction;
+        } else {
+            direction = wind_direction;
+        }
+
+        return angle_of_rotation * direction;
+
+    }
+
+    public double getStrength(LandingState state, LandingRate windRate){
+        Vector3d w = windRate.getVelocityRate();
+        Vector3d g = TitanGravityODE.getGravitationalPullingForce();
+
+        return w.add(g).norm();
     }
 
     public double desiredAcceleration(LandingState state){
