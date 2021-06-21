@@ -25,11 +25,11 @@ public class PhysicsEngine implements ODEFunctionInterface {
 
         LandingRate windRate = (LandingRate) windODE.call(t, y);
 
-        LandingRate thrustRate = (LandingRate) controller.thrust(windRate, y);
-        //LandingRate thrustRate = (LandingRate) controller.thrust(gravityRate, y);
+        //LandingRate thrustRate = (LandingRate) controller.thrust(windRate, y);
+        LandingRate thrustRate = (LandingRate) controller.thrust(gravityRate, y);
 
-        //LandingRate all = gravityRate.add(windRate).add(thrustRate);
-        LandingRate all = gravityRate.add(thrustRate);
+        LandingRate all = gravityRate.add(windRate).add(thrustRate);
+        //LandingRate all = gravityRate.add(thrustRate);
         return all;
     }
 
