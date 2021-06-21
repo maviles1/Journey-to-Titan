@@ -28,6 +28,10 @@ import javafx.scene.transform.*;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import titan.interfaces.StateInterface;
+import titan.landing.FeedbackController;
+import titan.landing.FeedbackController2;
+import titan.landing.LandingSimulation;
+import titan.ui.TitanView;
 
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
@@ -44,7 +48,7 @@ public class GUI3D {
     public static final double STEP_SIZE_TRAJECTORY = 3600;
     public static final int CANVAS_WIDTH = 1400;
     public static final int CANVAS_HEIGHT = 1000;
-    public static double scale = 1e10;
+    public static double scale = 1e11;
     public Camera cam;
     public StateInterface[] states;
     int counter = 0;
@@ -82,6 +86,9 @@ public class GUI3D {
     MediaPlayer player;
     Group paths = new Group();
     Scene scene;
+    Stage stage;
+    LandingSimulation landSim;
+    Boolean landing = false;
 
     @FXML
     private Button camButton;
@@ -254,6 +261,8 @@ public class GUI3D {
     public Scene start(Stage primaryStage) throws Exception {
         SpaceObjectBuilder builder = new SpaceObjectBuilder(getClass().getResource("/solar_system_data-2020_04_01.txt").getFile());
         Group group = new Group();
+        this.stage = primaryStage;
+        LandingSimulation landSim = new LandingSimulation();
         group.translateXProperty().set(CANVAS_WIDTH / 2);
         group.translateYProperty().set(CANVAS_HEIGHT / 2);
         this.group = group;
@@ -314,6 +323,12 @@ public class GUI3D {
                         public void handle(long l) {
                             if (counter > states.length - 1){
                                 counter = states.length - 1;
+                            }
+                            if (counter >=12000 && !landing){
+                                landing = true;
+                                TitanView titanView = landSim.getTitanView(new FeedbackController());
+                                stage.setScene(new Scene(titanView.getParent(),1200,800));
+                                titanView.start();
                             }
                             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/Y hh:mm a");
                             Date date = new Date(120,4,counter/24, counter, 0,0);

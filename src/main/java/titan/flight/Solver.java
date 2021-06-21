@@ -108,7 +108,7 @@ public class Solver implements ODESolverInterface {
                     System.out.println(s[i].getVelocities()[11].sub(s[i].getVelocities()[8]));
                 }
                 if (probePosition.dist(titanPosition)/1000 < 2574){
-                    System.out.println("SBFISFIUASBFIUASFBU: " + i);
+                    System.out.println("SBFISFIUASBFIUASFBU: " + i + " " +  s[i].getPositions()[11].dist(s[i].getPositions()[8])/1000);
                 }
 
                 StateInterface next = step(f,t,s[i],h);
