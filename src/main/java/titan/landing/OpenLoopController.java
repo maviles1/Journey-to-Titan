@@ -37,14 +37,14 @@ public class OpenLoopController extends Controller {
 
         //System.out.println("difference: " + (state.getAngle() % (2 * Math.PI) - targetAngle));
         if (Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle) < angleTolerance) {
-            System.out.println("timestep: " + state.getTime());
-            System.out.println("Reached target angle: " + targetAngle);
+            //System.out.println("timestep: " + state.getTime());
+            //System.out.println("Reached target angle: " + targetAngle);
             //now we need to counter torque
             angularAcceleration = stabilize(state, angleTolerance);
 
             if (isStable(state, angleTolerance) && state.getTime() > 0) {
                 if (targetAngle == 0) {
-                    System.out.println("UPRIGHT");
+                    //System.out.println("UPRIGHT");
                     //the lander is upright and stable.
                     //So now we can either use our main thrusters or initiate another rotation
                     state.setAngle(0); //hacky, i know, but its gotta be
@@ -53,7 +53,7 @@ public class OpenLoopController extends Controller {
                     double duration = 409; //409 and 2.1921 = 1.5vy // also 409 and 2.19211 = 1.5
 
                     if (state.getVelocity().getY() > 0)
-                        System.out.println("RISING");
+                        //System.out.println("RISING");
 
                     if (state.getTime() > t0 && state.getTime() < t0 + duration) { //stable at timestep 216
                         mainThrust = useMainThruster(state, 2.1921, duration);
@@ -62,7 +62,7 @@ public class OpenLoopController extends Controller {
                     }
 
                 } else {
-                    System.out.println("REACHED TARGET ANGLE");
+                    //System.out.println("REACHED TARGET ANGLE");
                     //the lander is at its target angle and is stable
                     //now we can use main thrusters for trajectory correction
                     //or put lander back into upright position

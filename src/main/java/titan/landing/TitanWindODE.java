@@ -24,7 +24,11 @@ public class TitanWindODE implements ODEFunctionInterface {
         {
             newwindvec = wm.createNewWindVector(state.getPrevWindVector(), altitute);
             forceVector = wm.getForceVector(newwindvec);
+        } else {
+            newwindvec = state.getPrevWindVector();
         }
+
+        System.out.println(newwindvec);
 
 
         return new LandingRate(state.getVelocity(), forceVector, state.getShuttle_direction(), state.getWind_direction(), newwindvec, 0);
