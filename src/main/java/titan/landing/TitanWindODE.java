@@ -15,9 +15,17 @@ public class TitanWindODE implements ODEFunctionInterface {
 
         //using windmodel
         WindModel wm = new WindModel();
-        Vector3d newwindvec = wm.createNewWindVector(state.getPrevWindVector(), altitute);
 
-        Vector3d forceVector = wm.getForceVector(newwindvec);
+        Vector3d newwindvec = new Vector3d(0, 0, 0);
+        Vector3d forceVector = new Vector3d (0, 0, 0);
+
+        //Wind only applies every 5 states --works really well
+        if( t % 5 == 0)
+        {
+            newwindvec = wm.createNewWindVector(state.getPrevWindVector(), altitute);
+            forceVector = wm.getForceVector(newwindvec);
+        }
+
 
         return new LandingRate(state.getVelocity(), forceVector, state.getShuttle_direction(), state.getWind_direction(), newwindvec, 0);
 
