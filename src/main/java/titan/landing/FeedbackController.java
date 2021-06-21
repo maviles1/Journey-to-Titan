@@ -44,10 +44,6 @@ public class FeedbackController extends Controller {
             double wind_direction = Math.signum(windRate.getVelocityRate().getX()); // -1 if left, 1 if right
             double landing_point_direction = Math.signum(state.getPosition().getX() - LandingSimulation.getLandingPosition().getX()); // -1 if left, 1 if right
 
-            if (wind_direction == 0){
-                throw new RuntimeException();
-            }
-
             double wind_acc = windRate.getVelocityRate().norm(); // strength of acceleration
             double acc = desiredAcceleration(state) - wind_acc;
             double direction;
@@ -73,7 +69,7 @@ public class FeedbackController extends Controller {
         ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 //        if (flag) {
-            angularAcceleration = startRotation(state, Math.toRadians(targetAngle), strength);
+            angularAcceleration = startRotation(state, Math.toRadians(targetAngle));
             //System.out.println(targetAngle);
 //            flag = false;
 //        }
@@ -89,7 +85,7 @@ public class FeedbackController extends Controller {
         if (Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle) < angleTolerance) {
             System.out.println("Reached target angle: " + targetAngle);
             //now we need to counter torque
-            angularAcceleration = stabilize(state, angleTolerance, strength);
+            angularAcceleration = stabilize(state, angleTolerance);
             //alternatively
             //state.setAngularVelocity(0.0);
 
