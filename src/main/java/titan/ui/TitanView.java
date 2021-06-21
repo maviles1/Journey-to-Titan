@@ -51,8 +51,8 @@ public class TitanView extends Renderer2D {
         gc.fillRect(0, HEIGHT - 50, WIDTH, 50);
 
         //draw landing pad
-        gc.setFill(Color.AQUA);
-        gc.fillRect(toCoord(landingPadX) - 2, HEIGHT - 50, 4, 4);
+        gc.setFill(Color.PURPLE);
+        gc.fillRect(toCoord(landingPadX) - 2, HEIGHT - 50, 5, 20);
 
         //this is where we draw the probe
         LandingState state = (LandingState) states[count];
@@ -64,7 +64,7 @@ public class TitanView extends Renderer2D {
 
         //draw wind vectors
         gc.setFill(Color.AQUA);
-        System.out.println(state.getPrevWindVector());
+        //System.out.println(state.getPrevWindVector());
 
         //check collision
         if (checkCollision(landerY)) {
@@ -76,6 +76,12 @@ public class TitanView extends Renderer2D {
                 errorAngle = Math.abs(state.getAngle());
                 errorAngleVel = Math.abs(state.getAngularVelocity());
                 landedAt = landerX;
+                //Print some land data
+                System.out.println("------------------------------------");
+                System.out.println("Xdis: " + errorX);
+                System.out.println("Xvel: " + errorVX);
+                System.out.println("Yvel: " + errorVY);
+                System.out.println("------------------------------------");
                 landed = true;
             }
 

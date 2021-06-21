@@ -16,7 +16,7 @@ public class LandingVerlet implements StepInterface  {
         //x(t + ∆t) = x(t) * ∆t + 1/2 * a(t) * ∆t^2
         Vector3d pos = state.getPosition().addMul(h, state.getVelocity().addMul(0.5 * h * h, rate.getVelocityRate()));
         double angle = state.getAngle() + (state.getAngularVelocity() * h) + (0.5 * h * h * rate.getAngularAcceleration());
-        System.out.println(rate.getPrevwindvec());
+        //System.out.println(rate.getPrevwindvec());
 
         LandingState nextState = new LandingState(pos, state.getVelocity(), state.getShuttle_direction(), state.getWind_direction(), rate.getPrevwindvec(), angle, state.getAngularVelocity(), t + h);
         //LandingRate newRate = (LandingRate) f.call(t + h, nextState);
