@@ -168,48 +168,8 @@ public class FeedbackController extends Controller {
         return ll.sub(pos);
     }
 
-    public boolean rotationNeeded(LandingState state){
-        return !(targetAngle - state.getPosition().getY() / state.getPosition().getX() <= angleTolerance);
-    }
-
     public double angle(Vector3d a, Vector3d b){
         double sum = a.getX()*b.getX() + a.getY()*b.getY() + a.getZ()*b.getZ();
         return  Math.acos(sum / (a.norm() * b.norm()));
     }
-
-//    /**
-//     * Method to find the adjustment for direction so it remains opposite towards Titan
-//     * @return the vector that represents the geometric difference between desired direction and the actual one
-//     */
-//    public Vector3d directionAdjustment(){
-//        Vector3d direction = landing_module.getDirection(); // direction of landing module
-//        Vector3d desired_direction = landing_module.getPosition(); // direction of the vector that goes from the centre of the Titan to the position of the landing module
-//        Vector3d adjustment = desired_direction.sub(direction);
-//        return adjustment.copy();
-//    }
-//
-//    /**
-//     * Method to produce the vector that starts at landing module's position and ends at landing location
-//     * @return the vector that represents the distance between landing module and landing location
-//     */
-//    public Vector3d dist(){
-//        Vector3d pos = current_state.getPosition();
-//        Vector3d ll = LandingSimulation.getLandingPosition();
-//
-//        return pos.sub(ll);
-//    }
-//
-//    /**
-//     * Method to produce thrust with the main thruster towards the landing location
-//     * @return the vector that represents an acceleration applied to the landing module - its main thruster's thrust
-//     */
-//    public Vector3d thruster(){
-//        Vector3d dir = dist();
-//        double desired_velocity = dir.getX() / dir.getY();
-//        double desired_acceleration = desired_velocity - current_state.getVelocity().norm();
-//
-//        Vector3d thrust = current_state.getShuttle_direction().normalize().mul(desired_acceleration);
-//
-//        return thrust;
-//    }
 }
