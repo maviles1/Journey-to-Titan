@@ -31,6 +31,7 @@ import titan.interfaces.StateInterface;
 import titan.landing.FeedbackController;
 import titan.landing.FeedbackController2;
 import titan.landing.LandingSimulation;
+import titan.landing.OpenLoopController;
 import titan.ui.TitanView;
 
 import java.net.URISyntaxException;
@@ -326,7 +327,7 @@ public class GUI3D {
                             }
                             if (counter >=12000 && !landing){
                                 landing = true;
-                                TitanView titanView = landSim.getTitanView(new FeedbackController());
+                                TitanView titanView = landSim.getTitanView(new OpenLoopController());
                                 stage.setScene(new Scene(titanView.getParent(),1200,800));
                                 titanView.start();
                             }

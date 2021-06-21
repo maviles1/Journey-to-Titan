@@ -112,7 +112,7 @@ public class OpenLoopController extends Controller {
     }
 
     @Override
-    public Controller clone() {
+    public Controller clone(){
         return new OpenLoopController(targetAngle, thrustUntil, isSetThrustUntil);
     }
 
