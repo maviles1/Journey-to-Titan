@@ -22,11 +22,12 @@ public class LandingRate implements RateInterface {
         this.angularAcceleration = angularAcceleration;
     }
 
-    public LandingRate(Vector3d posRate, Vector3d velRate, double angularVelocity, double angularAcceleration) {
+    public LandingRate(Vector3d posRate, Vector3d velRate, double angularVelocity, double angularAcceleration, Vector3d prevwindvec) {
         positionRate = posRate;
         velocityRate = velRate;
         this.angularVelocity = angularVelocity;
         this.angularAcceleration = angularAcceleration;
+        this.prevwindvec = prevwindvec;
     }
 
     public LandingRate mul(double scalar) {
@@ -38,7 +39,7 @@ public class LandingRate implements RateInterface {
 //        Vector3d newWind_directionRate = null;
 //        Vector3d prevwv = null;
 //        return new LandingRate(newPosition, newVelocity, newShuttle_directionRate, newWind_directionRate, prevwv, angularAcceleration);
-        return new LandingRate(newPosition, newVelocity, newAngularVel, newAngularAccel);
+        return new LandingRate(newPosition, newVelocity, newAngularVel, newAngularAccel, prevwindvec);
     }
 
     public LandingRate add(RateInterface rate){
@@ -52,7 +53,11 @@ public class LandingRate implements RateInterface {
 //        Vector3d newShuttle_directionRate = null;
 //        Vector3d newWind_directionRate = null;
 //        Vector3d prevwv = null;
-        return new LandingRate(newPosition, newVelocity, newAngularVel, newAngularAccel);
+        return new LandingRate(newPosition, newVelocity, newAngularVel, newAngularAccel, r.getPrevwindvec());
+    }
+
+    public Vector3d getPrevwindvec() {
+        return prevwindvec;
     }
 
     public double getAngularAcceleration() {

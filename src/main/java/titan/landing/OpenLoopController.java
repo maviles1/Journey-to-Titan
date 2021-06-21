@@ -34,38 +34,47 @@ public class OpenLoopController extends Controller {
             double enterAngle = Math.atan2(state.getVelocity().getY(), state.getVelocity().getX());
             System.out.println(enterAngle);
             angularAcceleration = startRotation(state, Math.toRadians(enterAngle), 100);
+        if (state.getTime() == 0) {
+            angularAcceleration = startRotation(state, Math.toRadians(-24.503));
         }
-        //double enterAngle = Math.atan2(state.getVelocity().getX(), state.getVelocity().getY());
 
         //System.out.println("difference: " + (state.getAngle() % (2 * Math.PI) - targetAngle));
         if (Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle) < angleTolerance) {
-            System.out.println("timestep: " + state.getTime());
-            System.out.println("Reached target angle: " + targetAngle);
+            //System.out.println("timestep: " + state.getTime());
+            //System.out.println("Reached target angle: " + targetAngle);
             //now we need to counter torque
             angularAcceleration = stabilize(state, angleTolerance, 50);
 
             if (isStable(state, angleTolerance) && state.getTime() > 0) {
                 if (targetAngle == 0) {
-                    System.out.println("UPRIGHT");
+                    //System.out.println("UPRIGHT");
                     //the lander is upright and stable.
                     //So now we can either use our main thrusters or initiate another rotation
+                    state.setAngle(0); //hacky, i know, but its gotta be
 
                     if (state.getTime() < 216 + 60) { //stable at timestep 216
                         mainThrust = useMainThruster(state, 3, 60);
                     } else if (state.getTime() == 216 + 60) {
                         angularAcceleration = startRotation(state, Math.toRadians(45), 100);
                     }
+                    double t0 = 380 + 250;//259 is when its upright, 380 is when it stops rising
+                    double duration = 409; //409 and 2.1921 = 1.5vy // also 409 and 2.19211 = 1.5
 
-                    if (state.getTime() > 276 && state.getTime() < 591 + 100) { //stable at timestep 591
-                        mainThrust = useMainThruster(state, 3, 100);
-                    } else {
-                        //do nothing
+                    if (state.getVelocity().getY() > 0)
+                        //System.out.println("RISING");
+
+                    if (state.getTime() > t0 && state.getTime() < t0 + duration) { //stable at timestep 216
+                        mainThrust = useMainThruster(state, 2.1921, duration);
+                    } else if (state.getTime() == t0 + duration) {
+                        //angularAcceleration = startRotation(state, Math.toRadians(45));
                     }
+
                 } else {
-                    System.out.println("REACHED TARGET ANGLE");
+                    //System.out.println("REACHED TARGET ANGLE");
                     //the lander is at its target angle and is stable
                     //now we can use main thrusters for trajectory correction
                     //or put lander back into upright position
+                    state.setAngle(targetAngle);
 
                     if (state.getTime() < 142 + 300) { //stable at timestep 142
                         mainThrust = useMainThruster(state, 3, 300);
@@ -77,7 +86,17 @@ public class OpenLoopController extends Controller {
                         mainThrust = useMainThruster(state, 3, 60);
                     } else if (state.getTime() == 461 + 60) {
                         angularAcceleration = startRotation(state, 0, 100);
+                    //old values: duration: 145, strength: 4.907
+                    double duration = 182;
+                    double t0 = 76;
+
+                    if (state.getTime() < t0 + duration) { //stable at timestep 142
+                        mainThrust = useMainThruster(state, 3.907, duration);
+
+                    } else if (state.getTime() == t0 + duration) { //THIS KINDA DEPENDS ON THE TIME STEP
+                        angularAcceleration = startRotation(state, 0);
                     }
+
                 }
             }
         }
