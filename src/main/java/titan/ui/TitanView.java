@@ -3,11 +3,13 @@ package titan.ui;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 import titan.flight.State;
 import titan.interfaces.StateInterface;
 import titan.landing.LandingRate;
@@ -60,28 +62,40 @@ public class TitanView extends Renderer2D {
         double landerY = state.getPosition().getY();
         setVvalue(1 - (toCoord(landerY) / HEIGHT));
 
+        //draw wind vectors
+        gc.setFill(Color.AQUA);
+        System.out.println(state.getPrevWindVector());
+
         //check collision
         if (checkCollision(landerY)) {
             if (!landed) {
-//                errorX = Math.abs(landerX - landingPadX);
-                errorX = landerX - landingPadX;
+                errorX = Math.abs(landerX - landingPadX);
+//                errorX = landerX - landingPadX;
                 errorVX = Math.abs(state.getVelocity().getX());
                 errorVY = Math.abs(state.getVelocity().getY());
+                errorAngle = Math.abs(state.getAngle());
+                errorAngleVel = Math.abs(state.getAngularVelocity());
+                landedAt = landerX;
                 landed = true;
             }
-            gc.fillOval(toCoord(landerX) - RADIUS, HEIGHT - 50 - RADIUS * 2, RADIUS * 2, RADIUS * 2); //I dunno why the height has to be subtracted by radius * 2
+
+//            gc.fillOval(toCoord(landerX) - RADIUS, HEIGHT - 50 - RADIUS * 2, RADIUS * 2, RADIUS * 2); //I dunno why the height has to be subtracted by radius * 2
+            gc.drawImage(new Image("/TransparentUFO.png"), toCoord(landedAt) - RADIUS, HEIGHT - 50 - RADIUS*2, 529/10.0, 254 / 10.0);
         } else {
-//            errorX = Math.abs(landerX - landingPadX);
-            errorX = landerX - landingPadX;
+            errorX = Math.abs(landerX - landingPadX);
+//            errorX = landerX - landingPadX;
             errorVX = Math.abs(state.getVelocity().getX());
             errorVY = Math.abs(state.getVelocity().getY());
+            errorAngle = Math.abs(state.getAngle());
+            errorAngleVel = Math.abs(state.getAngularVelocity());
 
             double rotationCenterX = toCoord(landerX);
             double rotationCenterY = HEIGHT - toCoord(landerY) - 50;
 
             gc.save();
             gc.transform(new Affine(new Rotate(Math.toDegrees(state.getAngle()), rotationCenterX, rotationCenterY)));
-            gc.fillRect(toCoord(landerX) - RADIUS, HEIGHT - toCoord(landerY) - 50 - RADIUS, RADIUS*2, RADIUS*2);
+//            gc.fillRect(toCoord(landerX) - RADIUS, HEIGHT - toCoord(landerY) - 50 - RADIUS, RADIUS*2, RADIUS*2);
+            gc.drawImage(new Image("/TransparentUFO.png"), toCoord(landerX) - RADIUS, HEIGHT - toCoord(landerY) - 50 - RADIUS, 529/10.0, 254 / 10.0);
             gc.restore();
         }
 
@@ -96,40 +110,67 @@ public class TitanView extends Renderer2D {
     double errorX = 0;
     double errorVX = 0;
     double errorVY = 0;
+    double errorAngleVel = 0;
+    double errorAngle = 0;
     boolean landed = false;
+    double landedAt = 0;
+
+    void drawArrow(GraphicsContext gc, int x1, int y1, int x2, int y2) {
+        gc.setFill(Color.BLACK);
+        int ARR_SIZE = 8;
+        double dx = x2 - x1, dy = y2 - y1;
+        double angle = Math.atan2(dy, dx);
+        int len = (int) Math.sqrt(dx * dx + dy * dy);
+
+        Transform transform = Transform.translate(x1, y1);
+        transform = transform.createConcatenation(Transform.rotate(Math.toDegrees(angle), 0, 0));
+        gc.setTransform(new Affine(transform));
+
+        gc.strokeLine(0, 0, len, 0);
+        gc.fillPolygon(new double[]{len, len - ARR_SIZE, len - ARR_SIZE, len}, new double[]{0, -ARR_SIZE, ARR_SIZE, 0},
+                4);
+    }
 
     @Override
     protected void prepareConsole() {
         LandingState state = (LandingState) states[count];
         console.getChildren().clear();
         console.getChildren().add(new Label("Distance to Titan: " + Math.max(states[count].getPositions()[0].getY(), 0)));
-        console.getChildren().add(new Label("Distance to Titan: " + states[count].getPositions()[0].getY()));
-        console.getChildren().add(new Label("VY:  " + states[count].getVelocities()[0].getY()));
+//        console.getChildren().add(new Label("VY:  " + states[count].getVelocities()[0].getY()));
         console.getChildren().add(new Label("ErrorX:  " + errorX));
 //        console.getChildren().add(new Label("ErrorX:  " + state.getPosition().getX()));
-//        console.getChildren().add(new Label("ErrorVX:  " + errorVX));
-        console.getChildren().add(new Label("ErrorVX:  " + state.getVelocity().getX()));
+        console.getChildren().add(new Label("ErrorVX:  " + errorVX));
+//        console.getChildren().add(new Label("ErrorVX:  " + state.getVelocity().getX()));
         console.getChildren().add(new Label("ErrorVY:  " + errorVY));
-        console.getChildren().add(new Label("Angle:  " + Math.toDegrees(state.getAngle() % (2*Math.PI))));
-        console.getChildren().add(new Label("AngularVel:  " + state.getAngularVelocity()));
+//        console.getChildren().add(new Label("Angle:  " + Math.toDegrees(state.getAngle() % (2*Math.PI))));
+        console.getChildren().add(new Label("Angle: " + errorAngle % (2*Math.PI)));
+        console.getChildren().add(new Label("AngularVel:  " + errorAngleVel));
 
         ((Label)console.getChildren().get(0)).setTextFill(Color.WHITE);
         ((Label)console.getChildren().get(1)).setTextFill(Color.WHITE);
         ((Label)console.getChildren().get(2)).setTextFill(Color.WHITE);
-        ((Label)console.getChildren().get(6)).setTextFill(Color.WHITE);
-        ((Label)console.getChildren().get(7)).setTextFill(Color.WHITE);
 
         if (errorX < 0.1)
+            ((Label)console.getChildren().get(1)).setTextFill(Color.GREEN);
+        else
+            ((Label)console.getChildren().get(1)).setTextFill(Color.RED);
+
+        if (errorVX < 0.1)
+            ((Label)console.getChildren().get(2)).setTextFill(Color.GREEN);
+        else
+            ((Label)console.getChildren().get(2)).setTextFill(Color.RED);
+
+        if (errorVY < 0.1)
             ((Label)console.getChildren().get(3)).setTextFill(Color.GREEN);
         else
             ((Label)console.getChildren().get(3)).setTextFill(Color.RED);
 
-        if (errorVX < 0.1)
+        if (errorAngle < 0.02)
             ((Label)console.getChildren().get(4)).setTextFill(Color.GREEN);
         else
             ((Label)console.getChildren().get(4)).setTextFill(Color.RED);
 
-        if (errorVY < 0.1)
+        if (errorAngleVel < 0.01)
             ((Label)console.getChildren().get(5)).setTextFill(Color.GREEN);
         else
             ((Label)console.getChildren().get(5)).setTextFill(Color.RED);

@@ -64,6 +64,9 @@ public class LandingState implements StateInterface {
     public double getAngularVelocity() {
         return angularVelocity;
     }
+    public void setAngularVelocity(double angularVelocity) {
+        this.angularVelocity = angularVelocity;
+    }
 
     public Vector3d getPosition() {
         return position;
