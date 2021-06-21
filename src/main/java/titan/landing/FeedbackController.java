@@ -68,11 +68,11 @@ public class FeedbackController extends Controller {
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-//        if (flag) {
+        if (flag) {
             angularAcceleration = startRotation(state, Math.toRadians(targetAngle));
             //System.out.println(targetAngle);
-//            flag = false;
-//        }
+            flag = false;
+        }
 
         //System.out.println("timestep: " + state.getTime());
         //System.out.println("difference: " + (state.getAngle() % (2 * Math.PI) - targetAngle));
@@ -85,9 +85,9 @@ public class FeedbackController extends Controller {
         if (Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle) < angleTolerance) {
             System.out.println("Reached target angle: " + targetAngle);
             //now we need to counter torque
-            angularAcceleration = stabilize(state, angleTolerance);
+            //angularAcceleration = stabilize(state, angleTolerance);
             //alternatively
-            //state.setAngularVelocity(0.0);
+            state.setAngularVelocity(0.0);
 
             if (isStable(state, angleTolerance)) {
                 flag = true;
@@ -97,7 +97,7 @@ public class FeedbackController extends Controller {
                     //the lander is upright and stable.
                     //So now we can either use our main thrusters or initiate another rotation
 
-                    mainThrust = strength;
+                    //mainThrust = strength;
 
 //                    if (state.getTime() < 216 + 60) { //stable at timestep 216
 //                        mainThrust = useMainThruster(state, strength, 60);
@@ -116,7 +116,7 @@ public class FeedbackController extends Controller {
                     //now we can use main thrusters for trajectory correction
                     //or put lander back into upright position
 
-                    mainThrust = strength;
+                    //mainThrust = strength;
 
 //                    if (state.getTime() < 71 + 75) { //stable at timestep 71
 //                        mainThrust = useMainThruster(state, strength, 75);
@@ -135,7 +135,7 @@ public class FeedbackController extends Controller {
         }
 
 //        System.out.println(Math.sin(state.getAngle()) + " ' " + Math.cos(state.getAngle()));
-        System.out.println("mainThrust          " + mainThrust);
+        System.out.println("mainThrust              " + mainThrust);
         double xAccel = mainThrust * Math.sin(state.getAngle());
         double yAccel = mainThrust * Math.cos(state.getAngle());
 //        System.out.println(xAccel + " ' " + yAccel);
