@@ -39,9 +39,9 @@ public class WindModel {
         //Create new direction
         windvector = refactor2DVector(windvector, angle); //Wind is only 2d
 
-        //System.out.println("Windvec: "+ windvector.toString());
-        System.out.println("Windstr: "+ windvector.norm());
-        System.out.println("Altitude: "+ altitude);
+//        //System.out.println("Windvec: "+ windvector.toString());
+//        System.out.println("Windstr: "+ windvector.norm());
+//        System.out.println("Altitude: "+ altitude);
 
         return windvector;
     }
@@ -115,10 +115,14 @@ public class WindModel {
         swv = new Vector3d(xyz[0], xyz[1], 0); //vector in 2d
         swv = swv.mul((gen.nextDouble() * (altitude/ws))/swv.norm());
 
-
         //make y value always negative
         if(swv.getY() > 0)
             swv.setY(swv.getY()*-1);
+
+
+        System.out.println("Inital Wind Vector: "+ swv.toString());
+        System.out.println("Initial Wind Speed: "+ swv.norm());
+        System.out.println("Drop Altitude: "+ altitude);
 
         return swv;
     }

@@ -83,14 +83,25 @@ public class OpenLoopController extends Controller {
             }
         }
 
+        //End thrusters to break and compensate for gravity during landing
+        if(state.getTime() >= 705 && state.getTime() <= 855)
+        {
+            mainThrust = 4;
+        }
+        if(state.getTime() >= 855 && state.getTime() <= 900)
+        {
+            mainThrust = 1.36;
+        }
+        if(state.getTime() >= 905 && state.getTime() <= 977)
+        {
+            mainThrust = 2;
+        }
+
         double xAccel = mainThrust * Math.sin(state.getAngle());
         double yAccel = mainThrust * Math.cos(state.getAngle());
 
         Vector3d thrust = new Vector3d(xAccel, yAccel, 0);
 
-//        System.out.println("angular accel: " +  angularAcceleration);
-        //System.out.println("angular vel: " +  state.getAngularVelocity());
-//        System.out.println("angle: " +  state.getAngle());
         return new LandingRate(state.getVelocity(), thrust, state.getShuttle_direction(), state.getWind_direction(), state.getPrevWindVector(), angularAcceleration);
     }
 
