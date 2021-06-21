@@ -84,9 +84,9 @@ public class FeedbackController extends Controller {
         System.out.println("thingy              " + Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle));
 
         if (Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle) < angleTolerance) {
-//            System.out.println("Reached target angle: " + targetAngle);
+            System.out.println("Reached target angle: " + targetAngle);
             //now we need to counter torque
-            angularAcceleration = stabilize(state, Math.toRadians(angleTolerance));
+            angularAcceleration = stabilize(state, Math.toRadians(angleTolerance), strength);
             //alternatively
             //state.setAngularVelocity(0.0);
 

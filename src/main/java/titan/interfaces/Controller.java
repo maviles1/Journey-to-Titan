@@ -8,7 +8,7 @@ public abstract class Controller {
 
     public final double MASS = 6000;
     public final double RADIUS = 3;
-    public final double angleTolerance = 1;
+    public final double angleTolerance = 0.1;
 
     public double targetAngle;
     public double thrustUntil; //TODO: find a formula to calculate this
@@ -45,14 +45,14 @@ public abstract class Controller {
         }
     }
 
-    public double stabilize(LandingState state, double tolerance) {
+    public double stabilize(LandingState state, double tolerance, double strength) {
         if (state.getAngularVelocity() < 0 - tolerance) { //spinning counter-clockwise
             //need to apply leftTorque
             //System.out.println("applying left torque");
-            return angularAcceleration(leftTorque(50, state));
+            return angularAcceleration(leftTorque(strength, state));
         } else if (state.getAngularVelocity() > 0 + tolerance) {
             //System.out.println("applying right torque");
-            return angularAcceleration(rightTorque(50, state));
+            return angularAcceleration(rightTorque(strength, state));
         } else {
             //angularVelocity is within tolerance, but maybe not exactly 0;
             return -state.getAngularVelocity(); //cancel any residual angular velocity/acceleration

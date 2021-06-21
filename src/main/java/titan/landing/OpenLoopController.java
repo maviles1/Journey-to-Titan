@@ -42,7 +42,7 @@ public class OpenLoopController extends Controller {
             System.out.println("timestep: " + state.getTime());
             System.out.println("Reached target angle: " + targetAngle);
             //now we need to counter torque
-            angularAcceleration = stabilize(state, angleTolerance);
+            angularAcceleration = stabilize(state, angleTolerance, 50);
 
             if (isStable(state, angleTolerance) && state.getTime() > 0) {
                 if (targetAngle == 0) {
