@@ -64,7 +64,7 @@ public class Solver implements ODESolverInterface {
         double t = 0;
         thrust(probe,s[0], initialThrust);
         double stateToReach = 12132;
-        double bufferStates = 4000;
+        double bufferStates = 1100;
         Vector3d rotationPoint = new Vector3d(9.642882419816824E11,-1.1329380605841162E12,-1.836751345662014E10).sub(new Vector3d(9.642882419816824E11,-1.1329380605841162E12,-1.836751345662014E10));
         Vector3d prevPoint = new Vector3d(9.64284008578408E11,-1.1329238606616946E12,-1.8369471931435688E10);
         for (int i = 1; i < size - 1; i++){
@@ -78,7 +78,7 @@ public class Solver implements ODESolverInterface {
             //1st (8.377236873346893E11,-1.2355819685819001E12,-1.1914403064430511E10)
             Vector3d v = new Vector3d(9.642882419816824E11,-1.1329380605841162E12,-1.836751345662014E10);
 //            System.out.println(v.dist(new Vector3d(9.094440054697218E11,-1.1776829849786262E12,-1.6206644915693071E10))/1000);
-            v = v.add(new Vector3d(-1e10 -2.1201e10,1e10 + 4.0e9,0));
+            v = v.add(new Vector3d(-1e10 ,2e9 ,0));
 
             if (i < stateToReach - bufferStates && i % 500 == 0){
                 Vector3d ve = v.sub(s[i].getPositions()[11]);
@@ -89,19 +89,28 @@ public class Solver implements ODESolverInterface {
                 Vector3d ve = new Vector3d(9.64288419816824E11,-1.1329380605841162E12,-1.836751345662014E10).sub(s[i].getPositions()[11]);
                 thrust(probe,s[i],probe.getVelocity().mul(-1).add(ve.mul((1.0/(stateToReach - i))/3600)));
             }
-            if (i == 12132){
-                System.out.println(s[i].getVelocities()[7]);
-            }
+//            if (i == 12132){
+//                System.out.println("probe vel: " + s[i].getVelocities()[11]);
+//                System.out.println("titan vel: " + s[i].getVelocities()[8]);
+//                System.out.println(s[i].getVelocities()[11].sub(s[i].getVelocities()[8]));
+//            }
 
             if (i >= stateToReach){
                 Vector3d probePosition = s[i].getPositions()[11];
                 Vector3d titanPosition = s[i].getPositions()[8];
                 rotationPoint =  probePosition.sub(titanPosition);
-                Vector3d nextRotationPoint = rotationPoint.rotate(20,0,0);
+                Vector3d nextRotationPoint = rotationPoint.rotate(30,0,0);
                 nextRotationPoint = nextRotationPoint.add(s[i].getPositions()[8]);
-//                if (probePosition.dist(titanPosition)/1000 < 2800 && probePosition.dist(titanPosition)/1000 > 2700 ){
-//                    System.out.println(i + " " + (probePosition.dist(titanPosition)/1000) + " " + probe.getVelocity());
-//                }
+                if (probePosition.dist(titanPosition)/1000 > 2674 && probePosition.dist(titanPosition)/1000 < 2700 ){
+                    System.out.println(i + " " + (probePosition.dist(titanPosition)/1000) + " " + probe.getVelocity());
+                    System.out.println("probe vel: " + s[i].getVelocities()[11]);
+                    System.out.println("titan vel: " + s[i].getVelocities()[8]);
+                    System.out.println(s[i].getVelocities()[11].sub(s[i].getVelocities()[8]));
+                }
+                if (probePosition.dist(titanPosition)/1000 < 2574){
+                    System.out.println("SBFISFIUASBFIUASFBU: " + i + " " +  s[i].getPositions()[11].dist(s[i].getPositions()[8])/1000);
+                }
+
                 StateInterface next = step(f,t,s[i],h);
                 Vector3d nextTitan = next.getPositions()[8].sub(titanPosition);
                 Vector3d thrustVector = nextRotationPoint.sub(s[i].getPositions()[11]).add(nextTitan);

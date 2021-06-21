@@ -75,7 +75,6 @@ public class OpenLoopController extends Controller {
                     //now we can use main thrusters for trajectory correction
                     //or put lander back into upright position
                     state.setAngle(targetAngle);
-
                     if (state.getTime() < 142 + 300) { //stable at timestep 142
                         mainThrust = useMainThruster(state, 3, 300);
                     } else if (state.getTime() == 142 + 300) { //THIS KINDA DEPENDS ON THE TIME STEP
@@ -111,7 +110,6 @@ public class OpenLoopController extends Controller {
 //        System.out.println("angle: " +  state.getAngle());
         return new LandingRate(state.getVelocity(), thrust, state.getShuttle_direction(), state.getWind_direction(), state.getPrevWindVector(), angularAcceleration);
     }
-
 
     @Override
     public Controller clone() {
