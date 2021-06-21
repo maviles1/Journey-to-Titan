@@ -28,6 +28,10 @@ import javafx.scene.transform.*;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import titan.interfaces.StateInterface;
+import titan.landing.FeedbackController;
+import titan.landing.FeedbackController2;
+import titan.landing.LandingSimulation;
+import titan.ui.TitanView;
 
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
@@ -82,6 +86,9 @@ public class GUI3D {
     MediaPlayer player;
     Group paths = new Group();
     Scene scene;
+    Stage stage;
+    LandingSimulation landSim;
+    Boolean landing = false;
 
     @FXML
     private Button camButton;
@@ -186,7 +193,7 @@ public class GUI3D {
             }
             else {
                 spaceObjects.get(j).setRadius(radius[j]);
-                Sphere sphere = new Sphere(20);
+                Sphere sphere = new Sphere(toScreenCoordinates(radius[j]));
 //                Sphere sphere = new Sphere(toScreenCoordinates(radius[j]));
                 sphere.translateXProperty().set(toScreenCoordinates(o.getPosition().getX()) - toScreenCoordinates(probePos.getX()));
                 sphere.translateYProperty().set(toScreenCoordinates(o.getPosition().getY()) - toScreenCoordinates(probePos.getY()));
@@ -199,7 +206,7 @@ public class GUI3D {
                     name.translateXProperty().set(toScreenCoordinates(o.getPosition().getX()) - toScreenCoordinates(probePos.getX()) + 10);
                     name.translateYProperty().set(toScreenCoordinates(o.getPosition().getY()) - toScreenCoordinates(probePos.getY()) - 12);
                     name.translateZProperty().set(toScreenCoordinates(o.getPosition().getZ())   - toScreenCoordinates(probePos.getZ()));
-                    sphere.setRadius(0);
+                    sphere.setRadius(toScreenCoordinates(radius[j]));
                 }
                 else{
                     name.translateXProperty().set(toScreenCoordinates(o.getPosition().getX()) - toScreenCoordinates(probePos.getX()));
@@ -217,6 +224,7 @@ public class GUI3D {
             e.printStackTrace();
         }
     }
+
 
     public void initLabels(Group superGroup){
         Text probeFuel = new Text("Probe Fuel Mass: ");
@@ -253,6 +261,8 @@ public class GUI3D {
     public Scene start(Stage primaryStage) throws Exception {
         SpaceObjectBuilder builder = new SpaceObjectBuilder(getClass().getResource("/solar_system_data-2020_04_01.txt").getFile());
         Group group = new Group();
+        this.stage = primaryStage;
+        LandingSimulation landSim = new LandingSimulation();
         group.translateXProperty().set(CANVAS_WIDTH / 2);
         group.translateYProperty().set(CANVAS_HEIGHT / 2);
         this.group = group;
@@ -314,6 +324,12 @@ public class GUI3D {
                             if (counter > states.length - 1){
                                 counter = states.length - 1;
                             }
+                            if (counter >=12000 && !landing){
+                                landing = true;
+                                TitanView titanView = landSim.getTitanView(new FeedbackController());
+                                stage.setScene(new Scene(titanView.getParent(),1200,800));
+                                titanView.start();
+                            }
                             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/Y hh:mm a");
                             Date date = new Date(120,4,counter/24, counter, 0,0);
                             daysPassed.setText("Date: " + formatter.format(date));
@@ -323,6 +339,16 @@ public class GUI3D {
                             probePos = probe;
                             probeSpeed.setText("Probe speed:" + states[counter].getVelocities()[11].norm() + "m/s");
                             sunPos = states[counter].getPositions()[0];
+                            Vector3d probePosition = states[counter].getPositions()[11];
+                            Vector3d titanPosition = states[counter].getPositions()[8];
+                            Vector3d rotationPoint =  probePosition.sub(titanPosition);
+                            Vector3d nextRotationPoint = rotationPoint.rotate(100,100,100);
+                            nextRotationPoint = nextRotationPoint.add(states[counter].getPositions()[8]);
+                            Sphere s = new Sphere(500);
+                            s.translateXProperty().set(toScreenCoordinates(nextRotationPoint.getX()));
+                            s.translateYProperty().set(toScreenCoordinates(nextRotationPoint.getY()));
+                            s.translateZProperty().set(toScreenCoordinates(nextRotationPoint.getZ()));
+                            group.getChildren().add(s);
 //                            System.out.println(states[counter].getPositions()[3].dist(states[counter].getPositions()[8]));
                             if (probeLock){
                                 camLock = states[counter].getPositions()[states[counter].getPositions().length - 1];

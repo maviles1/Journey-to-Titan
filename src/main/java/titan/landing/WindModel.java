@@ -33,12 +33,15 @@ public class WindModel {
         angle = gen.nextBoolean() ? angle : (angle * -1);
 
         //Create new wind strength
-        //System.out.println(previous);
         double windstrength = gen.nextDouble() * (altitude/ws);
         Vector3d windvector = previous.mul(windstrength/previous.norm());
 
         //Create new direction
         windvector = refactor2DVector(windvector, angle); //Wind is only 2d
+
+        //System.out.println("Windvec: "+ windvector.toString());
+        System.out.println("Windstr: "+ windvector.norm());
+        System.out.println("Altitude: "+ altitude);
 
         return windvector;
     }
