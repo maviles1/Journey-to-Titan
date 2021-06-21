@@ -33,9 +33,8 @@ public class OpenLoopController extends Controller {
         if (state.getTime() == 1) {
             double enterAngle = Math.atan2(state.getVelocity().getY(), state.getVelocity().getX());
             System.out.println(enterAngle);
-            angularAcceleration = startRotation(state, Math.toRadians(enterAngle), 100);
-        if (state.getTime() == 0) {
-            angularAcceleration = startRotation(state, Math.toRadians(-24.503));
+            angularAcceleration = startRotation(state, Math.toRadians(enterAngle));
+
         }
 
         //System.out.println("difference: " + (state.getAngle() % (2 * Math.PI) - targetAngle));
@@ -43,7 +42,7 @@ public class OpenLoopController extends Controller {
             //System.out.println("timestep: " + state.getTime());
             //System.out.println("Reached target angle: " + targetAngle);
             //now we need to counter torque
-            angularAcceleration = stabilize(state, angleTolerance, 50);
+            angularAcceleration = stabilize(state, angleTolerance);
 
             if (isStable(state, angleTolerance) && state.getTime() > 0) {
                 if (targetAngle == 0) {
@@ -55,7 +54,7 @@ public class OpenLoopController extends Controller {
                     if (state.getTime() < 216 + 60) { //stable at timestep 216
                         mainThrust = useMainThruster(state, 3, 60);
                     } else if (state.getTime() == 216 + 60) {
-                        angularAcceleration = startRotation(state, Math.toRadians(45), 100);
+                        angularAcceleration = startRotation(state, Math.toRadians(45));
                     }
                     double t0 = 380 + 250;//259 is when its upright, 380 is when it stops rising
                     double duration = 409; //409 and 2.1921 = 1.5vy // also 409 and 2.19211 = 1.5
@@ -78,7 +77,7 @@ public class OpenLoopController extends Controller {
                     if (state.getTime() < 142 + 300) { //stable at timestep 142
                         mainThrust = useMainThruster(state, 3, 300);
                     } else if (state.getTime() == 142 + 300) { //THIS KINDA DEPENDS ON THE TIME STEP
-                        angularAcceleration = startRotation(state, 0, 100);
+                        angularAcceleration = startRotation(state, 0);
                     }
 
                     if (state.getTime() > 142 + 300 && state.getTime() < 461 + 60) { //stable at 461

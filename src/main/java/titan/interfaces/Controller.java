@@ -18,14 +18,14 @@ public abstract class Controller {
 
     public abstract Controller clone();
 
-    public double startRotation(LandingState state, double targetAngle, double strength) {
+    public double startRotation(LandingState state, double targetAngle) {
         isSetThrustUntil = false;
         this.targetAngle = targetAngle;
         if (state.getAngle() - targetAngle > 0) {
             //we need to rotate to the left
-            return angularAcceleration(rightTorque(strength, state));
+            return angularAcceleration(rightTorque(100, state));
         } else if (state.getAngle() - targetAngle < 0) {
-            return angularAcceleration(leftTorque(strength, state));
+            return angularAcceleration(leftTorque(100, state));
         } else {
             return 0;
         }
@@ -45,14 +45,14 @@ public abstract class Controller {
         }
     }
 
-    public double stabilize(LandingState state, double tolerance, double strength) {
+    public double stabilize(LandingState state, double tolerance) {
         if (state.getAngularVelocity() < 0 - tolerance) { //spinning counter-clockwise
             //need to apply leftTorque
             //System.out.println("applying left torque");
-            return angularAcceleration(leftTorque(strength, state));
+            return angularAcceleration(leftTorque(50, state));
         } else if (state.getAngularVelocity() > 0 + tolerance) {
             //System.out.println("applying right torque");
-            return angularAcceleration(rightTorque(strength, state));
+            return angularAcceleration(rightTorque(50, state));
         } else {
             //angularVelocity is within tolerance, but maybe not exactly 0;
             return -state.getAngularVelocity(); //cancel any residual angular velocity/acceleration
