@@ -33,7 +33,7 @@ public class OpenLoopController extends Controller {
         if (state.getTime() == 1) {
             double enterAngle = Math.atan2(state.getVelocity().getY(), state.getVelocity().getX());
             System.out.println(enterAngle);
-            angularAcceleration = startRotation(state, Math.toRadians(enterAngle));
+            angularAcceleration = startRotation(state, Math.toRadians(enterAngle), 100);
         }
         //double enterAngle = Math.atan2(state.getVelocity().getX(), state.getVelocity().getY());
 
@@ -53,7 +53,7 @@ public class OpenLoopController extends Controller {
                     if (state.getTime() < 216 + 60) { //stable at timestep 216
                         mainThrust = useMainThruster(state, 3, 60);
                     } else if (state.getTime() == 216 + 60) {
-                        angularAcceleration = startRotation(state, Math.toRadians(45));
+                        angularAcceleration = startRotation(state, Math.toRadians(45), 100);
                     }
 
                     if (state.getTime() > 276 && state.getTime() < 591 + 100) { //stable at timestep 591
@@ -70,13 +70,13 @@ public class OpenLoopController extends Controller {
                     if (state.getTime() < 142 + 300) { //stable at timestep 142
                         mainThrust = useMainThruster(state, 3, 300);
                     } else if (state.getTime() == 142 + 300) { //THIS KINDA DEPENDS ON THE TIME STEP
-                        angularAcceleration = startRotation(state, 0);
+                        angularAcceleration = startRotation(state, 0, 100);
                     }
 
                     if (state.getTime() > 142 + 300 && state.getTime() < 461 + 60) { //stable at 461
                         mainThrust = useMainThruster(state, 3, 60);
                     } else if (state.getTime() == 461 + 60) {
-                        angularAcceleration = startRotation(state, 0);
+                        angularAcceleration = startRotation(state, 0, 100);
                     }
                 }
             }
