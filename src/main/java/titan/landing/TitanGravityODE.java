@@ -16,4 +16,8 @@ public class TitanGravityODE implements ODEFunctionInterface {
         Vector3d a = new Vector3d(0, GRAVITY, 0);
         return new LandingRate(state.getVelocity(), a, state.getShuttle_direction(), state.getWind_direction(), state.getPrevWindVector(), 0);
     }
+
+    public static Vector3d getGravitationalPullingForce(){
+        return new Vector3d(0, GRAVITY, 0);
+    }
 }

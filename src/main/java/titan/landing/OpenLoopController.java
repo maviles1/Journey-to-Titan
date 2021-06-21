@@ -13,7 +13,6 @@ public class OpenLoopController extends Controller {
         this.targetAngle = targetAngle;
         this.thrustUntil = thrustUntil;
         this.isSetThrustUntil = isSetThrustUntil;
-
     }
 
     @Override
@@ -27,7 +26,7 @@ public class OpenLoopController extends Controller {
         //vertical acceleration = u * cos(theta) (-g)
         //angular acceleration = torque
 
-        double mainThrust = 0; //TODO: potential base thrust off of altitute or if we are doing course correction
+        double mainThrust = 0; //TODO: potential base thrust off of altitude or if we are doing course correction
         double angularAcceleration = 0;
 
         //This is just to give it initial angular rotation in the first state
@@ -40,7 +39,7 @@ public class OpenLoopController extends Controller {
             //System.out.println("timestep: " + state.getTime());
             //System.out.println("Reached target angle: " + targetAngle);
             //now we need to counter torque
-            angularAcceleration = stabilize(state, angleTolerance);
+            angularAcceleration = stabilize(state, angleTolerance, 50);
 
             if (isStable(state, angleTolerance) && state.getTime() > 0) {
                 if (targetAngle == 0) {
