@@ -120,9 +120,9 @@ public class WindModel {
             swv.setY(swv.getY()*-1);
 
 
-        System.out.println("Windvec: "+ swv.toString());
-        System.out.println("InitialWV: "+ swv.norm());
-        System.out.println("Altitude: "+ altitude);
+        System.out.println("Inital Wind Vector: "+ swv.toString());
+        System.out.println("Initial Wind Speed: "+ swv.norm());
+        System.out.println("Drop Altitude: "+ altitude);
 
         return swv;
     }

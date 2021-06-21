@@ -28,12 +28,12 @@ public class TitanWindODE implements ODEFunctionInterface {
             newwindvec = state.getPrevWindVector();
         }
 
-        if(forceVector.getX() != 0)
-        {
-            System.out.println("used windenorm: " + newwindvec.norm());
-            System.out.println("used windforcenorm: " + forceVector.norm());
-            System.out.println("Altitude: " + altitute);
-        }
+//        if(forceVector.getX() != 0)
+//        {
+//            System.out.println("used windenorm: " + newwindvec.norm());
+//            System.out.println("used windforcenorm: " + forceVector.norm());
+//            System.out.println("Altitude: " + altitute);
+//        }
 
         return new LandingRate(state.getVelocity(), forceVector, state.getShuttle_direction(), state.getWind_direction(), newwindvec, 0);
 
