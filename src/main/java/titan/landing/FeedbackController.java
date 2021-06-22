@@ -54,40 +54,40 @@ public class FeedbackController extends Controller {
         switch (process) {
             case "rotating": {
                 if (Math.abs(state.getAngle() % (2 * Math.PI) - targetAngle) < angleTolerance) {
+                    System.out.println("Rotating. Reached target angle");
+
                     angularAcceleration = stabilize(state, angleTolerance);
                     process = "stabilizing";
                     flag = true;
-
-                    System.out.println("CHECK1.1");
                 } else if (Math.abs(state.getAngularVelocity()) <= max_angular_velocity) {
+                    System.out.println("Rotating");
+
                     targetAngle = getAngle(state, windRate);
                     angularAcceleration = startRotation(state, Math.toRadians(targetAngle));
-
-                    System.out.println("CHECK1.2");
                 }
             } break;
             case "stabilizing": {
-                if (isStable(state, angleTolerance * 0.1)) {
+                if (isStable(state, angleTolerance)) {
+                    System.out.println("Stabilizing. Stable");
+                    angle_of_rotation *= -1;
+
                     mainThrust = getStrength(state, windRate);
                     process = "thrusting";
-
-                    System.out.println("CHECK2.1");
                 } else if (Math.abs(state.getAngularVelocity()) <= max_angular_velocity) {
-                    angularAcceleration = stabilize(state, angleTolerance);
+                    System.out.println("Stabilizing");
 
-                    System.out.println("CHECK2.2");
+                    angularAcceleration = stabilize(state, angleTolerance);
                 }
             } break;
             case "thrusting": {
+                System.out.println("Thrusting");
+
                 if (state.getVelocity().norm() > max_velocity) {
                     mainThrust = getStrength(state, windRate);
                 }
                 process = "rotating";
-
-                System.out.println("CHECK3");
             }
         }
-        //System.out.println("PROCESS                         " + process);
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         //if (state.getPosition().getX() - LandingSimulation.getLandingPosition().getX() > 10) {

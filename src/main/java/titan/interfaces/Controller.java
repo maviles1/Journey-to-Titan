@@ -8,7 +8,7 @@ public abstract class Controller {
 
     public final double MASS = 6000;
     public final double RADIUS = 3;
-    public final double angleTolerance = 0.01;
+    public final double angleTolerance = 0.1;
 
     public double targetAngle;
     public double thrustUntil; //TODO: find a formula to calculate this
