@@ -1,5 +1,4 @@
-# Group 5
-## Project 1-2
+# Journey to Titan
 
 Members: Martin Aviles, Lou Feiler, Marie Picquet, Sam Glassman, Yaroslav Tymofiienko, Tjardo Neis
 
